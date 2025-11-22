@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Acme Creative — Design & Digital Agency</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root{
+            --bg:#0f1724;
+            --card:#0b1220;
+            --muted:#9aa4b2;
+            --accent-1: #7b5cff;
+            --accent-2: #ff6b9f;
+            --glass: rgba(255,255,255,0.04);
+            --white: #ffffff;
+            --radius: 12px;
+        }
+        *{box-sizing:border-box}
+        html,body{height:100%}
+        body{
+            margin:0;
+            font-family:'Poppins',system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+            background: linear-gradient(180deg,#05060a 0%, #071021 50%), var(--bg);
+            color:var(--white);
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+            line-height:1.45;
+            padding:32px;
+        }
+
+        .container{max-width:1150px;margin:0 auto;padding:24px;}
+
+        /* Header */
+        header{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:16px;
+            margin-bottom:28px;
+        }
+        .brand{
+            display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;
+        }
+        .logo{
+            width:52px;height:52px;border-radius:12px;
+            background:linear-gradient(135deg,var(--accent-1),var(--accent-2));
+            display:grid;place-items:center;font-weight:700;font-size:18px;
+            box-shadow:0 6px 20px rgba(123,92,255,0.16), 0 6px 20px rgba(255,107,159,0.06);
+        }
+        nav{display:flex;gap:18px;align-items:center}
+        nav a{color:var(--muted);text-decoration:none;font-weight:600}
+        .cta{
+            background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+            padding:10px 16px;border-radius:10px;color:var(--white);text-decoration:none;font-weight:700;
+            box-shadow:0 8px 30px rgba(123,92,255,0.12);
+        }
+        .hamburger{display:none;background:transparent;border:0;color:var(--muted);font-size:22px}
+
+        /* Hero */
+        .hero{
+            display:grid;
+            grid-template-columns:1fr 420px;
+            gap:28px;
+            align-items:center;
+            margin-bottom:36px;
+        }
+        .hero-card{
+            background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border-radius:var(--radius);
+            padding:36px;
+            backdrop-filter: blur(6px);
+        }
+        h1{margin:0 0 12px 0;font-size:34px;line-height:1.05}
+        p.lead{margin:0 0 22px 0;color:var(--muted);font-weight:500}
+        .hero-actions{display:flex;gap:12px;align-items:center}
+        .btn{
+            padding:12px 16px;border-radius:10px;text-decoration:none;font-weight:700;border:0;cursor:pointer;
+        }
+        .btn-primary{
+            background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:white;
+            box-shadow:0 10px 30px rgba(123,92,255,0.12);
+        }
+        .btn-ghost{
+            background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--white);
+        }
+
+        .hero-stats{
+            display:flex;gap:12px;margin-top:20px;
+        }
+        .stat{
+            padding:12px;border-radius:12px;background:var(--glass);min-width:120px;text-align:center;
+        }
+        .stat strong{display:block;font-size:18px}
+
+        /* Aside card */
+        .aside{
+            background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border-radius:var(--radius);padding:18px;position:relative;
+            box-shadow:0 6px 28px rgba(2,6,23,0.6);
+        }
+        .aside img{width:100%;border-radius:10px;display:block}
+        .aside .tag{display:inline-block;margin-top:12px;padding:6px 10px;border-radius:8px;background:rgba(255,255,255,0.04);font-weight:600;color:var(--muted);font-size:13px}
+
+        /* Services */
+        .services{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:28px 0}
+        .card{
+            background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            padding:18px;border-radius:14px;
+        }
+        .icon{
+            width:52px;height:52px;border-radius:12px;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+            display:grid;place-items:center;font-weight:700;margin-bottom:12px;
+        }
+        .card h3{margin:0 0 8px 0}
+        .card p{margin:0;color:var(--muted);font-size:14px}
+
+        /* Portfolio */
+        .portfolio{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:30px}
+        .project{border-radius:12px;overflow:hidden;min-height:140px;background:#0b0f18}
+        .project img{width:100%;height:100%;object-fit:cover;display:block}
+        .project .overlay{padding:12px;color:white;display:flex;align-items:flex-end;height:100%;background:linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.45))}
+        .project h4{margin:0}
+
+        /* Contact */
+        .contact{
+            display:grid;grid-template-columns:1fr 380px;gap:18px;margin-bottom:36px;
+        }
+        form{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px}
+        label{display:block;font-weight:600;margin:10px 0 6px;color:var(--muted);font-size:13px}
+        input[type="text"],input[type="email"],textarea{
+            width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--white);
+        }
+        textarea{min-height:120px;resize:vertical}
+        .form-actions{display:flex;gap:12px;margin-top:12px}
+
+        /* Footer */
+        footer{display:flex;justify-content:space-between;gap:12px;align-items:center;color:var(--muted);font-size:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.03)}
+        .social a{margin-left:10px;color:var(--muted);text-decoration:none}
+
+        /* Responsive */
+        @media (max-width:960px){
+            .hero{grid-template-columns:1fr;gap:18px}
+            .services{grid-template-columns:repeat(2,1fr)}
+            .portfolio{grid-template-columns:repeat(2,1fr)}
+            .contact{grid-template-columns:1fr}
+            nav{display:none}
+            .hamburger{display:block}
+        }
+        @media (max-width:520px){
+            .services{grid-template-columns:1fr}
+            .portfolio{grid-template-columns:1fr}
+            body{padding:18px}
+            h1{font-size:28px}
+            .logo{width:44px;height:44px;font-size:16px}
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a class="brand" href="#">
+                <div class="logo">AC</div>
+                <div>
+                    <div style="font-weight:700">Acme Creative</div>
+                    <div style="font-size:12px;color:var(--muted)">Design • Product • Growth</div>
+                </div>
+            </a>
+
+            <nav>
+                <a href="#services">Services</a>
+                <a href="#work">Work</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+                <a class="cta" href="#contact">Get a Quote</a>
+            </nav>
+
+            <button class="hamburger" aria-label="menu" id="menuBtn">☰</button>
+        </header>
+
+        <main>
+            <section class="hero">
+                <div class="hero-card">
+                    <h1>We craft beautiful brands & pixel-perfect products</h1>
+                    <p class="lead">A boutique studio helping startups and enterprises design meaningful products and memorable brands — from strategy to launch.</p>
+
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#contact">Start a Project</a>
+                        <a class="btn btn-ghost" href="#work">View Portfolio</a>
+                    </div>
+
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <strong>150+</strong>
+                            Clients
+                        </div>
+                        <div class="stat">
+                            <strong>320</strong>
+                            Projects
+                        </div>
+                        <div class="stat">
+                            <strong>8.9/10</strong>
+                            Avg Rating
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="aside">
+                    <img src="https://images.unsplash.com/photo-1558522194-355d4f2b9a9d?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9b61d6b3b28c5f06a6aa8b8bfe2a5f7b" alt="Creative workspace">
+                    <div class="tag">Featured case study • Product Identity</div>
+                </aside>
+            </section>
+
+            <section id="services" aria-label="Services" class="services">
+                <div class="card">
+                    <div class="icon">UI</div>
+                    <h3>Product Design</h3>
+                    <p>End-to-end design systems, interaction design and user testing to ship delightful digital products.</p>
+                </div>
+
+                <div class="card">
+                    <div class="icon">BR</div>
+                    <h3>Brand Strategy</h3>
+                    <p>Positioning, visual identity and messaging that aligns with your business goals and audience.</p>
+                </div>
+
+                <div class="card">
+                    <div class="icon">WD</div>
+                    <h3>Web Development</h3>
+                    <p>Performance-focused, accessible websites and marketing experiences built with modern tooling.</p>
+                </div>
+            </section>
+
+            <section id="work" aria-label="Portfolio" class="portfolio" style="margin-bottom:36px">
+                <div class="project">
+                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9b6f2f0b6d2b3a9f3a2b0b8a1c2e9f7a" alt="Project 1">
+                    <div class="overlay"><h4>Fintech Dashboard • UX</h4></div>
+                </div>
+
+                <div class="project">
+                    <img src="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=7b34d0a0a6f4a7f0c68f8e7a7c9f0f2f" alt="Project 2">
+                    <div class="overlay"><h4>Brand Identity • Retail</h4></div>
+                </div>
+
+                <div class="project">
+                    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=0d9c6f3f3d6b0972a6f0c995d7b3f2a1" alt="Project 3">
+                    <div class="overlay"><h4>Marketing Site • Launch</h4></div>
+                </div>
+            </section>
+
+            <section id="about" style="margin-bottom:18px">
+                <div style="display:flex;gap:18px;align-items:center">
+                    <div style="flex:1">
+                        <h2 style="margin-top:0">About Acme Creative</h2>
+                        <p style="color:var(--muted);margin-top:8px">We’re a cross-disciplinary team of designers, developers and strategists who partner with teams to conceive and ship products that matter. Small team. Big results.</p>
+                    </div>
+                    <div style="min-width:220px">
+                        <div style="background:linear-gradient(90deg,var(--accent-1),var(--accent-2));padding:16px;border-radius:12px;">
+                            <div style="font-weight:700">Trusted by</div>
+                            <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+                                <div style="background:rgba(255,255,255,0.12);padding:6px 10px;border-radius:8px;font-weight:600">Acme</div>
+                                <div style="background:rgba(255,255,255,0.08);padding:6px 10px;border-radius:8px;font-weight:600">Nexa</div>
+                                <div style="background:rgba(255,255,255,0.08);padding:6px 10px;border-radius:8px;font-weight:600">Orbit</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact" class="contact">
+                <form onsubmit="handleSubmit(event)">
+                    <h3 style="margin-top:0">Let's talk about your project</h3>
+                    <label for="name">Name</label>
+                    <input id="name" type="text" required placeholder="Your name">
+
+                    <label for="email">Email</label>
+                    <input id="email" type="email" required placeholder="you@company.com">
+
+                    <label for="message">Message</label>
+                    <textarea id="message" placeholder="Tell us about your goals"></textarea>
+
+                    <div class="form-actions">
+                        <button class="btn btn-primary" type="submit">Send Message</button>
+                        <button class="btn btn-ghost" type="reset">Reset</button>
+                    </div>
+                </form>
+
+                <aside style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px">
+                    <h4 style="margin-top:0">Contact</h4>
+                    <p style="color:var(--muted)">hello@acmecreative.com<br>+1 (555) 123-4567</p>
+
+                    <h4 style="margin-top:18px">Studio</h4>
+                    <p style="color:var(--muted)">123 Market St, Suite 400<br>San Francisco, CA</p>
+
+                    <div style="margin-top:16px">
+                        <a class="btn btn-primary" href="mailto:hello@acmecreative.com">Email Us</a>
+                    </div>
+                </aside>
+            </section>
+        </main>
+
+        <footer>
+            <div>© <span id="year"></span> Acme Creative — All rights reserved</div>
+            <div class="social">
+                <a href="#" aria-label="Twitter">Twitter</a>
+                <a href="#" aria-label="LinkedIn">LinkedIn</a>
+                <a href="#" aria-label="Dribbble">Dribbble</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Small interactions: menu toggle & form handling
+        const menuBtn = document.getElementById('menuBtn');
+        menuBtn && menuBtn.addEventListener('click', () => {
+            const nav = document.querySelector('nav');
+            if (!nav) return;
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        function handleSubmit(e){
+            e.preventDefault();
+            // Simple UX: show a quick acknowledgement (replace with real submit)
+            const name = document.getElementById('name').value || 'there';
+            alert('Thanks, ' + name + '! We will contact you shortly.');
+            e.target.reset();
+        }
+
+        // set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
