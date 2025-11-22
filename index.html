@@ -1,336 +1,607 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Acme Creative — Design & Digital Agency</title>
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thermowave Dynamics</title>
     <style>
-        :root{
-            --bg:#0f1724;
-            --card:#0b1220;
-            --muted:#9aa4b2;
-            --accent-1: #7b5cff;
-            --accent-2: #ff6b9f;
-            --glass: rgba(255,255,255,0.04);
-            --white: #ffffff;
-            --radius: 12px;
-        }
-        *{box-sizing:border-box}
-        html,body{height:100%}
-        body{
-            margin:0;
-            font-family:'Poppins',system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-            background: linear-gradient(180deg,#05060a 0%, #071021 50%), var(--bg);
-            color:var(--white);
-            -webkit-font-smoothing:antialiased;
-            -moz-osx-font-smoothing:grayscale;
-            line-height:1.45;
-            padding:32px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .container{max-width:1150px;margin:0 auto;padding:24px;}
-
-        /* Header */
-        header{
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            gap:16px;
-            margin-bottom:28px;
-        }
-        .brand{
-            display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;
-        }
-        .logo{
-            width:52px;height:52px;border-radius:12px;
-            background:linear-gradient(135deg,var(--accent-1),var(--accent-2));
-            display:grid;place-items:center;font-weight:700;font-size:18px;
-            box-shadow:0 6px 20px rgba(123,92,255,0.16), 0 6px 20px rgba(255,107,159,0.06);
-        }
-        nav{display:flex;gap:18px;align-items:center}
-        nav a{color:var(--muted);text-decoration:none;font-weight:600}
-        .cta{
-            background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
-            padding:10px 16px;border-radius:10px;color:var(--white);text-decoration:none;font-weight:700;
-            box-shadow:0 8px 30px rgba(123,92,255,0.12);
-        }
-        .hamburger{display:none;background:transparent;border:0;color:var(--muted);font-size:22px}
-
-        /* Hero */
-        .hero{
-            display:grid;
-            grid-template-columns:1fr 420px;
-            gap:28px;
-            align-items:center;
-            margin-bottom:36px;
-        }
-        .hero-card{
-            background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-            border-radius:var(--radius);
-            padding:36px;
-            backdrop-filter: blur(6px);
-        }
-        h1{margin:0 0 12px 0;font-size:34px;line-height:1.05}
-        p.lead{margin:0 0 22px 0;color:var(--muted);font-weight:500}
-        .hero-actions{display:flex;gap:12px;align-items:center}
-        .btn{
-            padding:12px 16px;border-radius:10px;text-decoration:none;font-weight:700;border:0;cursor:pointer;
-        }
-        .btn-primary{
-            background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:white;
-            box-shadow:0 10px 30px rgba(123,92,255,0.12);
-        }
-        .btn-ghost{
-            background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--white);
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f8f8;
+            color: #1a1a1a;
+            overflow-x: hidden;
         }
 
-        .hero-stats{
-            display:flex;gap:12px;margin-top:20px;
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: white;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 1rem 0;
         }
-        .stat{
-            padding:12px;border-radius:12px;background:var(--glass);min-width:120px;text-align:center;
-        }
-        .stat strong{display:block;font-size:18px}
 
-        /* Aside card */
-        .aside{
-            background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-            border-radius:var(--radius);padding:18px;position:relative;
-            box-shadow:0 6px 28px rgba(2,6,23,0.6);
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
         }
-        .aside img{width:100%;border-radius:10px;display:block}
-        .aside .tag{display:inline-block;margin-top:12px;padding:6px 10px;border-radius:8px;background:rgba(255,255,255,0.04);font-weight:600;color:var(--muted);font-size:13px}
 
-        /* Services */
-        .services{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:28px 0}
-        .card{
-            background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-            padding:18px;border-radius:14px;
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #4a0000;
+            letter-spacing: 3px;
         }
-        .icon{
-            width:52px;height:52px;border-radius:12px;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
-            display:grid;place-items:center;font-weight:700;margin-bottom:12px;
-        }
-        .card h3{margin:0 0 8px 0}
-        .card p{margin:0;color:var(--muted);font-size:14px}
 
-        /* Portfolio */
-        .portfolio{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:30px}
-        .project{border-radius:12px;overflow:hidden;min-height:140px;background:#0b0f18}
-        .project img{width:100%;height:100%;object-fit:cover;display:block}
-        .project .overlay{padding:12px;color:white;display:flex;align-items:flex-end;height:100%;background:linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.45))}
-        .project h4{margin:0}
-
-        /* Contact */
-        .contact{
-            display:grid;grid-template-columns:1fr 380px;gap:18px;margin-bottom:36px;
+        .nav-logo span {
+            color: #c41e3a;
         }
-        form{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px}
-        label{display:block;font-weight:600;margin:10px 0 6px;color:var(--muted);font-size:13px}
-        input[type="text"],input[type="email"],textarea{
-            width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--white);
-        }
-        textarea{min-height:120px;resize:vertical}
-        .form-actions{display:flex;gap:12px;margin-top:12px}
 
-        /* Footer */
-        footer{display:flex;justify-content:space-between;gap:12px;align-items:center;color:var(--muted);font-size:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.03)}
-        .social a{margin-left:10px;color:var(--muted);text-decoration:none}
-
-        /* Responsive */
-        @media (max-width:960px){
-            .hero{grid-template-columns:1fr;gap:18px}
-            .services{grid-template-columns:repeat(2,1fr)}
-            .portfolio{grid-template-columns:repeat(2,1fr)}
-            .contact{grid-template-columns:1fr}
-            nav{display:none}
-            .hamburger{display:block}
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
         }
-        @media (max-width:520px){
-            .services{grid-template-columns:1fr}
-            .portfolio{grid-template-columns:1fr}
-            body{padding:18px}
-            h1{font-size:28px}
-            .logo{width:44px;height:44px;font-size:16px}
+
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: #c41e3a;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: #c41e3a;
+        }
+
+        .content {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .home-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 80px);
+            padding: 4rem 2rem;
+        }
+
+        .logo-display {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .logo-display h1 {
+            font-size: 5rem;
+            font-weight: 900;
+            color: #4a0000;
+            letter-spacing: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .logo-display h2 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #c41e3a;
+            letter-spacing: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .team-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .team-title {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-member {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(196, 30, 58, 0.2);
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a0000, #c41e3a);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .team-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-role {
+            font-size: 1rem;
+            color: #c41e3a;
+            margin-bottom: 1rem;
+        }
+
+        .team-bio {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .problem-page,
+        .solution-page {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            margin-bottom: 4rem;
+        }
+
+        .page-number {
+            font-size: 1.5rem;
+            color: #999;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #1a1a1a;
+        }
+
+        .problem-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .problem-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .problem-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .problem-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4a0000;
+            margin-bottom: 1rem;
+        }
+
+        .problem-text {
+            font-size: 1.1rem;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2rem;
+        }
+
+        .solution-card {
+            background: #4a0000;
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 250px;
+        }
+
+        .solution-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(74, 0, 0, 0.4);
+        }
+
+        .solution-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #c41e3a, #ff6b6b);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .card-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .mobile-menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #1a1a1a;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                gap: 0;
+                padding: 2rem;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+                transition: left 0.3s ease;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .solutions-grid,
+            .problem-content {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-link {
+                padding: 1rem;
+                border-bottom: 1px solid #eee;
+            }
+
+            .logo-display h1 {
+                font-size: 3rem !important;
+            }
+
+            .logo-display h2 {
+                font-size: 2rem !important;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <a class="brand" href="#">
-                <div class="logo">AC</div>
-                <div>
-                    <div style="font-weight:700">Acme Creative</div>
-                    <div style="font-size:12px;color:var(--muted)">Design • Product • Growth</div>
-                </div>
-            </a>
-
-            <nav>
-                <a href="#services">Services</a>
-                <a href="#work">Work</a>
-                <a href="#about">About</a>
-                <a href="#contact">Contact</a>
-                <a class="cta" href="#contact">Get a Quote</a>
-            </nav>
-
-            <button class="hamburger" aria-label="menu" id="menuBtn">☰</button>
-        </header>
-
-        <main>
-            <section class="hero">
-                <div class="hero-card">
-                    <h1>We craft beautiful brands & pixel-perfect products</h1>
-                    <p class="lead">A boutique studio helping startups and enterprises design meaningful products and memorable brands — from strategy to launch.</p>
-
-                    <div class="hero-actions">
-                        <a class="btn btn-primary" href="#contact">Start a Project</a>
-                        <a class="btn btn-ghost" href="#work">View Portfolio</a>
-                    </div>
-
-                    <div class="hero-stats">
-                        <div class="stat">
-                            <strong>150+</strong>
-                            Clients
-                        </div>
-                        <div class="stat">
-                            <strong>320</strong>
-                            Projects
-                        </div>
-                        <div class="stat">
-                            <strong>8.9/10</strong>
-                            Avg Rating
-                        </div>
-                    </div>
-                </div>
-
-                <aside class="aside">
-                    <img src="https://images.unsplash.com/photo-1558522194-355d4f2b9a9d?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9b61d6b3b28c5f06a6aa8b8bfe2a5f7b" alt="Creative workspace">
-                    <div class="tag">Featured case study • Product Identity</div>
-                </aside>
-            </section>
-
-            <section id="services" aria-label="Services" class="services">
-                <div class="card">
-                    <div class="icon">UI</div>
-                    <h3>Product Design</h3>
-                    <p>End-to-end design systems, interaction design and user testing to ship delightful digital products.</p>
-                </div>
-
-                <div class="card">
-                    <div class="icon">BR</div>
-                    <h3>Brand Strategy</h3>
-                    <p>Positioning, visual identity and messaging that aligns with your business goals and audience.</p>
-                </div>
-
-                <div class="card">
-                    <div class="icon">WD</div>
-                    <h3>Web Development</h3>
-                    <p>Performance-focused, accessible websites and marketing experiences built with modern tooling.</p>
-                </div>
-            </section>
-
-            <section id="work" aria-label="Portfolio" class="portfolio" style="margin-bottom:36px">
-                <div class="project">
-                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9b6f2f0b6d2b3a9f3a2b0b8a1c2e9f7a" alt="Project 1">
-                    <div class="overlay"><h4>Fintech Dashboard • UX</h4></div>
-                </div>
-
-                <div class="project">
-                    <img src="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=7b34d0a0a6f4a7f0c68f8e7a7c9f0f2f" alt="Project 2">
-                    <div class="overlay"><h4>Brand Identity • Retail</h4></div>
-                </div>
-
-                <div class="project">
-                    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=0d9c6f3f3d6b0972a6f0c995d7b3f2a1" alt="Project 3">
-                    <div class="overlay"><h4>Marketing Site • Launch</h4></div>
-                </div>
-            </section>
-
-            <section id="about" style="margin-bottom:18px">
-                <div style="display:flex;gap:18px;align-items:center">
-                    <div style="flex:1">
-                        <h2 style="margin-top:0">About Acme Creative</h2>
-                        <p style="color:var(--muted);margin-top:8px">We’re a cross-disciplinary team of designers, developers and strategists who partner with teams to conceive and ship products that matter. Small team. Big results.</p>
-                    </div>
-                    <div style="min-width:220px">
-                        <div style="background:linear-gradient(90deg,var(--accent-1),var(--accent-2));padding:16px;border-radius:12px;">
-                            <div style="font-weight:700">Trusted by</div>
-                            <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-                                <div style="background:rgba(255,255,255,0.12);padding:6px 10px;border-radius:8px;font-weight:600">Acme</div>
-                                <div style="background:rgba(255,255,255,0.08);padding:6px 10px;border-radius:8px;font-weight:600">Nexa</div>
-                                <div style="background:rgba(255,255,255,0.08);padding:6px 10px;border-radius:8px;font-weight:600">Orbit</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="contact" class="contact">
-                <form onsubmit="handleSubmit(event)">
-                    <h3 style="margin-top:0">Let's talk about your project</h3>
-                    <label for="name">Name</label>
-                    <input id="name" type="text" required placeholder="Your name">
-
-                    <label for="email">Email</label>
-                    <input id="email" type="email" required placeholder="you@company.com">
-
-                    <label for="message">Message</label>
-                    <textarea id="message" placeholder="Tell us about your goals"></textarea>
-
-                    <div class="form-actions">
-                        <button class="btn btn-primary" type="submit">Send Message</button>
-                        <button class="btn btn-ghost" type="reset">Reset</button>
-                    </div>
-                </form>
-
-                <aside style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px">
-                    <h4 style="margin-top:0">Contact</h4>
-                    <p style="color:var(--muted)">hello@acmecreative.com<br>+1 (555) 123-4567</p>
-
-                    <h4 style="margin-top:18px">Studio</h4>
-                    <p style="color:var(--muted)">123 Market St, Suite 400<br>San Francisco, CA</p>
-
-                    <div style="margin-top:16px">
-                        <a class="btn btn-primary" href="mailto:hello@acmecreative.com">Email Us</a>
-                    </div>
-                </aside>
-            </section>
-        </main>
-
-        <footer>
-            <div>© <span id="year"></span> Acme Creative — All rights reserved</div>
-            <div class="social">
-                <a href="#" aria-label="Twitter">Twitter</a>
-                <a href="#" aria-label="LinkedIn">LinkedIn</a>
-                <a href="#" aria-label="Dribbble">Dribbble</a>
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">
+                THERMOWAVE <span>DYNAMICS</span>
             </div>
-        </footer>
+            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a class="nav-link active" onclick="showPage(event, 'home')">Home</a></li>
+                <li><a class="nav-link" onclick="showPage(event, 'problem')">Problem</a></li>
+                <li><a class="nav-link" onclick="showPage(event, 'solution')">Solution</a></li>
+                <li><a class="nav-link" onclick="showPage(event, 'team')">Team</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="content">
+        <div id="home" class="page active">
+            <div class="home-page">
+                <div class="logo-display">
+                    <h1>THERMOWAVE</h1>
+                    <h2>DYNAMICS</h2>
+                    <p class="subtitle">Deeptech company building both industrial-scale and consumer-focused pyrolysis solutions</p>
+                </div>
+
+                <div class="team-section">
+                    <h2 class="team-title">Our Team</h2>
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <div class="team-avatar">A</div>
+                            <h3 class="team-name">Atiksh</h3>
+                            <p class="team-role">CEO</p>
+                            <p class="team-bio">Visionary leader driving Thermowave's mission to revolutionize waste-to-energy solutions.</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-avatar">K</div>
+                            <h3 class="team-name">Kamlesh</h3>
+                            <p class="team-role">CFO</p>
+                            <p class="team-bio">Financial strategist managing investments and ensuring sustainable growth.</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-avatar">L</div>
+                            <h3 class="team-name">Lavitra</h3>
+                            <p class="team-role">COO</p>
+                            <p class="team-bio">Operations expert ensuring seamless execution of industrial and consumer initiatives.</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-avatar">A</div>
+                            <h3 class="team-name">Arjun</h3>
+                            <p class="team-role">Janitor</p>
+                            <p class="team-bio">Keeping our facilities spotless and ensuring a clean, safe working environment.</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-avatar">S</div>
+                            <h3 class="team-name">Srishti</h3>
+                            <p class="team-role">Marketing</p>
+                            <p class="team-bio">Marketing leader building brand awareness and driving customer engagement.</p>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-avatar">J</div>
+                            <h3 class="team-name">Jivitesh</h3>
+                            <p class="team-role">Tech</p>
+                            <p class="team-bio">Technology specialist developing cutting-edge pyrolysis systems and automation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="problem" class="page problem-page">
+            <div class="page-header">
+                <span class="page-number">01</span>
+                <h1 class="page-title">THE PROBLEM</h1>
+            </div>
+            <div class="problem-content">
+                <div class="problem-card">
+                    <div class="problem-icon">🌍</div>
+                    <h3 class="problem-title">Waste Crisis</h3>
+                    <p class="problem-text">Millions of tons of plastic and organic waste cannot be efficiently recycled.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">🏠</div>
+                    <h3 class="problem-title">Limited Home Solutions</h3>
+                    <p class="problem-text">Households and small communities lack safe, convenient ways to convert waste into usable energy.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">🏭</div>
+                    <h3 class="problem-title">Industrial Limitations</h3>
+                    <p class="problem-text">Large-scale pyrolysis plants face safety, efficiency, and emissions limitations.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">📊</div>
+                    <h3 class="problem-title">400M+ Tons</h3>
+                    <p class="problem-text">Of plastic waste each year with less than 10% recycled effectively. Incineration plants release 400M tons of CO2 yearly.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="solution" class="page solution-page">
+            <div class="page-header">
+                <span class="page-number">02</span>
+                <h1 class="page-title">OUR SOLUTION</h1>
+            </div>
+            <div class="solutions-grid">
+                <div class="solution-card">
+                    <div class="card-icon">🏭</div>
+                    <h3 class="card-title">INDUSTRIAL PLANTS</h3>
+                    <p class="card-description">
+                        Buy/recycle plastics from plants or households → produce eco-friendly fuel using advanced microwave pyrolysis technology.
+                    </p>
+                </div>
+                <div class="solution-card">
+                    <div class="card-icon">🏠</div>
+                    <h3 class="card-title">HOME UNITS (R&D)</h3>
+                    <p class="card-description">
+                        Compact, safe pyrolysis devices for households, turning waste into usable fuel safely. Currently in development.
+                    </p>
+                </div>
+                <div class="solution-card">
+                    <div class="card-icon">🔬</div>
+                    <h3 class="card-title">INNOVATION</h3>
+                    <p class="card-description">
+                        Integrated approach — operational experience improves safety and efficiency of both home units and industrial plants.
+                    </p>
+                </div>
+                <div class="solution-card">
+                    <div class="card-icon">🌱</div>
+                    <h3 class="card-title">IMPACT</h3>
+                    <p class="card-description">
+                        Reduces landfill waste, produces low-carbon fuel, enables circular economy at both industrial and household scale.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="team" class="page problem-page">
+            <div class="page-header">
+                <span class="page-number">03</span>
+                <h1 class="page-title">OUR TEAM</h1>
+            </div>
+            <div class="team-grid" style="max-width: 1200px; margin: 0 auto;">
+                <div class="team-member">
+                    <div class="team-avatar">A</div>
+                    <h3 class="team-name">Atiksh</h3>
+                    <p class="team-role">CEO</p>
+                    <p class="team-bio">Visionary leader driving Thermowave's mission to revolutionize waste-to-energy solutions globally. Strategic thinker with passion for sustainable innovation.</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">K</div>
+                    <h3 class="team-name">Kamlesh</h3>
+                    <p class="team-role">CFO</p>
+                    <p class="team-bio">Financial strategist managing investments and ensuring sustainable growth. Expert in financial planning and resource allocation.</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">L</div>
+                    <h3 class="team-name">Lavitra</h3>
+                    <p class="team-role">COO</p>
+                    <p class="team-bio">Operations expert ensuring seamless execution of industrial and consumer initiatives. Master of process optimization and team coordination.</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">A</div>
+                    <h3 class="team-name">Arjun</h3>
+                    <p class="team-role">Janitor</p>
+                    <p class="team-bio">Keeping our facilities spotless and ensuring a clean, safe working environment for the entire team. The unsung hero of Thermowave.</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">S</div>
+                    <h3 class="team-name">Srishti</h3>
+                    <p class="team-role">Marketing</p>
+                    <p class="team-bio">Marketing leader building brand awareness and driving customer engagement. Creative strategist connecting our mission with the world.</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">J</div>
+                    <h3 class="team-name">Jivitesh</h3>
+                    <p class="team-role">Tech</p>
+                    <p class="team-bio">Technology specialist developing cutting-edge pyrolysis systems and automation solutions. Passionate about innovation and engineering excellence.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Small interactions: menu toggle & form handling
-        const menuBtn = document.getElementById('menuBtn');
-        menuBtn && menuBtn.addEventListener('click', () => {
-            const nav = document.querySelector('nav');
-            if (!nav) return;
-            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
-        });
+        function showPage(event, pageName) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
 
-        function handleSubmit(e){
-            e.preventDefault();
-            // Simple UX: show a quick acknowledgement (replace with real submit)
-            const name = document.getElementById('name').value || 'there';
-            alert('Thanks, ' + name + '! We will contact you shortly.');
-            e.target.reset();
+            document.getElementById(pageName).classList.add('active');
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.getElementById('navMenu').classList.remove('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // set current year
-        document.getElementById('year').textContent = new Date().getFullYear();
+        function toggleMobileMenu() {
+            document.getElementById('navMenu').classList.toggle('active');
+        }
+
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('navMenu');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (!nav.contains(event.target) && !toggle.contains(event.target) && !event.target.classList.contains('nav-link')) {
+                nav.classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>
