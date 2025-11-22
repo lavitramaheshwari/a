@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Thermowave Dynamics</title>
     <style>
         * {
@@ -37,15 +37,27 @@
             padding: 0 2rem;
         }
 
+        /* Logo container changed to host the PDF-based logo */
         .nav-logo {
-            font-size: 1.5rem;
-            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
             color: #4a0000;
+            font-weight: 900;
             letter-spacing: 3px;
+            text-transform: uppercase;
         }
 
-        .nav-logo span {
-            color: #c41e3a;
+        .nav-logo .logo-pdf {
+            width: 160px;
+            height: 48px;
+            display: block;
+            border: none;
+        }
+
+        .nav-logo .logo-fallback {
+            font-size: 1.1rem;
+            color: #4a0000;
         }
 
         .nav-menu {
@@ -140,6 +152,7 @@
             margin: 0 auto;
         }
 
+        /* Enforce a 3x2 layout on larger screens (3 columns, 2 rows) */
         .team-section {
             max-width: 1200px;
             margin: 0 auto;
@@ -154,9 +167,10 @@
             text-align: center;
         }
 
+        /* 3 columns layout for desktop, falls back to single column on small screens */
         .team-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
         }
 
@@ -343,6 +357,13 @@
             transition: all 0.3s ease;
         }
 
+        @media (max-width: 1024px) {
+            .nav-logo .logo-pdf {
+                width: 140px;
+                height: 44px;
+            }
+        }
+
         @media (max-width: 768px) {
             .nav-menu {
                 position: fixed;
@@ -374,6 +395,11 @@
                 grid-template-columns: 1fr;
             }
 
+            /* Stack team members into 1 column on small screens */
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
             .nav-link {
                 padding: 1rem;
                 border-bottom: 1px solid #eee;
@@ -392,10 +418,19 @@
 <body>
     <nav>
         <div class="nav-container">
-            <div class="nav-logo">
-                THERMOWAVE <span>DYNAMICS</span>
+            <div class="nav-logo" aria-label="Thermowave Dynamics">
+                <!-- Embed the PDF logo. The object will display the PDF in browsers that support it.
+                     Also include an <img> fallback (e.g., thermodynamics.png) and plain text fallback. 
+                     Ensure the referenced file thermodynamics.pdf is available at the repo root. -->
+                <object class="logo-pdf" data="thermodynamics.pdf" type="application/pdf" aria-label="Thermowave logo">
+                    <!-- Fallback for browsers that cannot render PDFs inside an object -->
+                    <img src="thermodynamics.png" alt="Thermowave Dynamics logo" style="height:48px; display:block;" />
+                    <span class="logo-fallback">THERMOWAVE <span style="color:#c41e3a">DYNAMICS</span></span>
+                </object>
+                <!-- Keep the textual brand in case object fails or for accessibility -->
+                <div style="display:none;">THERMOWAVE <span>DYNAMICS</span></div>
             </div>
-            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -421,41 +456,47 @@
                 <div class="team-section">
                     <h2 class="team-title">Our Team</h2>
                     <div class="team-grid">
+                        <!-- Reordered to: CEO, COO, CFO, Marketing, Tech, Janitor -->
                         <div class="team-member">
                             <div class="team-avatar">A</div>
                             <h3 class="team-name">Atiksh</h3>
                             <p class="team-role">CEO</p>
                             <p class="team-bio">Visionary leader driving Thermowave's mission to revolutionize waste-to-energy solutions.</p>
                         </div>
-                        <div class="team-member">
-                            <div class="team-avatar">K</div>
-                            <h3 class="team-name">Kamlesh</h3>
-                            <p class="team-role">CFO</p>
-                            <p class="team-bio">Financial strategist managing investments and ensuring sustainable growth.</p>
-                        </div>
+
                         <div class="team-member">
                             <div class="team-avatar">L</div>
                             <h3 class="team-name">Lavitra</h3>
                             <p class="team-role">COO</p>
                             <p class="team-bio">Operations expert ensuring seamless execution of industrial and consumer initiatives.</p>
                         </div>
+
                         <div class="team-member">
-                            <div class="team-avatar">A</div>
-                            <h3 class="team-name">Arjun</h3>
-                            <p class="team-role">Janitor</p>
-                            <p class="team-bio">Keeping our facilities spotless and ensuring a clean, safe working environment.</p>
+                            <div class="team-avatar">K</div>
+                            <h3 class="team-name">Kamlesh</h3>
+                            <p class="team-role">CFO</p>
+                            <p class="team-bio">Financial strategist managing investments and ensuring sustainable growth.</p>
                         </div>
+
                         <div class="team-member">
                             <div class="team-avatar">S</div>
                             <h3 class="team-name">Srishti</h3>
                             <p class="team-role">Marketing</p>
                             <p class="team-bio">Marketing leader building brand awareness and driving customer engagement.</p>
                         </div>
+
                         <div class="team-member">
                             <div class="team-avatar">J</div>
                             <h3 class="team-name">Jivitesh</h3>
                             <p class="team-role">Tech</p>
                             <p class="team-bio">Technology specialist developing cutting-edge pyrolysis systems and automation.</p>
+                        </div>
+
+                        <div class="team-member">
+                            <div class="team-avatar">A</div>
+                            <h3 class="team-name">Arjun</h3>
+                            <p class="team-role">Janitor</p>
+                            <p class="team-bio">Keeping our facilities spotless and ensuring a clean, safe working environment.</p>
                         </div>
                     </div>
                 </div>
@@ -534,41 +575,47 @@
                 <h1 class="page-title">OUR TEAM</h1>
             </div>
             <div class="team-grid" style="max-width: 1200px; margin: 0 auto;">
+                <!-- Team page: same 3x2 order: CEO, COO, CFO, Marketing, Tech, Janitor -->
                 <div class="team-member">
                     <div class="team-avatar">A</div>
                     <h3 class="team-name">Atiksh</h3>
                     <p class="team-role">CEO</p>
                     <p class="team-bio">Visionary leader driving Thermowave's mission to revolutionize waste-to-energy solutions globally. Strategic thinker with passion for sustainable innovation.</p>
                 </div>
-                <div class="team-member">
-                    <div class="team-avatar">K</div>
-                    <h3 class="team-name">Kamlesh</h3>
-                    <p class="team-role">CFO</p>
-                    <p class="team-bio">Financial strategist managing investments and ensuring sustainable growth. Expert in financial planning and resource allocation.</p>
-                </div>
+
                 <div class="team-member">
                     <div class="team-avatar">L</div>
                     <h3 class="team-name">Lavitra</h3>
                     <p class="team-role">COO</p>
                     <p class="team-bio">Operations expert ensuring seamless execution of industrial and consumer initiatives. Master of process optimization and team coordination.</p>
                 </div>
+
                 <div class="team-member">
-                    <div class="team-avatar">A</div>
-                    <h3 class="team-name">Arjun</h3>
-                    <p class="team-role">Janitor</p>
-                    <p class="team-bio">Keeping our facilities spotless and ensuring a clean, safe working environment for the entire team. The unsung hero of Thermowave.</p>
+                    <div class="team-avatar">K</div>
+                    <h3 class="team-name">Kamlesh</h3>
+                    <p class="team-role">CFO</p>
+                    <p class="team-bio">Financial strategist managing investments and ensuring sustainable growth. Expert in financial planning and resource allocation.</p>
                 </div>
+
                 <div class="team-member">
                     <div class="team-avatar">S</div>
                     <h3 class="team-name">Srishti</h3>
                     <p class="team-role">Marketing</p>
                     <p class="team-bio">Marketing leader building brand awareness and driving customer engagement. Creative strategist connecting our mission with the world.</p>
                 </div>
+
                 <div class="team-member">
                     <div class="team-avatar">J</div>
                     <h3 class="team-name">Jivitesh</h3>
                     <p class="team-role">Tech</p>
                     <p class="team-bio">Technology specialist developing cutting-edge pyrolysis systems and automation solutions. Passionate about innovation and engineering excellence.</p>
+                </div>
+
+                <div class="team-member">
+                    <div class="team-avatar">A</div>
+                    <h3 class="team-name">Arjun</h3>
+                    <p class="team-role">Janitor</p>
+                    <p class="team-bio">Keeping our facilities spotless and ensuring a clean, safe working environment for the entire team. The unsung hero of Thermowave.</p>
                 </div>
             </div>
         </div>
@@ -579,11 +626,12 @@
             const pages = document.querySelectorAll('.page');
             pages.forEach(page => page.classList.remove('active'));
 
-            document.getElementById(pageName).classList.add('active');
+            const target = document.getElementById(pageName);
+            if (target) target.classList.add('active');
 
             const navLinks = document.querySelectorAll('.nav-link');
             navLinks.forEach(link => link.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event && event.target) event.target.classList.add('active');
 
             document.getElementById('navMenu').classList.remove('active');
 
@@ -597,8 +645,8 @@
         document.addEventListener('click', function(event) {
             const nav = document.getElementById('navMenu');
             const toggle = document.querySelector('.mobile-menu-toggle');
-            
-            if (!nav.contains(event.target) && !toggle.contains(event.target) && !event.target.classList.contains('nav-link')) {
+
+            if (!nav.contains(event.target) && (!toggle || !toggle.contains(event.target)) && !event.target.classList.contains('nav-link')) {
                 nav.classList.remove('active');
             }
         });
