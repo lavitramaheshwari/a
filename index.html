@@ -47,30 +47,26 @@
             text-transform: uppercase;
             font-size: 1.1rem;
         }
-
+        /* logo container + robust image styles */
+        .nav-logo { display: flex; align-items: center; gap: 0.5rem; }
+        .nav-logo a { display:inline-block; line-height:0; }
         .site-logo {
-            height: 48px;
+            display: block;
             width: auto;
-            display: block;
-            border-radius: 0;
+            height: 48px;        /* compact nav size */
+            max-width: 240px;    /* prevents overflow if PNG is large */
             object-fit: contain;
-            box-shadow: none;
+            border: 0;
+            background: transparent;
         }
-        /* full-size hero logo used on the home page (keeps original image aspect) */
-        .hero-logo {
-            max-width: 720px;
-            width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto 1.5rem;
-        }
-
-        .nav-logo .logo-main {
+        /* visible fallback text when image can't load */
+        .logo-fallback {
+            display: none;
+            font-weight: 900;
             color: #4a0000;
-        }
-
-        .nav-logo .logo-sub {
-            color: #c41e3a;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 1rem;
         }
 
         .nav-menu {
@@ -1314,14 +1310,18 @@
     <nav>
         <div class="nav-container">
             <div class="nav-logo">
-                <!-- simple, robust logo in the nav (no text) -->
-                <a href="#" aria-label="Home" style="display:inline-block;line-height:0;">
+                <!-- robust logo: exact relative path, explicit size, and fallback text -->
+                <a href="#" aria-label="Home">
                     <img
                         src="assets/images/thermowave-logo.png"
                         alt="Thermowave logo"
                         class="site-logo"
+                        width="240"
+                        height="72"
                         loading="lazy"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"
                     />
+                    <span class="logo-fallback" aria-hidden="true">THERMOWAVE</span>
                 </a>
             </div>
              <div class="mobile-menu-toggle">
@@ -1342,9 +1342,14 @@
         <!-- HOME PAGE -->
         <div class="page home-page" data-page="home" data-active="true">
             <div class="logo-display">
-                <!-- use the full PNG as the hero/logo (no separate text) -->
-                <img src="assets/images/thermowave-logo.png" alt="Thermowave logo" class="hero-logo" />
-                <p class="subtitle">Deeptech company building both industrial-scale and consumer-focused pyrolysis solutions</p>
+                <!-- full hero logo (keeps aspect ratio). fallback: hide image if not found -->
+                <img
+                    src="assets/images/thermowave-logo.png"
+                    alt="Thermowave logo"
+                    class="hero-logo"
+                    onerror="this.style.display='none';"
+                />
+                 <p class="subtitle">Deeptech company building both industrial-scale and consumer-focused pyrolysis solutions</p>
             </div>
 
             <div class="team-section">
