@@ -1,1677 +1,374 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Thermowave Dynamics</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Thermowave Dynamics</title>
+<style>
+    /* Reset + base */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+        font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+        background:#f8f8f8;color:#111;overflow-x:hidden;
+    }
+
+    /* NAV */
+    nav{
+        position:fixed;top:0;left:0;right:0;background:#fff;
+        box-shadow:0 2px 20px rgba(0,0,0,0.08);z-index:1000;padding:12px 0;
+    }
+    .nav-container{
+        max-width:1400px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    }
+    .nav-left{display:flex;align-items:center;gap:12px}
+    .nav-logo a{display:inline-block;line-height:0}
+    .site-logo{
+        display:block;height:44px;width:auto;max-width:240px;object-fit:contain;border:0;background:transparent;
+    }
+    .logo-fallback{
+        display:none;font-weight:900;color:#4a0000;letter-spacing:2px;text-transform:uppercase;font-size:0.95rem;
+    }
+
+    .mobile-menu-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer}
+    .mobile-menu-toggle span{width:24px;height:3px;background:#111;border-radius:2px;display:block}
+
+    .nav-menu{
+        display:flex;gap:18px;list-style:none;align-items:center;
+    }
+    .nav-link{cursor:pointer;color:#333;text-decoration:none;font-weight:700;font-size:.9rem;text-transform:uppercase;padding:.45rem .8rem;position:relative}
+    .nav-link::after{content:'';position:absolute;left:50%;bottom:0;height:3px;width:0;background:#c41e3a;transform:translateX(-50%);transition:width .25s}
+    .nav-link:hover::after,.nav-link[data-active="true"]::after{width:100%}
+    .nav-link[data-active="true"]{color:#c41e3a}
+
+    /* Content/page layout */
+    .content{margin-top:76px;min-height:calc(100vh - 76px)}
+    .page{display:none;padding:40px 20px}
+    .page[data-active="true"]{display:block;animation:fadeIn .45s ease both}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+    /* Home hero */
+    .home-page{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 76px);padding:48px 20px}
+    .hero-logo{width:100%;max-width:720px;height:auto;display:block;margin:0 auto 18px}
+    .subtitle{max-width:760px;text-align:center;color:#333;font-size:1.05rem;line-height:1.6}
+
+    /* Team */
+    .team-section{max-width:1200px;margin:28px auto;padding:12px;display:none}
+    .page.home-page[data-active="true"] .team-section{display:block}
+    .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .team-member{background:#fff;padding:20px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.06);text-align:center}
+    .team-avatar{width:96px;height:96px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin:0 auto 12px;background:linear-gradient(135deg,#4a0000,#c41e3a);color:#fff;font-weight:800;font-size:32px}
+
+    /* Pages - Problem / Solution / How it works */
+    .page-header{max-width:1200px;margin:0 auto 26px}
+    .page-number{display:block;color:#999;font-weight:700;margin-bottom:6px}
+    .page-title{font-size:2.8rem;letter-spacing:1px}
+    .problem-content,.solutions-grid{max-width:1200px;margin:0 auto;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+    .problem-card,.solution-card{background:#fff;padding:20px;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,0.06)}
+
+    /* Animation panels */
+    .animation-split{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:1400px;margin:0 auto}
+    .animation-panel{background:#fff;border-radius:16px;padding:20px;box-shadow:0 12px 40px rgba(0,0,0,0.06)}
+    .panel-title{font-weight:900;color:#4a0000;text-align:center;text-transform:uppercase;margin-bottom:8px}
+    .panel-description{text-align:center;color:#666;margin-bottom:12px}
+
+    .stage-container{position:relative;width:100%;height:420px;background:linear-gradient(135deg,#0a0a0a,#1a1a1a);border-radius:12px;overflow:hidden;box-shadow:inset 0 0 40px rgba(0,0,0,0.45)}
+    .reactor-unit{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:260px;height:320px}
+    .reactor-body{width:100%;height:100%;background:linear-gradient(135deg,#4a0000,#2a0000);border-radius:12px;border:4px solid #c41e3a;position:relative;box-shadow:0 0 40px rgba(196,30,58,0.4),inset 0 0 30px rgba(0,0,0,0.45)}
+    .reactor-window{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:200px;height:250px;background:radial-gradient(circle,#1a0000,#000);border-radius:10px;overflow:hidden;box-shadow:inset 0 0 40px rgba(196,30,58,0.25)}
+    .microwave-source{position:absolute;left:50%;top:28px;transform:translateX(-50%);width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,#ff3355,#c41e3a);box-shadow:0 0 40px rgba(255,51,85,0.85);animation:pulse 2s ease-in-out infinite}
+    @keyframes pulse{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.08)}}
+
+    .wave-emission{position:absolute;inset:0;pointer-events:none}
+    .wave{position:absolute;left:50%;top:36px;transform:translate(-50%,-50%);border-radius:50%;border:3px solid rgba(255,51,85,0.8);animation:expandWave 3s ease-out infinite}
+    @keyframes expandWave{0%{width:60px;height:60px;opacity:1}100%{width:280px;height:280px;opacity:0}}
+    .wave:nth-child(1){animation-delay:0s}.wave:nth-child(2){animation-delay:.6s}.wave:nth-child(3){animation-delay:1.2s}
+
+    .waste-material{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);width:160px;height:64px;background:linear-gradient(135deg,#666,#444);border-radius:50% 50% 14px 14px;animation:materialDecompose 8s ease-in-out infinite}
+    @keyframes materialDecompose{0%,100%{height:64px;opacity:1}50%{height:44px;opacity:.75}}
+
+    .heat-particles{position:absolute;inset:0;pointer-events:none}
+    .heat-particle{position:absolute;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle,#ff6b6b,#ff3355);box-shadow:0 0 12px #ff6b6b;animation:floatUp 4s ease-in-out infinite}
+    @keyframes floatUp{0%{bottom:110px;opacity:0}20%{opacity:1;transform:translateX(6px)}80%{opacity:1}100%{bottom:240px;opacity:0;transform:translateX(-10px)}}
+    .heat-particle:nth-child(1){left:18%;animation-delay:0}s;.heat-particle:nth-child(2){left:30%;animation-delay:.5s}.heat-particle:nth-child(3){left:40%;animation-delay:1s}
+    .heat-particle:nth-child(4){left:50%;animation-delay:1.5s}.heat-particle:nth-child(5){left:60%;animation-delay:2s}
+
+    .temp-display{position:absolute;top:16px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#ff6b6b,#ff3355);color:#fff;padding:.6rem 1rem;border-radius:10px;font-weight:800;box-shadow:0 8px 30px rgba(255,51,85,0.35)}
+
+    /* Collection side */
+    .collection-unit{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:36px}
+    .vapor-chamber{width:200px;height:320px;background:linear-gradient(180deg,rgba(100,150,255,0.08),rgba(100,150,255,0.2));border-radius:12px;border:3px solid rgba(100,150,255,0.5);position:relative;overflow:hidden}
+    .vapor-blob{position:absolute;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle,#cfe8ff,#90bff7);box-shadow:0 0 18px rgba(100,150,255,0.6);animation:vaporFloat 5s ease-in-out infinite}
+    @keyframes vaporFloat{0%{bottom:0;opacity:0;transform:scale(.5)}20%{opacity:1;transform:translateX(8px) scale(1)}100%{bottom:100%;opacity:0;transform:translateX(-8px) scale(1.2)}}
+    .vapor-blob:nth-child(1){left:40%;animation-delay:0}.vapor-blob:nth-child(2){left:50%;animation-delay:1s}.vapor-blob:nth-child(3){left:60%;animation-delay:2s}
+
+    .connection-pipe{position:relative;left:0;top:0;width:120px;height:12px;background:linear-gradient(90deg,rgba(100,150,255,0.5),rgba(196,30,58,0.5));border-radius:10px;overflow:hidden}
+    .connection-pipe::after{content:'';position:absolute;left:-40%;top:0;width:30%;height:100%;background:linear-gradient(90deg,rgba(255,255,255,0.2),rgba(255,255,255,0.05));transform:skewX(-20deg);animation:pipeFlow 1.5s linear infinite}
+    @keyframes pipeFlow{0%{left:-40%}100%{left:120%}}
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #f8f8f8;
-            color: #1a1a1a;
-            overflow-x: hidden;
-        }
+    .condenser-unit{width:180px;height:260px;border-radius:12px;background:linear-gradient(180deg,#444,#222);border:4px solid #c41e3a;position:relative;overflow:hidden}
+    .condenser-fill{position:absolute;left:0;bottom:0;width:100%;height:0;background:linear-gradient(180deg,transparent,rgba(255,215,0,.3));animation:fillCondenser 8s ease-in-out infinite}
+    @keyframes fillCondenser{0%,100%{height:0}50%{height:82%}}
 
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: white;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-            z-index: 1000;
-            padding: 1rem 0;
-        }
+    .fuel-droplet{position:absolute;width:18px;height:28px;border-radius:0 0 50% 50%;background:linear-gradient(180deg,#ffd857,#ff8c00);left:50%;transform:translateX(-50%);bottom:220px;animation:dropFuel 4s ease-in-out infinite}
+    @keyframes dropFuel{0%,80%{opacity:0;bottom:220px}85%{opacity:1;bottom:220px}100%{opacity:0;bottom:120px}}
 
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
+    .fuel-collector{position:absolute;bottom:-88px;left:50%;transform:translateX(-50%);width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,#ffd700,#ff8c00);box-shadow:0 12px 40px rgba(255,200,0,0.5);animation:fuelGlow 3s ease-in-out infinite}
+    @keyframes fuelGlow{0%,100%{box-shadow:0 12px 40px rgba(255,200,0,.6)}50%{box-shadow:0 18px 60px rgba(255,200,0,.9)}}
 
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #4a0000;
-            font-weight: 900;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            font-size: 1.1rem;
-        }
-        /* logo container + robust image styles */
-        .nav-logo { display: flex; align-items: center; gap: 0.5rem; }
-        .nav-logo a { display:inline-block; line-height:0; }
-        .site-logo {
-            display: block;
-            width: auto;
-            height: 48px;        /* compact nav size */
-            max-width: 240px;    /* prevents overflow if PNG is large */
-            object-fit: contain;
-            border: 0;
-            background: transparent;
-        }
-        /* visible fallback text when image can't load */
-        .logo-fallback {
-            display: none;
-            font-weight: 900;
-            color: #4a0000;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-size: 1rem;
-        }
+    .label-overlay{position:absolute;background:rgba(196,30,58,.95);color:#fff;padding:.5rem .8rem;border-radius:8px;font-weight:800;font-size:.8rem;z-index:10;white-space:nowrap}
+    .label-heating{bottom:18px;left:50%;transform:translateX(-50%)}.label-vapor{top:14px;left:12px}.label-condenser{top:14px;right:12px}.label-fuel{bottom:18px;left:50%;transform:translateX(-50%)}
 
-        .nav-menu {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-            align-items: center;
-        }
+    /* Small controls + badges */
+    .stage-controls{display:flex;gap:8px;justify-content:center;margin-bottom:12px}
+    .stage-controls button{background:#fff;border:2px solid #c41e3a;color:#c41e3a;padding:.4rem .6rem;border-radius:8px;cursor:pointer;font-weight:800}
+    .badge{display:inline-block;background:#c41e3a;color:#fff;padding:.2rem .5rem;border-radius:999px;font-weight:800;font-size:.8rem;margin-right:.5rem}
 
-        .nav-link {
-            color: #333;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 0.5rem 1rem;
-            transition: all 0.3s ease;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 3px;
-            background: #c41e3a;
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .nav-link[data-active="true"] {
-            color: #c41e3a;
-        }
-
-        .nav-link[data-active="true"]::after {
-            width: 100%;
-        }
-
-        .content {
-            margin-top: 80px;
-            min-height: calc(100vh - 80px);
-        }
-
-        .page {
-            display: none;
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        .page[data-active="true"] {
-            display: block;
-        }
-
-        .home-page {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: calc(100vh - 80px);
-            padding: 4rem 2rem;
-        }
-
-        .logo-display {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .logo-display h1 {
-            font-size: 5rem;
-            font-weight: 900;
-            color: #4a0000;
-            letter-spacing: 5px;
-            margin-bottom: 1rem;
-        }
-
-        .logo-display h2 {
-            font-size: 3rem;
-            font-weight: 700;
-            color: #c41e3a;
-            letter-spacing: 8px;
-            margin-bottom: 2rem;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: #333;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        .team-section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            display: none; /* hidden by default */
-        }
-
-        /* Show team section only when the HOME page is active */
-        .page.home-page[data-active="true"] .team-section {
-            display: block;
-        }
-
-        .team-title {
-            font-size: 3rem;
-            font-weight: 900;
-            color: #1a1a1a;
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-
-        .team-member {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .team-member:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(196, 30, 58, 0.2);
-        }
-
-        .team-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #4a0000, #c41e3a);
-            margin: 0 auto 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: white;
-            font-weight: 700;
-        }
-
-        .team-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 0.5rem;
-        }
-
-        .team-role {
-            font-size: 1rem;
-            color: #c41e3a;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-
-        .team-bio {
-            font-size: 0.95rem;
-            color: #666;
-            line-height: 1.5;
-        }
-
-        .problem-page,
-        .solution-page,
-        .how-it-works-page {
-            padding: 4rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .page-header {
-            margin-bottom: 4rem;
-        }
-
-        .page-number {
-            font-size: 1.5rem;
-            color: #999;
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .page-title {
-            font-size: 4rem;
-            font-weight: 900;
-            color: #1a1a1a;
-        }
-
-        .problem-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .problem-card {
-            background: white;
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-
-        .problem-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-        }
-
-        .problem-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .problem-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #4a0000;
-            margin-bottom: 1rem;
-        }
-
-        .problem-text {
-            font-size: 1.1rem;
-            color: #333;
-            line-height: 1.7;
-        }
-
-        .solutions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2rem;
-        }
-
-        .solution-card {
-            background: #4a0000;
-            color: white;
-            padding: 3rem;
-            border-radius: 20px;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            min-height: 250px;
-        }
-
-        .solution-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(74, 0, 0, 0.4);
-        }
-
-        .solution-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #c41e3a, #ff6b6b);
-        }
-
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .card-description {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            opacity: 0.95;
-        }
-
-        .animation-split {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            margin-top: 4rem;
-        }
-
-        .animation-panel {
-            background: white;
-            border-radius: 25px;
-            padding: 3rem;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
-        }
-
-        .panel-title {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #4a0000;
-            margin-bottom: 1rem;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .panel-description {
-            font-size: 1rem;
-            color: #666;
-            text-align: center;
-            margin-bottom: 2rem;
-            line-height: 1.6;
-            padding: 0 1rem;
-        }
-
-        .stage-container {
-            position: relative;
-            width: 100%;
-            height: 500px;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
-        }
-
-        .reactor-unit {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 280px;
-            height: 350px;
-        }
-
-        .reactor-body {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #4a0000 0%, #2a0000 50%, #1a0000 100%);
-            border-radius: 20px;
-            border: 4px solid #c41e3a;
-            box-shadow: 0 0 50px rgba(196, 30, 58, 0.6), inset 0 0 30px rgba(0,0,0,0.5);
-            position: relative;
-        }
-
-        .reactor-window {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 220px;
-            height: 280px;
-            background: radial-gradient(circle at center, rgba(40,0,0,0.9), rgba(0,0,0,0.95));
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: inset 0 0 40px rgba(196, 30, 58, 0.3);
-        }
-
-        .microwave-source {
-            position: absolute;
-            top: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 70px;
-            height: 70px;
-            background: radial-gradient(circle, #ff3355 0%, #c41e3a 50%, #4a0000 100%);
-            border-radius: 50%;
-            box-shadow: 0 0 40px rgba(255, 51, 85, 0.9), 0 0 80px rgba(196, 30, 58, 0.6);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { 
-                transform: translateX(-50%) scale(1);
-                box-shadow: 0 0 40px rgba(255, 51, 85, 0.9), 0 0 80px rgba(196, 30, 58, 0.6);
-            }
-            50% { 
-                transform: translateX(-50%) scale(1.1);
-                box-shadow: 0 0 60px rgba(255, 51, 85, 1), 0 0 120px rgba(196, 30, 58, 0.8);
-            }
-        }
-
-        .wave-emission {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .wave {
-            position: absolute;
-            top: -35px;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 3px solid rgba(255, 51, 85, 0.8);
-            border-radius: 50%;
-            animation: expandWave 2.5s ease-out infinite;
-        }
-
-        .wave:nth-child(1) { animation-delay: 0s; }
-        .wave:nth-child(2) { animation-delay: 0.5s; }
-        .wave:nth-child(3) { animation-delay: 1s; }
-        .wave:nth-child(4) { animation-delay: 1.5s; }
-        .wave:nth-child(5) { animation-delay: 2s; }
-
-        @keyframes expandWave {
-            0% {
-                width: 70px;
-                height: 70px;
-                opacity: 1;
-                border-width: 3px;
-            }
-            100% {
-                width: 280px;
-                height: 280px;
-                opacity: 0;
-                border-width: 1px;
-            }
-        }
-
-        .waste-material {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 160px;
-            height: 70px;
-            background: linear-gradient(135deg, #666 0%, #444 50%, #222 100%);
-            border-radius: 50% 50% 15px 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.8);
-            animation: materialDecompose 8s ease-in-out infinite;
-        }
-
-        @keyframes materialDecompose {
-            0%, 100% { 
-                height: 70px; 
-                opacity: 1;
-                background: linear-gradient(135deg, #666 0%, #444 50%, #222 100%);
-            }
-            50% { 
-                height: 45px; 
-                opacity: 0.7;
-                background: linear-gradient(135deg, #555 0%, #333 50%, #111 100%);
-            }
-        }
-
-        .heat-particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .heat-particle {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: radial-gradient(circle, #ff6b6b, #ff3355);
-            border-radius: 50%;
-            box-shadow: 0 0 15px #ff6b6b, 0 0 30px rgba(255, 51, 85, 0.5);
-            animation: floatUp 4s ease-in-out infinite;
-        }
-
-        .heat-particle:nth-child(1) { left: 20%; animation-delay: 0s; }
-        .heat-particle:nth-child(2) { left: 30%; animation-delay: 0.5s; }
-        .heat-particle:nth-child(3) { left: 40%; animation-delay: 1s; }
-        .heat-particle:nth-child(4) { left: 50%; animation-delay: 1.5s; }
-        .heat-particle:nth-child(5) { left: 60%; animation-delay: 2s; }
-        .heat-particle:nth-child(6) { left: 70%; animation-delay: 2.5s; }
-        .heat-particle:nth-child(7) { left: 80%; animation-delay: 3s; }
-
-        @keyframes floatUp {
-            0% {
-                bottom: 110px;
-                opacity: 0;
-                transform: translateX(0) scale(0.5);
-            }
-            20% {
-                opacity: 1;
-                transform: translateX(5px) scale(1);
-            }
-            80% {
-                opacity: 1;
-            }
-            100% {
-                bottom: 250px;
-                opacity: 0;
-                transform: translateX(-10px) scale(0.8);
-            }
-        }
-
-        .temp-display {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #ff6b6b, #ff3355);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            font-weight: 800;
-            font-size: 1.4rem;
-            box-shadow: 0 8px 30px rgba(255, 51, 85, 0.5);
-            animation: tempGlow 2s ease-in-out infinite;
-        }
-
-        @keyframes tempGlow {
-            0%, 100% {
-                box-shadow: 0 8px 30px rgba(255, 51, 85, 0.5);
-            }
-            50% {
-                box-shadow: 0 12px 40px rgba(255, 51, 85, 0.8);
-            }
-        }
-
-        .collection-unit {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 60px;
-        }
-
-        .vapor-chamber {
-            width: 200px;
-            height: 350px;
-            background: linear-gradient(180deg, rgba(100, 150, 255, 0.1) 0%, rgba(100, 150, 255, 0.3) 100%);
-            border: 4px solid rgba(100, 150, 255, 0.6);
-            border-radius: 20px;
-            position: relative;
-            box-shadow: 0 0 40px rgba(100, 150, 255, 0.4), inset 0 0 30px rgba(100, 150, 255, 0.2);
-        }
-
-        .vapor-flow {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .vapor-blob {
-            position: absolute;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            background: radial-gradient(circle, rgba(150, 200, 255, 0.9), rgba(100, 150, 255, 0.6));
-            border-radius: 50%;
-            box-shadow: 0 0 20px rgba(100, 150, 255, 0.8);
-            animation: vaporFloat 5s ease-in-out infinite;
-        }
-
-        .vapor-blob:nth-child(1) { animation-delay: 0s; left: 40%; }
-        .vapor-blob:nth-child(2) { animation-delay: 1s; left: 50%; }
-        .vapor-blob:nth-child(3) { animation-delay: 2s; left: 60%; }
-        .vapor-blob:nth-child(4) { animation-delay: 3s; left: 45%; }
-        .vapor-blob:nth-child(5) { animation-delay: 4s; left: 55%; }
-
-        @keyframes vaporFloat {
-            0% {
-                bottom: 0%;
-                opacity: 0;
-                transform: translateX(0) scale(0.5);
-            }
-            20% {
-                opacity: 1;
-                transform: translateX(10px) scale(1);
-            }
-            80% {
-                opacity: 1;
-            }
-            100% {
-                bottom: 100%;
-                opacity: 0;
-                transform: translateX(-10px) scale(1.2);
-            }
-        }
-
-        .condenser-unit {
-            width: 180px;
-            height: 280px;
-            background: linear-gradient(180deg, #555 0%, #333 100%);
-            border: 4px solid #c41e3a;
-            border-radius: 20px;
-            position: relative;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            overflow: hidden;
-        }
-
-        .condenser-fill {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 0%;
-            background: linear-gradient(180deg, transparent 0%, rgba(255, 215, 0, 0.3) 50%, rgba(255, 140, 0, 0.5) 100%);
-            animation: fillCondenser 8s ease-in-out infinite;
-        }
-
-        @keyframes fillCondenser {
-            0%, 100% { height: 0%; }
-            50% { height: 85%; }
-        }
-
-        .fuel-collector {
-            position: absolute;
-            bottom: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 140px;
-            height: 140px;
-            background: radial-gradient(circle, #ffd700 0%, #ff8c00 100%);
-            border-radius: 50%;
-            box-shadow: 0 10px 50px rgba(255, 215, 0, 0.7), 0 0 80px rgba(255, 140, 0, 0.5);
-            animation: fuelGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes fuelGlow {
-            0%, 100% {
-                box-shadow: 0 10px 50px rgba(255, 215, 0, 0.7), 0 0 80px rgba(255, 140, 0, 0.5);
-            }
-            50% {
-                box-shadow: 0 15px 60px rgba(255, 215, 0, 0.9), 0 0 100px rgba(255, 140, 0, 0.7);
-            }
-        }
-
-        .fuel-droplet {
-            position: absolute;
-            bottom: 280px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 30px;
-            background: linear-gradient(180deg, #ffd700, #ff8c00);
-            border-radius: 0 0 50% 50%;
-            box-shadow: 0 5px 15px rgba(255, 140, 0, 0.6);
-            animation: dropFuel 4s ease-in infinite;
-        }
-
-        @keyframes dropFuel {
-            0%, 80% {
-                opacity: 0;
-                bottom: 280px;
-            }
-            85% {
-                opacity: 1;
-                bottom: 280px;
-            }
-            100% {
-                opacity: 0;
-                bottom: 140px;
-            }
-        }
-
-        .connection-pipe {
-            position: absolute;
-            top: 50%;
-            left: 200px;
-            width: 60px;
-            height: 8px;
-            background: linear-gradient(90deg, rgba(100, 150, 255, 0.6), rgba(196, 30, 58, 0.6));
-            transform: translateY(-50%);
-            box-shadow: 0 0 20px rgba(100, 150, 255, 0.4);
-        }
-
-        .flow-indicator {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 20px;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 4px;
-            animation: flowMove 2s linear infinite;
-        }
-
-        @keyframes flowMove {
-            0% { left: 0%; }
-            100% { left: 100%; }
-        }
-
-        .label-overlay {
-            position: absolute;
-            background: rgba(196, 30, 58, 0.95);
-            color: white;
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            z-index: 10;
-            white-space: nowrap;
-        }
-
-        .label-heating { top: 380px; left: 50%; transform: translateX(-50%); }
-        .label-vapor { top: 20px; left: 20px; }
-        .label-condenser { top: 20px; right: 20px; }
-        .label-fuel { bottom: 20px; left: 50%; transform: translateX(-50%); }
-
-        .process-intro {
-            background: linear-gradient(135deg, #f8f8f8, #ffffff);
-            padding: 3rem;
-            border-radius: 20px;
-            margin-bottom: 3rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .process-intro h3 {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #4a0000;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
-        .process-intro p {
-            font-size: 1.1rem;
-            color: #333;
-            line-height: 1.8;
-            margin-bottom: 1rem;
-            text-align: center;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .process-intro .highlight {
-            color: #c41e3a;
-            font-weight: 700;
-        }
-
-        .animation-legend {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            background: white;
-            padding: 1rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-
-        .legend-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .legend-icon.heat { background: linear-gradient(135deg, #ff6b6b, #ff3355); }
-        .legend-icon.wave { background: linear-gradient(135deg, #c41e3a, #ff3355); border: 3px solid rgba(255, 51, 85, 0.8); }
-        .legend-icon.vapor { background: linear-gradient(135deg, rgba(100, 150, 255, 0.3), rgba(100, 150, 255, 0.6)); }
-        .legend-icon.fuel { background: linear-gradient(135deg, #ffd700, #ff8c00); }
-
-        .legend-text {
-            flex: 1;
-        }
-
-        .legend-text strong {
-            display: block;
-            color: #1a1a1a;
-            font-size: 0.9rem;
-            margin-bottom: 0.2rem;
-        }
-
-        .legend-text span {
-            display: block;
-            color: #666;
-            font-size: 0.8rem;
-        }
-
-        .process-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .step-card {
-            background: linear-gradient(135deg, #4a0000, #c41e3a);
-            color: white;
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .step-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(196, 30, 58, 0.4);
-        }
-
-        .step-number {
-            font-size: 3rem;
-            font-weight: 900;
-            margin-bottom: 1rem;
-            opacity: 0.8;
-        }
-
-        .step-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .step-description {
-            font-size: 0.95rem;
-            opacity: 0.9;
-            line-height: 1.5;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .mobile-menu-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-        }
-
-        .mobile-menu-toggle span {
-            width: 25px;
-            height: 3px;
-            background: #1a1a1a;
-            transition: all 0.3s ease;
-        }
-
-        @media (max-width: 1024px) {
-            .animation-split {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .stage-container {
-                height: 450px;
-            }
-
-            .reactor-unit {
-                width: 240px;
-                height: 300px;
-            }
-
-            .reactor-window {
-                width: 190px;
-                height: 240px;
-            }
-
-            .solutions-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .team-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .problem-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .animation-legend {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-menu {
-                position: fixed;
-                top: 70px;
-                left: -100%;
-                width: 100%;
-                background: white;
-                flex-direction: column;
-                gap: 0;
-                padding: 2rem;
-                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-                transition: left 0.3s ease;
-            }
-
-            .nav-menu[data-mobile-open="true"] {
-                left: 0;
-            }
-
-            .mobile-menu-toggle {
-                display: flex;
-            }
-
-            .page-title {
-                font-size: 2.5rem;
-            }
-
-            .page-number {
-                font-size: 1.2rem;
-            }
-
-            .solutions-grid,
-            .problem-content {
-                grid-template-columns: 1fr;
-            }
-
-            .team-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-link {
-                padding: 1rem;
-                border-bottom: 1px solid #eee;
-            }
-
-            .logo-display h1 {
-                font-size: 3rem;
-                letter-spacing: 3px;
-            }
-
-            .logo-display h2 {
-                font-size: 2rem;
-                letter-spacing: 4px;
-            }
-
-            .subtitle {
-                font-size: 1rem;
-                padding: 0 1rem;
-            }
-
-            .stage-container {
-                height: 400px;
-            }
-
-            .reactor-unit {
-                width: 200px;
-                height: 260px;
-            }
-
-            .reactor-window {
-                width: 160px;
-                height: 210px;
-            }
-
-            .collection-unit {
-                gap: 30px;
-            }
-
-            .vapor-chamber {
-                width: 140px;
-                height: 280px;
-            }
-
-            .condenser-unit {
-                width: 130px;
-                height: 220px;
-            }
-
-            .fuel-collector {
-                width: 100px;
-                height: 100px;
-                bottom: -70px;
-            }
-
-            .temp-display {
-                font-size: 1.1rem;
-                padding: 0.7rem 1.3rem;
-            }
-
-            .label-overlay {
-                font-size: 0.75rem;
-                padding: 0.4rem 0.8rem;
-            }
-
-            .panel-title {
-                font-size: 1.3rem;
-            }
-
-            .panel-description {
-                font-size: 0.9rem;
-            }
-
-            .animation-legend {
-                grid-template-columns: 1fr;
-            }
-
-            .process-intro h3 {
-                font-size: 1.5rem;
-            }
-
-            .process-intro p {
-                font-size: 1rem;
-            }
-
-            .process-intro {
-                padding: 2rem 1.5rem;
-            }
-
-            .animation-panel {
-                padding: 2rem 1.5rem;
-            }
-
-            .problem-card,
-            .solution-card {
-                padding: 2rem;
-            }
-
-            .problem-icon,
-            .card-icon {
-                font-size: 2.5rem;
-            }
-
-            .problem-title,
-            .card-title {
-                font-size: 1.5rem;
-            }
-
-            .problem-text,
-            .card-description {
-                font-size: 1rem;
-            }
-
-            .team-section {
-                padding: 1rem;
-            }
-
-            .team-title {
-                font-size: 2rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .nav-logo {
-                font-size: 0.9rem;
-                letter-spacing: 2px;
-            }
-
-            .logo-display h1 {
-                font-size: 2.5rem;
-                letter-spacing: 2px;
-            }
-
-            .logo-display h2 {
-                font-size: 1.5rem;
-                letter-spacing: 3px;
-            }
-
-            .subtitle {
-                font-size: 0.95rem;
-            }
-
-            .page-title {
-                font-size: 2rem;
-            }
-
-            .stage-container {
-                height: 350px;
-            }
-
-            .reactor-unit {
-                width: 160px;
-                height: 220px;
-            }
-
-            .reactor-window {
-                width: 130px;
-                height: 180px;
-            }
-
-            .microwave-source {
-                width: 50px;
-                height: 50px;
-                top: 30px;
-            }
-
-            .waste-material {
-                width: 120px;
-                height: 50px;
-                bottom: 30px;
-            }
-
-            .vapor-chamber {
-                width: 110px;
-                height: 220px;
-            }
-
-            .condenser-unit {
-                width: 100px;
-                height: 180px;
-            }
-
-            .connection-pipe {
-                width: 40px;
-                left: 110px;
-            }
-
-            .fuel-collector {
-                width: 80px;
-                height: 80px;
-                bottom: -50px;
-            }
-
-            .temp-display {
-                font-size: 1rem;
-                padding: 0.5rem 1rem;
-            }
-
-            .label-overlay {
-                font-size: 0.65rem;
-                padding: 0.3rem 0.6rem;
-            }
-
-            .label-heating {
-                top: 320px;
-            }
-
-            .panel-title {
-                font-size: 1.1rem;
-                letter-spacing: 1px;
-            }
-
-            .panel-description {
-                font-size: 0.85rem;
-                padding: 0 0.5rem;
-            }
-
-            .process-intro h3 {
-                font-size: 1.3rem;
-            }
-
-            .process-intro p {
-                font-size: 0.9rem;
-            }
-
-            .process-intro {
-                padding: 1.5rem 1rem;
-            }
-
-            .animation-panel {
-                padding: 1.5rem 1rem;
-            }
-
-            .step-card {
-                padding: 1.5rem;
-            }
-
-            .step-number {
-                font-size: 2.5rem;
-            }
-
-            .step-title {
-                font-size: 1.1rem;
-            }
-
-            .step-description {
-                font-size: 0.85rem;
-            }
-
-            .problem-card,
-            .solution-card {
-                padding: 1.5rem;
-            }
-
-            .team-avatar {
-                width: 100px;
-                height: 100px;
-                font-size: 2.5rem;
-            }
-
-            .team-name {
-                font-size: 1.3rem;
-            }
-
-            .team-role {
-                font-size: 0.9rem;
-            }
-
-            .team-bio {
-                font-size: 0.85rem;
-            }
-
-            .legend-item {
-                padding: 0.8rem;
-            }
-
-            .legend-icon {
-                width: 35px;
-                height: 35px;
-                font-size: 1.2rem;
-            }
-
-            .legend-text strong {
-                font-size: 0.85rem;
-            }
-
-            .legend-text span {
-                font-size: 0.75rem;
-            }
-        }
-
-        @media (min-width: 1440px) {
-            .nav-container,
-            .problem-page,
-            .solution-page,
-            .how-it-works-page {
-                max-width: 1600px;
-            }
-
-            .page-title {
-                font-size: 5rem;
-            }
-
-            .logo-display h1 {
-                font-size: 6rem;
-            }
-
-            .logo-display h2 {
-                font-size: 4rem;
-            }
-        }
-    </style>
+    /* Responsive */
+    @media (max-width:1024px){.animation-split{grid-template-columns:1fr}.team-grid{grid-template-columns:repeat(2,1fr)}.stage-container{height:380px}}
+    @media (max-width:768px){.nav-menu{position:fixed;top:64px;left:-100%;width:100%;background:#fff;flex-direction:column;padding:16px;gap:0;transition:left .25s}.nav-menu[data-mobile-open="true"]{left:0}.mobile-menu-toggle{display:flex}.team-grid{grid-template-columns:1fr}.hero-logo{max-width:420px}}
+    @media (max-width:480px){.site-logo{height:36px}.page-title{font-size:1.5rem}}
+</style>
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
+<nav>
+    <div class="nav-container">
+        <div class="nav-left">
             <div class="nav-logo">
-                <!-- robust logo: exact relative path, explicit size, and fallback text -->
-                <a href="#" aria-label="Home">
-                    <img
-                        src="assets/images/thermowave-logo.png"
-                        alt="Thermowave logo"
-                        class="site-logo"
-                        width="240"
-                        height="72"
-                        loading="lazy"
-                        onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"
-                    />
+                <a href="#" aria-label="Home" id="nav-home-link">
+                    <img src="assets/images/thermowave-logo.png" alt="Thermowave logo" class="site-logo"
+                         width="240" height="72"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" />
                     <span class="logo-fallback" aria-hidden="true">THERMOWAVE</span>
                 </a>
             </div>
-             <div class="mobile-menu-toggle">
-                 <span></span>
-                 <span></span>
-                 <span></span>
-             </div>
-             <ul class="nav-menu">
-                 <li><a class="nav-link" data-page="home" data-active="true">Home</a></li>
-                 <li><a class="nav-link" data-page="problem">Problem</a></li>
-                 <li><a class="nav-link" data-page="solution">Solution</a></li>
-                 <li><a class="nav-link" data-page="how-it-works">How It Works</a></li>
-             </ul>
-         </div>
-     </nav>
-
-    <div class="content">
-        <!-- HOME PAGE -->
-        <div class="page home-page" data-page="home" data-active="true">
-            <div class="logo-display">
-                <!-- full hero logo (keeps aspect ratio). fallback: hide image if not found -->
-                <img
-                    src="assets/images/thermowave-logo.png"
-                    alt="Thermowave logo"
-                    class="hero-logo"
-                    onerror="this.style.display='none';"
-                />
-                 <p class="subtitle">Deeptech company building both industrial-scale and consumer-focused pyrolysis solutions</p>
-            </div>
-
-            <div class="team-section">
-                <h2 class="team-title">Our Team</h2>
-                <div class="team-grid">
-                    <div class="team-member">
-                        <div class="team-avatar">A</div>
-                        <h3 class="team-name">Atiksh</h3>
-                        <p class="team-role">CEO</p>
-                        <p class="team-bio">Visionary leader driving Thermowave's mission to revolutionize waste-to-energy solutions.</p>
-                    </div>
-
-                    <div class="team-member">
-                        <div class="team-avatar">L</div>
-                        <h3 class="team-name">Lavitra</h3>
-                        <p class="team-role">COO & CTO</p>
-                        <p class="team-bio">Technology leader responsible for operational execution and technical direction, driving innovation and overseeing both organizational performance and advanced engineering development.</p>
-                    </div>
-
-                    <div class="team-member">
-                        <div class="team-avatar">K</div>
-                        <h3 class="team-name">Kamlesh</h3>
-                        <p class="team-role">CFO</p>
-                        <p class="team-bio">Financial strategist managing investments and ensuring sustainable growth.</p>
-                    </div>
-
-                    <div class="team-member">
-                        <div class="team-avatar">S</div>
-                        <h3 class="team-name">Srishti</h3>
-                        <p class="team-role">CMO</p>
-                        <p class="team-bio">Marketing leader building brand awareness and driving customer engagement. Creative strategist connecting our mission with the world.</p>
-                    </div>
-                    
-                    <div class="team-member">
-                        <div class="team-avatar">A</div>
-                        <h3 class="team-name">Arjun</h3>
-                        <p class="team-role">CRDO</p>
-                        <p class="team-bio">Chief Research & Development Officer spearheading breakthrough innovations in pyrolysis technology.</p>
-                    </div>
-                    
-                    <div class="team-member">
-                        <div class="team-avatar">J</div>
-                        <h3 class="team-name">Jivitesh</h3>
-                        <p class="team-role">HR</p>
-                        <p class="team-bio">Human resources strategist building world-class teams and company culture.</p>
-                    </div>
-                </div>
-            </div>
         </div>
 
-        <!-- PROBLEM PAGE -->
-        <div class="page problem-page" data-page="problem">
-            <div class="page-header">
-                <span class="page-number">01</span>
-                <h1 class="page-title">THE PROBLEM</h1>
-            </div>
-            <div class="problem-content">
-                <div class="problem-card">
-                    <div class="problem-icon">🌍</div>
-                    <h3 class="problem-title">Waste Crisis</h3>
-                    <p class="problem-text">Millions of tons of plastic and organic waste cannot be efficiently recycled.</p>
-                </div>
-                <div class="problem-card">
-                    <div class="problem-icon">🏠</div>
-                    <h3 class="problem-title">Limited Home Solutions</h3>
-                    <p class="problem-text">Households and small communities lack safe, convenient ways to convert waste into usable energy.</p>
-                </div>
-                <div class="problem-card">
-                    <div class="problem-icon">🏭</div>
-                    <h3 class="problem-title">Industrial Limitations</h3>
-                    <p class="problem-text">Large-scale pyrolysis plants face safety, efficiency, and emissions limitations.</p>
-                </div>
-                <div class="problem-card">
-                    <div class="problem-icon">📊</div>
-                    <h3 class="problem-title">400M+ Tons</h3>
-                    <p class="problem-text">Of plastic waste each year with less than 10% recycled effectively. Incineration plants release 400M tons of CO2 yearly.</p>
-                </div>
-            </div>
+        <div class="mobile-menu-toggle" id="mobile-toggle" aria-label="Open menu" role="button" tabindex="0">
+            <span></span><span></span><span></span>
         </div>
 
-        <!-- SOLUTION PAGE -->
-        <div class="page solution-page" data-page="solution">
-            <div class="page-header">
-                <span class="page-number">02</span>
-                <h1 class="page-title">OUR SOLUTION</h1>
-            </div>
-            <div class="solutions-grid">
-                <div class="solution-card">
-                    <div class="card-icon">🏭</div>
-                    <h3 class="card-title">INDUSTRIAL PLANTS</h3>
-                    <p class="card-description">
-                        Buy/recycle plastics from plants or households → produce eco-friendly fuel using advanced microwave pyrolysis technology.
-                    </p>
-                </div>
-                <div class="solution-card">
-                    <div class="card-icon">🏠</div>
-                    <h3 class="card-title">HOME UNITS (R&D)</h3>
-                    <p class="card-description">
-                        Compact, safe pyrolysis devices for households, turning waste into usable fuel safely. Currently in development.
-                    </p>
-                </div>
-                <div class="solution-card">
-                    <div class="card-icon">🔬</div>
-                    <h3 class="card-title">INNOVATION</h3>
-                    <p class="card-description">
-                        Integrated approach — operational experience improves safety and efficiency of both home units and industrial plants.
-                    </p>
-                </div>
-                <div class="solution-card">
-                    <div class="card-icon">🌱</div>
-                    <h3 class="card-title">IMPACT</h3>
-                    <p class="card-description">
-                        Reduces landfill waste, produces low-carbon fuel, enables circular economy at both industrial and household scale.
-                    </p>
-                </div>
-            </div>
+        <ul class="nav-menu" id="nav-menu">
+            <li><a class="nav-link" data-page="home" data-active="true">Home</a></li>
+            <li><a class="nav-link" data-page="problem">Problem</a></li>
+            <li><a class="nav-link" data-page="solution">Solution</a></li>
+            <li><a class="nav-link" data-page="how-it-works">How It Works</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="content" id="content">
+    <!-- HOME -->
+    <section class="page home-page" data-page="home" data-active="true">
+        <div class="logo-display">
+            <img src="assets/images/thermowave-logo.png" alt="Thermowave logo" class="hero-logo" onerror="this.style.display='none'">
+            <p class="subtitle">Deeptech company building both industrial-scale and consumer-focused pyrolysis solutions</p>
         </div>
 
-        <!-- HOW IT WORKS PAGE -->
-        <div class="page how-it-works-page" data-page="how-it-works">
-            <div class="page-header">
-                <span class="page-number">03</span>
-                <h1 class="page-title">HOW IT WORKS</h1>
+        <section class="team-section" aria-labelledby="team-title">
+            <h2 id="team-title" class="team-title">Our Team</h2>
+            <div class="team-grid">
+                <div class="team-member"><div class="team-avatar">A</div><h3>Atiksh</h3><p class="team-role">CEO</p></div>
+                <div class="team-member"><div class="team-avatar">L</div><h3>Lavitra</h3><p class="team-role">COO & CTO</p></div>
+                <div class="team-member"><div class="team-avatar">K</div><h3>Kamlesh</h3><p class="team-role">CFO</p></div>
+                <div class="team-member"><div class="team-avatar">S</div><h3>Srishti</h3><p class="team-role">CMO</p></div>
+                <div class="team-member"><div class="team-avatar">A</div><h3>Arjun</h3><p class="team-role">CRDO</p></div>
+                <div class="team-member"><div class="team-avatar">J</div><h3>Jivitesh</h3><p class="team-role">HR</p></div>
             </div>
+        </section>
+    </section>
 
-            <div class="process-intro">
-                <h3>Understanding Microwave</h3>
-                <p>
-                    <span class="highlight">Pyrolysis</span> is the process of breaking down materials using heat in the absence of oxygen. 
-                    Think of it like "cooking" waste materials to transform them into useful products without burning them.
-                </p>
-                <p>
-                    Our technology uses <span class="highlight">microwave energy</span> (similar to a microwave oven) to heat waste materials rapidly and efficiently. 
-                    This breaks the chemical bonds in plastics and organic waste, converting them into clean fuel oils.
-                </p>
-                <p>
-                    The process happens in <span class="highlight">two main stages</span> that work together continuously:
-                </p>
-            </div>
-            
-            <div class="animation-split">
-                <!-- Stage 1: Heating & Decomposition -->
-                <div class="animation-panel">
-                    <h2 class="panel-title">Stage 1: Heating & Decomposition</h2>
-                    <p class="panel-description">
-                        Waste materials are heated to 500°C using targeted microwave energy. The microwaves (shown as expanding circles) break down the waste into vapor without combustion.
-                    </p>
-                    
-                    <div class="animation-legend">
-                        <div class="legend-item">
-                            <div class="legend-icon wave"></div>
-                            <div class="legend-text">
-                                <strong>Microwave Waves</strong>
-                                <span>Energy waves that heat the material</span>
-                            </div>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-icon heat">🔥</div>
-                            <div class="legend-text">
-                                <strong>Heat Particles</strong>
-                                <span>Rising heat breaking down waste</span>
-                            </div>
-                        </div>
-                    </div>
+    <!-- PROBLEM -->
+    <section class="page problem-page" data-page="problem" aria-labelledby="problem-title">
+        <div class="page-header"><span class="page-number">01</span><h1 id="problem-title" class="page-title">THE PROBLEM</h1></div>
+        <div class="problem-content">
+            <div class="problem-card"><h3>Waste Crisis</h3><p>Millions of tons of plastic and organic waste cannot be efficiently recycled.</p></div>
+            <div class="problem-card"><h3>Limited Home Solutions</h3><p>Households and small communities lack safe, convenient ways to convert waste into usable energy.</p></div>
+            <div class="problem-card"><h3>Industrial Limitations</h3><p>Large-scale pyrolysis plants face safety, efficiency, and emissions limitations.</p></div>
+            <div class="problem-card"><h3>400M+ Tons</h3><p>Of plastic waste each year with less than 10% recycled effectively. Incineration plants release 400M tons of CO₂ yearly.</p></div>
+        </div>
+    </section>
 
-                    <div class="stage-container">
-                        <div class="temp-display">500°C</div>
-                        <div class="reactor-unit">
-                            <div class="reactor-body">
-                                <div class="reactor-window">
-                                    <div class="microwave-source"></div>
-                                    <div class="wave-emission">
-                                        <div class="wave"></div>
-                                        <div class="wave"></div>
-                                        <div class="wave"></div>
-                                        <div class="wave"></div>
-                                        <div class="wave"></div>
-                                    </div>
-                                    <div class="waste-material"></div>
-                                    <div class="heat-particles">
-                                        <div class="heat-particle"></div>
-                                        <div class="heat-particle"></div>
-                                        <div class="heat-particle"></div>
-                                        <div class="heat-particle"></div>
-                                        <div class="heat-particle"></div>
-                                        <div class="heat-particle"></div>
-                                        <div class="heat-particle"></div>
-                                    </div>
+    <!-- SOLUTION -->
+    <section class="page solution-page" data-page="solution" aria-labelledby="solution-title">
+        <div class="page-header"><span class="page-number">02</span><h1 id="solution-title" class="page-title">OUR SOLUTION</h1></div>
+        <div class="solutions-grid">
+            <div class="solution-card"><h3>Industrial Plants</h3><p>Buy/recycle plastics from plants or households → produce eco-friendly fuel using advanced microwave pyrolysis.</p></div>
+            <div class="solution-card"><h3>Home Units (R&D)</h3><p>Compact, safe pyrolysis devices for households, turning waste into usable fuel safely. In development.</p></div>
+            <div class="solution-card"><h3>Innovation</h3><p>Operational experience improves safety and efficiency of both home units and industrial plants.</p></div>
+            <div class="solution-card"><h3>Impact</h3><p>Reduces landfill waste, produces low-carbon fuel, enables circular economy at multiple scales.</p></div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="page how-it-works-page" data-page="how-it-works" aria-labelledby="how-title">
+        <div class="page-header"><span class="page-number">03</span><h1 id="how-title" class="page-title">HOW IT WORKS</h1></div>
+
+        <div class="process-intro">
+            <h3 style="text-align:center;color:#4a0000">Understanding Microwave</h3>
+            <p style="text-align:center;max-width:880px;margin:8px auto;color:#333">
+                <strong>Pyrolysis</strong> is thermal decomposition in the absence of oxygen. We use <strong>microwave energy</strong> to rapidly heat waste, converting it into vapor and then condensing into fuel.
+            </p>
+        </div>
+
+        <div class="animation-split">
+            <div class="animation-panel" id="panel-heat">
+                <div class="stage-controls" aria-hidden="false">
+                    <button id="toggle-animations">Pause</button>
+                    <button data-step="heat">Highlight Heat</button>
+                    <button data-step="vapor">Show Vapor</button>
+                </div>
+
+                <h3 class="panel-title">Stage 1: Heating & Decomposition</h3>
+                <p class="panel-description">Microwaves heat materials to ~500°C; bonds break and vapors form.</p>
+                <div class="stage-container" aria-hidden="false">
+                    <div class="temp-display" role="status">500°C</div>
+                    <div class="reactor-unit">
+                        <div class="reactor-body">
+                            <div class="reactor-window">
+                                <div class="microwave-source" aria-hidden="true"></div>
+                                <div class="wave-emission" aria-hidden="true">
+                                    <div class="wave"></div><div class="wave"></div><div class="wave"></div>
+                                </div>
+                                <div class="waste-material" aria-hidden="true"></div>
+                                <div class="heat-particles" aria-hidden="true">
+                                    <div class="heat-particle"></div><div class="heat-particle"></div><div class="heat-particle"></div><div class="heat-particle"></div><div class="heat-particle"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="label-overlay label-heating">MICROWAVE HEATING</div>
                     </div>
-                </div>
-
-                <!-- Stage 2: Condensation & Collection -->
-                <div class="animation-panel">
-                    <h2 class="panel-title">Stage 2: Condensation & Collection</h2>
-                    <p class="panel-description">
-                        The vapor rises and flows through a cooling system (condenser) where it turns back into liquid fuel. The golden fuel collects at the bottom, ready for use.
-                    </p>
-
-                    <div class="animation-legend">
-                        <div class="legend-item">
-                            <div class="legend-icon vapor">💨</div>
-                            <div class="legend-text">
-                                <strong>Vapor Bubbles</strong>
-                                <span>Gas rising from heated waste</span>
-                            </div>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-icon fuel">⚡</div>
-                            <div class="legend-text">
-                                <strong>Fuel Output</strong>
-                                <span>Clean, usable liquid fuel</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="stage-container">
-                        <div class="collection-unit">
-                            <div class="vapor-chamber">
-                                <div class="vapor-flow">
-                                    <div class="vapor-blob"></div>
-                                    <div class="vapor-blob"></div>
-                                    <div class="vapor-blob"></div>
-                                    <div class="vapor-blob"></div>
-                                    <div class="vapor-blob"></div>
-                                </div>
-                                <div class="label-overlay label-vapor">VAPOR</div>
-                            </div>
-                            
-                            <div class="connection-pipe">
-                                <div class="flow-indicator"></div>
-                            </div>
-                            
-                            <div class="condenser-unit">
-                                <div class="condenser-fill"></div>
-                                <div class="fuel-droplet"></div>
-                                <div class="label-overlay label-condenser">CONDENSER</div>
-                            </div>
-                        </div>
-                        <div class="fuel-collector"></div>
-                        <div class="label-overlay label-fuel">FUEL OUTPUT</div>
-                    </div>
+                    <div class="label-overlay label-heating">MICROWAVE HEATING</div>
                 </div>
             </div>
 
-            <div class="process-steps">
-                <div class="step-card">
-                    <div class="step-number">01</div>
-                    <h3 class="step-title">Waste Input</h3>
-                    <p class="step-description">Plastic and organic waste materials are loaded into the sealed pyrolysis reactor chamber. No oxygen is present inside.</p>
+            <div class="animation-panel" id="panel-condense">
+                <div class="stage-controls" aria-hidden="true">
+                    <button data-step="condense">Highlight Condenser</button>
+                    <button data-step="fuel">Show Fuel</button>
                 </div>
-                <div class="step-card">
-                    <div class="step-number">02</div>
-                    <h3 class="step-title">Microwave Heating</h3>
-                    <p class="step-description">Targeted microwave energy rapidly heats the waste to 500°C, breaking molecular bonds efficiently. This is faster and more precise than traditional heating.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">03</div>
-                    <h3 class="step-title">Vapor Formation</h3>
-                    <p class="step-description">Materials decompose into vapor and gases without burning (no combustion). The vapor rises and flows into the condensation system.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">04</div>
-                    <h3 class="step-title">Fuel Collection</h3>
-                    <p class="step-description">Vapors are cooled and condensed into clean, usable fuel oils. This fuel can power vehicles, generators, or industrial equipment.</p>
+
+                <h3 class="panel-title">Stage 2: Condensation & Collection</h3>
+                <p class="panel-description">Vapors move to the condenser, cool and form liquid fuel which is collected.</p>
+                <div class="stage-container" aria-hidden="false">
+                    <div class="collection-unit" aria-hidden="true">
+                        <div class="vapor-chamber" aria-hidden="true">
+                            <div class="vapor-flow" aria-hidden="true">
+                                <div class="vapor-blob"></div><div class="vapor-blob"></div><div class="vapor-blob"></div>
+                            </div>
+                            <div class="label-overlay label-vapor">VAPOR</div>
+                        </div>
+
+                        <div class="connection-pipe" aria-hidden="true"></div>
+
+                        <div class="condenser-unit" aria-hidden="true">
+                            <div class="condenser-fill" aria-hidden="true"></div>
+                            <div class="fuel-droplet" aria-hidden="true"></div>
+                            <div class="label-overlay label-condenser">CONDENSER</div>
+                        </div>
+                    </div>
+
+                    <div class="fuel-collector" aria-hidden="true"></div>
+                    <div class="label-overlay label-fuel">FUEL OUTPUT</div>
                 </div>
             </div>
         </div>
 
-        <!-- TEAM PAGE -->
-        <!-- Removed empty duplicate TEAM page so team content is only present inside the Home page -->
+        <div style="max-width:1200px;margin:28px auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+            <div style="background:linear-gradient(135deg,#4a0000,#c41e3a);color:#fff;padding:18px;border-radius:12px;text-align:center"><div style="font-weight:900;font-size:28px">01</div><h4>Waste Input</h4><p>No oxygen — sealed chamber.</p></div>
+            <div style="background:linear-gradient(135deg,#4a0000,#c41e3a);color:#fff;padding:18px;border-radius:12px;text-align:center"><div style="font-weight:900;font-size:28px">02</div><h4>Microwave Heating</h4><p>Rapid, targeted heating to break bonds.</p></div>
+            <div style="background:linear-gradient(135deg,#4a0000,#c41e3a);color:#fff;padding:18px;border-radius:12px;text-align:center"><div style="font-weight:900;font-size:28px">03</div><h4>Vapor Formation</h4><p>Decomposition produces vapor.</p></div>
+            <div style="background:linear-gradient(135deg,#4a0000,#c41e3a);color:#fff;padding:18px;border-radius:12px;text-align:center"><div style="font-weight:900;font-size:28px">04</div><h4>Fuel Collection</h4><p>Vapors condense into usable fuel.</p></div>
+        </div>
+    </section>
+</main>
 
-    <script>
-        // Page navigation
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function() {
-                const targetPage = this.getAttribute('data-page');
-                
-                // Hide all pages
-                document.querySelectorAll('.page').forEach(page => {
-                    page.removeAttribute('data-active');
-                });
-                
-                // Show target page
-                document.querySelector(`.page[data-page="${targetPage}"]`).setAttribute('data-active', 'true');
-                
-                // Update nav links
-                document.querySelectorAll('.nav-link').forEach(navLink => {
-                    navLink.removeAttribute('data-active');
-                });
-                this.setAttribute('data-active', 'true');
-                
-                // Close mobile menu
-                document.querySelector('.nav-menu').removeAttribute('data-mobile-open');
-                
-                // Scroll to top
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
+<script>
+/* NAV + PAGE SWITCHING */
+(function(){
+    const links = document.querySelectorAll('.nav-link');
+    const pages = document.querySelectorAll('.page');
+    const menu = document.getElementById('nav-menu');
+    const mobileToggle = document.getElementById('mobile-toggle');
+
+    function showPage(name){
+        pages.forEach(p=>p.removeAttribute('data-active'));
+        const target = document.querySelector('.page[data-page="'+name+'"]');
+        if(target) target.setAttribute('data-active','true');
+        links.forEach(l=>l.removeAttribute('data-active'));
+        const active = Array.from(links).find(l=>l.getAttribute('data-page')===name);
+        if(active) active.setAttribute('data-active','true');
+        // hide mobile menu
+        menu.removeAttribute('data-mobile-open');
+        window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    links.forEach(link=>{
+        link.addEventListener('click',e=>{
+            e.preventDefault();
+            const page = link.getAttribute('data-page');
+            showPage(page);
         });
-        
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
-            const menu = document.querySelector('.nav-menu');
-            if (menu.getAttribute('data-mobile-open') === 'true') {
-                menu.removeAttribute('data-mobile-open');
-            } else {
-                menu.setAttribute('data-mobile-open', 'true');
-            }
+    });
+
+    // nav logo -> home
+    document.getElementById('nav-home-link').addEventListener('click',e=>{ e.preventDefault(); showPage('home'); });
+
+    // mobile toggle
+    mobileToggle.addEventListener('click',()=> {
+        const open = menu.getAttribute('data-mobile-open') === 'true';
+        if(open) menu.removeAttribute('data-mobile-open'); else menu.setAttribute('data-mobile-open','true');
+    });
+    // keyboard accessible
+    mobileToggle.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); mobileToggle.click(); } });
+
+    // click outside to close mobile menu
+    document.addEventListener('click', (evt)=>{
+        if(!menu.contains(evt.target) && !mobileToggle.contains(evt.target)){
+            menu.removeAttribute('data-mobile-open');
+        }
+    });
+})();
+
+/* Animation controls & highlights */
+(function(){
+    const body = document.body;
+    const toggleBtn = document.getElementById('toggle-animations');
+    const stepButtons = document.querySelectorAll('[data-step]');
+
+    function setPaused(paused){
+        if(paused){ body.classList.add('animations-paused'); if(toggleBtn) toggleBtn.textContent='Play'; }
+        else { body.classList.remove('animations-paused'); if(toggleBtn) toggleBtn.textContent='Pause'; }
+    }
+    // pause via CSS class
+    const style = document.createElement('style');
+    style.innerHTML = '.animations-paused *{animation-play-state:paused !important;transition:none !important}';
+    document.head.appendChild(style);
+
+    if(toggleBtn) toggleBtn.addEventListener('click', ()=> setPaused(!document.body.classList.contains('animations-paused')) );
+
+    function pulse(el){
+        if(!el) return;
+        el.classList.add('pulse-highlight');
+        setTimeout(()=>el.classList.remove('pulse-highlight'),1200);
+    }
+    // simple pulse highlight CSS (inserted)
+    const pulseCss = document.createElement('style');
+    pulseCss.innerHTML = '.pulse-highlight{box-shadow:0 0 30px rgba(196,30,58,0.35);transform:scale(1.04);transition:transform .25s}';
+    document.head.appendChild(pulseCss);
+
+    stepButtons.forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+            const step = btn.getAttribute('data-step');
+            if(step==='heat') pulse(document.querySelector('#panel-heat .reactor-window'));
+            if(step==='vapor') pulse(document.querySelector('#panel-heat .wave-emission')) , pulse(document.querySelector('#panel-condense .vapor-chamber'));
+            if(step==='condense') pulse(document.querySelector('#panel-condense .condenser-unit'));
+            if(step==='fuel') pulse(document.querySelector('#panel-condense .fuel-collector'));
         });
-        
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const menu = document.querySelector('.nav-menu');
-            const toggle = document.querySelector('.mobile-menu-toggle');
-            
-            if (!menu.contains(event.target) && !toggle.contains(event.target) && !event.target.classList.contains('nav-link')) {
-                menu.removeAttribute('data-mobile-open');
-            }
-        });
-    </script>
+    });
+
+    // expose small helper for future use (no errors if absent)
+    window.Thermowave = { setPaused };
+})();
+</script>
 </body>
 </html>
