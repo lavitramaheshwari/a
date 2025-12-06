@@ -352,10 +352,19 @@
             font-size: 1.8rem;
             font-weight: 800;
             color: #4a0000;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 2px;
+        }
+
+        .panel-description {
+            font-size: 1rem;
+            color: #666;
+            text-align: center;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            padding: 0 1rem;
         }
 
         .stage-container {
@@ -744,6 +753,87 @@
         .label-condenser { top: 20px; right: 20px; }
         .label-fuel { bottom: 20px; left: 50%; transform: translateX(-50%); }
 
+        .process-intro {
+            background: linear-gradient(135deg, #f8f8f8, #ffffff);
+            padding: 3rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .process-intro h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #4a0000;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .process-intro p {
+            font-size: 1.1rem;
+            color: #333;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            text-align: center;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .process-intro .highlight {
+            color: #c41e3a;
+            font-weight: 700;
+        }
+
+        .animation-legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .legend-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .legend-icon.heat { background: linear-gradient(135deg, #ff6b6b, #ff3355); }
+        .legend-icon.wave { background: linear-gradient(135deg, #c41e3a, #ff3355); border: 3px solid rgba(255, 51, 85, 0.8); }
+        .legend-icon.vapor { background: linear-gradient(135deg, rgba(100, 150, 255, 0.3), rgba(100, 150, 255, 0.6)); }
+        .legend-icon.fuel { background: linear-gradient(135deg, #ffd700, #ff8c00); }
+
+        .legend-text {
+            flex: 1;
+        }
+
+        .legend-text strong {
+            display: block;
+            color: #1a1a1a;
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .legend-text span {
+            display: block;
+            color: #666;
+            font-size: 0.8rem;
+        }
+
         .process-steps {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -828,6 +918,22 @@
                 width: 190px;
                 height: 240px;
             }
+
+            .solutions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .problem-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .animation-legend {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
@@ -856,6 +962,10 @@
                 font-size: 2.5rem;
             }
 
+            .page-number {
+                font-size: 1.2rem;
+            }
+
             .solutions-grid,
             .problem-content {
                 grid-template-columns: 1fr;
@@ -872,10 +982,17 @@
 
             .logo-display h1 {
                 font-size: 3rem;
+                letter-spacing: 3px;
             }
 
             .logo-display h2 {
                 font-size: 2rem;
+                letter-spacing: 4px;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                padding: 0 1rem;
             }
 
             .stage-container {
@@ -920,6 +1037,252 @@
             .label-overlay {
                 font-size: 0.75rem;
                 padding: 0.4rem 0.8rem;
+            }
+
+            .panel-title {
+                font-size: 1.3rem;
+            }
+
+            .panel-description {
+                font-size: 0.9rem;
+            }
+
+            .animation-legend {
+                grid-template-columns: 1fr;
+            }
+
+            .process-intro h3 {
+                font-size: 1.5rem;
+            }
+
+            .process-intro p {
+                font-size: 1rem;
+            }
+
+            .process-intro {
+                padding: 2rem 1.5rem;
+            }
+
+            .animation-panel {
+                padding: 2rem 1.5rem;
+            }
+
+            .problem-card,
+            .solution-card {
+                padding: 2rem;
+            }
+
+            .problem-icon,
+            .card-icon {
+                font-size: 2.5rem;
+            }
+
+            .problem-title,
+            .card-title {
+                font-size: 1.5rem;
+            }
+
+            .problem-text,
+            .card-description {
+                font-size: 1rem;
+            }
+
+            .team-section {
+                padding: 1rem;
+            }
+
+            .team-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-logo {
+                font-size: 0.9rem;
+                letter-spacing: 2px;
+            }
+
+            .logo-display h1 {
+                font-size: 2.5rem;
+                letter-spacing: 2px;
+            }
+
+            .logo-display h2 {
+                font-size: 1.5rem;
+                letter-spacing: 3px;
+            }
+
+            .subtitle {
+                font-size: 0.95rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .stage-container {
+                height: 350px;
+            }
+
+            .reactor-unit {
+                width: 160px;
+                height: 220px;
+            }
+
+            .reactor-window {
+                width: 130px;
+                height: 180px;
+            }
+
+            .microwave-source {
+                width: 50px;
+                height: 50px;
+                top: 30px;
+            }
+
+            .waste-material {
+                width: 120px;
+                height: 50px;
+                bottom: 30px;
+            }
+
+            .vapor-chamber {
+                width: 110px;
+                height: 220px;
+            }
+
+            .condenser-unit {
+                width: 100px;
+                height: 180px;
+            }
+
+            .connection-pipe {
+                width: 40px;
+                left: 110px;
+            }
+
+            .fuel-collector {
+                width: 80px;
+                height: 80px;
+                bottom: -50px;
+            }
+
+            .temp-display {
+                font-size: 1rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .label-overlay {
+                font-size: 0.65rem;
+                padding: 0.3rem 0.6rem;
+            }
+
+            .label-heating {
+                top: 320px;
+            }
+
+            .panel-title {
+                font-size: 1.1rem;
+                letter-spacing: 1px;
+            }
+
+            .panel-description {
+                font-size: 0.85rem;
+                padding: 0 0.5rem;
+            }
+
+            .process-intro h3 {
+                font-size: 1.3rem;
+            }
+
+            .process-intro p {
+                font-size: 0.9rem;
+            }
+
+            .process-intro {
+                padding: 1.5rem 1rem;
+            }
+
+            .animation-panel {
+                padding: 1.5rem 1rem;
+            }
+
+            .step-card {
+                padding: 1.5rem;
+            }
+
+            .step-number {
+                font-size: 2.5rem;
+            }
+
+            .step-title {
+                font-size: 1.1rem;
+            }
+
+            .step-description {
+                font-size: 0.85rem;
+            }
+
+            .problem-card,
+            .solution-card {
+                padding: 1.5rem;
+            }
+
+            .team-avatar {
+                width: 100px;
+                height: 100px;
+                font-size: 2.5rem;
+            }
+
+            .team-name {
+                font-size: 1.3rem;
+            }
+
+            .team-role {
+                font-size: 0.9rem;
+            }
+
+            .team-bio {
+                font-size: 0.85rem;
+            }
+
+            .legend-item {
+                padding: 0.8rem;
+            }
+
+            .legend-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 1.2rem;
+            }
+
+            .legend-text strong {
+                font-size: 0.85rem;
+            }
+
+            .legend-text span {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (min-width: 1440px) {
+            .nav-container,
+            .problem-page,
+            .solution-page,
+            .how-it-works-page {
+                max-width: 1600px;
+            }
+
+            .page-title {
+                font-size: 5rem;
+            }
+
+            .logo-display h1 {
+                font-size: 6rem;
+            }
+
+            .logo-display h2 {
+                font-size: 4rem;
             }
         }
     </style>
@@ -1076,11 +1439,47 @@
                 <span class="page-number">03</span>
                 <h1 class="page-title">HOW IT WORKS</h1>
             </div>
+
+            <div class="process-intro">
+                <h3>Understanding Microwave Pyrolysis</h3>
+                <p>
+                    <span class="highlight">Pyrolysis</span> is the process of breaking down materials using heat in the absence of oxygen. 
+                    Think of it like "cooking" waste materials to transform them into useful products without burning them.
+                </p>
+                <p>
+                    Our technology uses <span class="highlight">microwave energy</span> (similar to a microwave oven) to heat waste materials rapidly and efficiently. 
+                    This breaks the chemical bonds in plastics and organic waste, converting them into clean fuel oils.
+                </p>
+                <p>
+                    The process happens in <span class="highlight">two main stages</span> that work together continuously:
+                </p>
+            </div>
             
             <div class="animation-split">
                 <!-- Stage 1: Heating & Decomposition -->
                 <div class="animation-panel">
                     <h2 class="panel-title">Stage 1: Heating & Decomposition</h2>
+                    <p class="panel-description">
+                        Waste materials are heated to 500°C using targeted microwave energy. The microwaves (shown as expanding circles) break down the waste into vapor without combustion.
+                    </p>
+                    
+                    <div class="animation-legend">
+                        <div class="legend-item">
+                            <div class="legend-icon wave"></div>
+                            <div class="legend-text">
+                                <strong>Microwave Waves</strong>
+                                <span>Energy waves that heat the material</span>
+                            </div>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-icon heat">🔥</div>
+                            <div class="legend-text">
+                                <strong>Heat Particles</strong>
+                                <span>Rising heat breaking down waste</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="stage-container">
                         <div class="temp-display">500°C</div>
                         <div class="reactor-unit">
@@ -1114,6 +1513,27 @@
                 <!-- Stage 2: Condensation & Collection -->
                 <div class="animation-panel">
                     <h2 class="panel-title">Stage 2: Condensation & Collection</h2>
+                    <p class="panel-description">
+                        The vapor rises and flows through a cooling system (condenser) where it turns back into liquid fuel. The golden fuel collects at the bottom, ready for use.
+                    </p>
+
+                    <div class="animation-legend">
+                        <div class="legend-item">
+                            <div class="legend-icon vapor">💨</div>
+                            <div class="legend-text">
+                                <strong>Vapor Bubbles</strong>
+                                <span>Gas rising from heated waste</span>
+                            </div>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-icon fuel">⚡</div>
+                            <div class="legend-text">
+                                <strong>Fuel Output</strong>
+                                <span>Clean, usable liquid fuel</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="stage-container">
                         <div class="collection-unit">
                             <div class="vapor-chamber">
@@ -1147,76 +1567,28 @@
                 <div class="step-card">
                     <div class="step-number">01</div>
                     <h3 class="step-title">Waste Input</h3>
-                    <p class="step-description">Plastic and organic waste materials are loaded into the pyrolysis reactor chamber.</p>
+                    <p class="step-description">Plastic and organic waste materials are loaded into the sealed pyrolysis reactor chamber. No oxygen is present inside.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-number">02</div>
                     <h3 class="step-title">Microwave Heating</h3>
-                    <p class="step-description">Targeted microwave energy rapidly heats the waste material, breaking molecular bonds efficiently.</p>
+                    <p class="step-description">Targeted microwave energy rapidly heats the waste to 500°C, breaking molecular bonds efficiently. This is faster and more precise than traditional heating.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-number">03</div>
-                    <h3 class="step-title">Decomposition</h3>
-                    <p class="step-description">Materials decompose into vapor and gases without combustion, in an oxygen-free environment.</p>
+                    <h3 class="step-title">Vapor Formation</h3>
+                    <p class="step-description">Materials decompose into vapor and gases without burning (no combustion). The vapor rises and flows into the condensation system.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-number">04</div>
-                    <h3 class="step-title">Fuel Output</h3>
-                    <p class="step-description">Vapors are condensed into clean, usable fuel oils ready for industrial or consumer applications.</p>
+                    <h3 class="step-title">Fuel Collection</h3>
+                    <p class="step-description">Vapors are cooled and condensed into clean, usable fuel oils. This fuel can power vehicles, generators, or industrial equipment.</p>
                 </div>
             </div>
         </div>
 
         <!-- TEAM PAGE -->
         <div class="page problem-page" data-page="team" style="display: none;">
-            <div class="page-header">
-                <span class="page-number">04</span>
-                <h1 class="page-title">OUR TEAM</h1>
-            </div>
-            <div class="team-grid" style="max-width: 1200px; margin: 0 auto;">
-                <div class="team-member">
-                    <div class="team-avatar">A</div>
-                    <h3 class="team-name">Atiksh</h3>
-                    <p class="team-role">CEO</p>
-                    <p class="team-bio">Visionary leader driving Thermowave's mission to revolutionize waste-to-energy solutions globally. Strategic thinker with passion for sustainable innovation.</p>
-                </div>
-
-                <div class="team-member">
-                    <div class="team-avatar">L</div>
-                    <h3 class="team-name">Lavitra</h3>
-                    <p class="team-role">COO & CTO</p>
-                    <p class="team-bio">Technology leader responsible for operational execution and technical direction, driving innovation and overseeing both organizational performance and advanced engineering development.</p>
-                </div>
-
-                <div class="team-member">
-                    <div class="team-avatar">K</div>
-                    <h3 class="team-name">Kamlesh</h3>
-                    <p class="team-role">CFO</p>
-                    <p class="team-bio">Financial strategist managing investments and ensuring sustainable growth. Expert in financial planning and resource allocation.</p>
-                </div>
-
-                <div class="team-member">
-                    <div class="team-avatar">S</div>
-                    <h3 class="team-name">Srishti</h3>
-                    <p class="team-role">CMO</p>
-                    <p class="team-bio">Marketing leader building brand awareness and driving customer engagement. Creative strategist connecting our mission with the world.</p>
-                </div>
-
-                <div class="team-member">
-                    <div class="team-avatar">A</div>
-                    <h3 class="team-name">Arjun</h3>
-                    <p class="team-role">CRDO</p>
-                    <p class="team-bio">Chief Research & Development Officer spearheading breakthrough innovations in pyrolysis technology. Leading our technical advancement.</p>
-                </div>
-
-                <div class="team-member">
-                    <div class="team-avatar">J</div>
-                    <h3 class="team-name">Jivitesh</h3>
-                    <p class="team-role">HR</p>
-                    <p class="team-bio">Human resources strategist building world-class teams and company culture. Fostering innovation and collaboration.</p>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>
