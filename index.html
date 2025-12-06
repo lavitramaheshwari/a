@@ -1306,24 +1306,38 @@
     <nav>
         <div class="nav-container">
             <div class="nav-logo">
-                <!-- logo image (place THERMOWAVE-logo.png next to the HTML file) -->
-                <img src="THERMOWAVE-logo.png" alt="Thermowave logo" class="site-logo" />
-                <span class="logo-main">THERMOWAVE</span>
-                <span class="logo-sub">DYNAMICS</span>
+                <!-- use the PNG at assets/images/thermowave-logo.png -->
+                <a href="#" aria-label="Home" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;">
+                    <img
+                        src="assets/images/thermowave-logo.png"
+                        alt="Thermowave logo"
+                        class="site-logo"
+                        width="52"
+                        height="52"
+                        loading="lazy"
+                        onload="this.nextElementSibling.style.display='none';"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';"
+                    />
+                    <!-- fallback text shown only when image fails to load -->
+                    <span class="logo-text-fallback" style="display:none;">
+                        <span class="logo-main">THERMOWAVE</span>
+                        <span class="logo-sub">DYNAMICS</span>
+                    </span>
+                </a>
             </div>
-            <div class="mobile-menu-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <ul class="nav-menu">
-                <li><a class="nav-link" data-page="home" data-active="true">Home</a></li>
-                <li><a class="nav-link" data-page="problem">Problem</a></li>
-                <li><a class="nav-link" data-page="solution">Solution</a></li>
-                <li><a class="nav-link" data-page="how-it-works">How It Works</a></li>
-            </ul>
-        </div>
-    </nav>
+             <div class="mobile-menu-toggle">
+                 <span></span>
+                 <span></span>
+                 <span></span>
+             </div>
+             <ul class="nav-menu">
+                 <li><a class="nav-link" data-page="home" data-active="true">Home</a></li>
+                 <li><a class="nav-link" data-page="problem">Problem</a></li>
+                 <li><a class="nav-link" data-page="solution">Solution</a></li>
+                 <li><a class="nav-link" data-page="how-it-works">How It Works</a></li>
+             </ul>
+         </div>
+     </nav>
 
     <div class="content">
         <!-- HOME PAGE -->
@@ -1458,7 +1472,7 @@
             </div>
 
             <div class="process-intro">
-                <h3>Understanding Microwave Pyrolysis</h3>
+                <h3>Understanding Microwave</h3>
                 <p>
                     <span class="highlight">Pyrolysis</span> is the process of breaking down materials using heat in the absence of oxygen. 
                     Think of it like "cooking" waste materials to transform them into useful products without burning them.
