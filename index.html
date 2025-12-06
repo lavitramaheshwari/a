@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Thermowave Dynamics</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works - Pyrolysis Technology</title>
     <style>
         * {
             margin: 0;
@@ -12,18 +12,18 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #f8f8f8;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Open Sans', sans-serif;
+            background: #f8f9fa;
             color: #1a1a1a;
-            overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        nav {
-            position: fixed;
+        /* Navigation Bar */
+        .navbar {
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
             top: 0;
-            width: 100%;
-            background: white;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
             z-index: 1000;
             padding: 1rem 0;
         }
@@ -31,627 +31,866 @@
         .nav-container {
             max-width: 1400px;
             margin: 0 auto;
+            padding: 0 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 2rem;
         }
 
-        /* Logo container changed to host the PDF-based logo */
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            color: #4a0000;
-            font-weight: 900;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        .nav-logo .logo-pdf {
-            width: 160px;
-            height: 48px;
-            display: block;
-            border: none;
-        }
-
-        .nav-logo .logo-fallback {
-            font-size: 1.1rem;
-            color: #4a0000;
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #c41e3a;
+            text-decoration: none;
+            letter-spacing: 1px;
         }
 
         .nav-menu {
             display: flex;
-            gap: 2rem;
+            gap: 2.5rem;
             list-style: none;
-            align-items: center;
         }
 
         .nav-link {
             color: #333;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 0.5rem 1rem;
-            transition: all 0.3s ease;
+            font-weight: 500;
+            transition: color 0.3s ease;
             position: relative;
-            cursor: pointer;
         }
 
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 3px;
-            background: #c41e3a;
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-
-        .nav-link:hover::after,
-        .nav-link.active::after {
-            width: 100%;
+        .nav-link:hover {
+            color: #c41e3a;
         }
 
         .nav-link.active {
             color: #c41e3a;
         }
 
-        .content {
-            margin-top: 80px;
-            min-height: calc(100vh - 80px);
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #c41e3a;
         }
 
-        .page {
-            display: none;
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        .home-page {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: calc(100vh - 80px);
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #4a0000 0%, #c41e3a 100%);
+            color: white;
             padding: 4rem 2rem;
-        }
-
-        .logo-display {
             text-align: center;
-            margin-bottom: 4rem;
         }
 
-        .logo-display h1 {
-            font-size: 5rem;
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 3rem;
             font-weight: 900;
-            color: #4a0000;
-            letter-spacing: 5px;
             margin-bottom: 1rem;
+            letter-spacing: 2px;
         }
 
-        .logo-display h2 {
-            font-size: 3rem;
-            font-weight: 700;
-            color: #c41e3a;
-            letter-spacing: 8px;
-            margin-bottom: 2rem;
-        }
-
-        .subtitle {
+        .hero-subtitle {
             font-size: 1.2rem;
-            color: #333;
-            max-width: 600px;
+            opacity: 0.95;
+            line-height: 1.8;
+            max-width: 700px;
             margin: 0 auto;
         }
 
-        /* Enforce a 3x2 layout on larger screens (3 columns, 2 rows) */
-        .team-section {
-            max-width: 1200px;
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 3rem 2rem;
         }
 
-        .team-title {
-            font-size: 3rem;
-            font-weight: 900;
-            color: #1a1a1a;
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        /* 3 columns layout for desktop, falls back to single column on small screens */
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-
-        .team-member {
+        /* Animation Container */
+        .animation-wrapper {
             background: white;
-            padding: 2rem;
             border-radius: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin-bottom: 3rem;
         }
 
-        .team-member:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(196, 30, 58, 0.2);
+        #pyrolysisCanvas {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 3px solid #1a1a1a;
+            border-radius: 10px;
+            background: #f5f5f0;
         }
 
-        .team-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #4a0000, #c41e3a);
-            margin: 0 auto 1.5rem;
+        .animation-controls {
             display: flex;
-            align-items: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
             justify-content: center;
-            font-size: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: #c41e3a;
             color: white;
         }
 
-        .team-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 0.5rem;
+        .btn-primary:hover {
+            background: #9e1830;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(196, 30, 58, 0.3);
         }
 
-        .team-role {
-            font-size: 1rem;
-            color: #c41e3a;
-            margin-bottom: 1rem;
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .team-bio {
-            font-size: 0.95rem;
-            color: #666;
-            line-height: 1.5;
+        .btn-secondary {
+            background: #333;
+            color: white;
         }
 
-        .problem-page,
-        .solution-page {
-            padding: 4rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
+        .btn-secondary:hover {
+            background: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
 
-        .page-header {
-            margin-bottom: 4rem;
+        /* Status Box */
+        .status-container {
+            background: #f8f9fa;
+            border-left: 4px solid #c41e3a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
         }
 
-        .page-number {
-            font-size: 1.5rem;
-            color: #999;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        .page-title {
-            font-size: 4rem;
-            font-weight: 900;
-            color: #1a1a1a;
-        }
-
-        .problem-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .problem-card {
-            background: white;
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-
-        .problem-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-        }
-
-        .problem-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .problem-title {
-            font-size: 1.8rem;
+        .status-heading {
+            font-size: 1.3rem;
             font-weight: 700;
             color: #4a0000;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
-        .problem-text {
-            font-size: 1.1rem;
+        .status-description {
+            font-size: 1rem;
             color: #333;
             line-height: 1.7;
         }
 
-        .solutions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 2rem;
+        /* Legend Section */
+        .legend-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 3rem;
         }
 
-        .solution-card {
-            background: #4a0000;
-            color: white;
-            padding: 3rem;
-            border-radius: 20px;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            min-height: 250px;
-        }
-
-        .solution-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(74, 0, 0, 0.4);
-        }
-
-        .solution-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #c41e3a, #ff6b6b);
-        }
-
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-title {
-            font-size: 1.8rem;
+        .legend-title {
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            text-align: center;
         }
 
-        .card-description {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            opacity: 0.95;
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
         }
 
-        .mobile-menu-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
+        .legend-item:hover {
+            transform: translateX(5px);
         }
 
-        .mobile-menu-toggle span {
-            width: 25px;
-            height: 3px;
+        .legend-color-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            border: 2px solid #1a1a1a;
+            flex-shrink: 0;
+        }
+
+        .legend-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Footer */
+        .footer {
             background: #1a1a1a;
-            transition: all 0.3s ease;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
         }
 
-        @media (max-width: 1024px) {
-            .nav-logo .logo-pdf {
-                width: 140px;
-                height: 44px;
-            }
+        .footer-text {
+            font-size: 0.95rem;
+            opacity: 0.9;
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
             .nav-menu {
-                position: fixed;
-                top: 70px;
-                left: -100%;
-                width: 100%;
-                background: white;
-                flex-direction: column;
-                gap: 0;
-                padding: 2rem;
-                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-                transition: left 0.3s ease;
+                gap: 1rem;
+                font-size: 0.9rem;
             }
 
-            .nav-menu.active {
-                left: 0;
+            .hero-title {
+                font-size: 2rem;
             }
 
-            .mobile-menu-toggle {
-                display: flex;
+            .hero-subtitle {
+                font-size: 1rem;
             }
 
-            .page-title {
-                font-size: 2.5rem;
-            }
-
-            .solutions-grid,
-            .problem-content {
-                grid-template-columns: 1fr;
-            }
-
-            /* Stack team members into 1 column on small screens */
-            .team-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-link {
+            .animation-wrapper {
                 padding: 1rem;
-                border-bottom: 1px solid #eee;
             }
 
-            .logo-display h1 {
-                font-size: 3rem !important;
-            }
-
-            .logo-display h2 {
-                font-size: 2rem !important;
+            .legend-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <nav>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo" aria-label="Thermowave Dynamics">
-                <!-- Embed the PDF logo. The object will display the PDF in browsers that support it.
-                     Also include an <img> fallback (e.g., thermodynamics.png) and plain text fallback. 
-                     Ensure the referenced file thermodynamics.pdf is available at the repo root. -->
-                <object class="logo-pdf" data="thermodynamics.pdf" type="application/pdf" aria-label="Thermowave logo">
-                    <!-- Fallback for browsers that cannot render PDFs inside an object -->
-                    <img src="thermodynamics.png" alt="Thermowave Dynamics logo" style="height:48px; display:block;" />
-                    <span class="logo-fallback">THERMOWAVE <span style="color:#c41e3a">DYNAMICS</span></span>
-                </object>
-                <!-- Keep the textual brand in case object fails or for accessibility -->
-                <div style="display:none;">THERMOWAVE <span>DYNAMICS</span></div>
-            </div>
-            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <ul class="nav-menu" id="navMenu">
-                <li><a class="nav-link active" onclick="showPage(event, 'home')">Home</a></li>
-                <li><a class="nav-link" onclick="showPage(event, 'problem')">Problem</a></li>
-                <li><a class="nav-link" onclick="showPage(event, 'solution')">Solution</a></li>
-                <li><a class="nav-link" onclick="showPage(event, 'team')">Team</a></li>
+            <a href="#" class="nav-brand">THERMOWAVE</a>
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-link">Home</a></li>
+                <li><a href="#" class="nav-link">About</a></li>
+                <li><a href="#" class="nav-link">Technology</a></li>
+                <li><a href="#" class="nav-link active">How It Works</a></li>
             </ul>
         </div>
     </nav>
 
-    <div class="content">
-        <div id="home" class="page active">
-            <div class="home-page">
-                <div class="logo-display">
-                    <h1>THERMOWAVE</h1>
-                    <h2>DYNAMICS</h2>
-                    <p class="subtitle">Deeptech company building both industrial-scale and consumer-focused pyrolysis solutions</p>
-                </div>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">The Science of Pyrolysis</h1>
+            <p class="hero-subtitle">
+                Pyrolysis is a sustainable thermal decomposition process that converts waste materials into valuable products without combustion. By heating biomass or plastic waste in an oxygen-free environment, we transform waste into biochar, bio-oil, and syngas—creating a circular economy solution.
+            </p>
+        </div>
+    </section>
 
-                <div class="team-section">
-                    <h2 class="team-title">Our Team</h2>
-                    <div class="team-grid">
-                        <!-- Reordered to: CEO, COO, CFO, Marketing, Tech, Janitor -->
-                        <div class="team-member">
-                            <div class="team-avatar">A</div>
-                            <h3 class="team-name">Atiksh</h3>
-                            <p class="team-role">CEO</p>
-                            <p class="team-bio">Visionary leader driving Thermowave's mission to revolutionize waste-to-energy solutions.</p>
-                        </div>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Animation Container -->
+        <div class="animation-wrapper">
+            <canvas id="pyrolysisCanvas" width="1200" height="700"></canvas>
+            
+            <div class="animation-controls">
+                <button class="btn btn-primary" id="startBtn">Start Animation</button>
+                <button class="btn btn-secondary" id="resetBtn">Reset</button>
+            </div>
 
-                        <div class="team-member">
-                            <div class="team-avatar">L</div>
-                            <h3 class="team-name">Lavitra</h3>
-                            <p class="team-role">COO & CTO</p>
-                            <p class="team-bio">Technology leader responsible for operational execution and technical direction, driving innovation and overseeing both organizational performance and advanced engineering development.</p>
-                        </div>
-
-                        <div class="team-member">
-                            <div class="team-avatar">K</div>
-                            <h3 class="team-name">Kamlesh</h3>
-                            <p class="team-role">CFO</p>
-                            <p class="team-bio">Financial strategist managing investments and ensuring sustainable growth.</p>
-                        </div>
-
-                        <div class="team-member">
-                            <div class="team-avatar">S</div>
-                            <h3 class="team-name">Srishti</h3>
-                            <p class="team-role">CMO</p>
-                            <p class="team-bio">Marketing leader building brand awareness and driving customer engagement. Creative strategist connecting our mission with the world.</p>
-                        </div>
-                        
-                         <div class="team-member">
-                            <div class="team-avatar">A</div>
-                            <h3 class="team-name">Arjun</h3>
-                            <p class="team-role">CRDO</p>
-                            <p class="team-bio">Chief Research & Development Officer spearheading breakthrough innovations in pyrolysis technology.</p>
-                        </div>
-                        
-                        <div class="team-member">
-                            <div class="team-avatar">J</div>
-                            <h3 class="team-name">Jivitesh</h3>
-                            <p class="team-role">HR</p>
-                            <p class="team-bio">Human resources strategist building world-class teams and company culture.</p>
-                        </div>
-
-                       
-                    </div>
+            <div class="status-container">
+                <div class="status-heading" id="statusTitle">Ready to Start</div>
+                <div class="status-description" id="statusText">
+                    Click "Start Animation" to see how pyrolysis converts biomass into biochar, bio-oil, and syngas through thermal decomposition without oxygen.
                 </div>
             </div>
         </div>
 
-        <div id="problem" class="page problem-page">
-            <div class="page-header">
-                <span class="page-number">01</span>
-                <h1 class="page-title">THE PROBLEM</h1>
-            </div>
-            <div class="problem-content">
-                <div class="problem-card">
-                    <div class="problem-icon">🌍</div>
-                    <h3 class="problem-title">Waste Crisis</h3>
-                    <p class="problem-text">Millions of tons of plastic and organic waste cannot be efficiently recycled.</p>
+        <!-- Legend Section -->
+        <section class="legend-section">
+            <h2 class="legend-title">Process Components</h2>
+            <div class="legend-grid">
+                <div class="legend-item">
+                    <div class="legend-color-box" style="background: #27ae60;"></div>
+                    <span class="legend-label">Feedstock (Biomass)</span>
                 </div>
-                <div class="problem-card">
-                    <div class="problem-icon">🏠</div>
-                    <h3 class="problem-title">Limited Home Solutions</h3>
-                    <p class="problem-text">Households and small communities lack safe, convenient ways to convert waste into usable energy.</p>
+                <div class="legend-item">
+                    <div class="legend-color-box" style="background: #e63946;"></div>
+                    <span class="legend-label">Heat Source</span>
                 </div>
-                <div class="problem-card">
-                    <div class="problem-icon">🏭</div>
-                    <h3 class="problem-title">Industrial Limitations</h3>
-                    <p class="problem-text">Large-scale pyrolysis plants face safety, efficiency, and emissions limitations.</p>
+                <div class="legend-item">
+                    <div class="legend-color-box" style="background: #1a1a1a;"></div>
+                    <span class="legend-label">Biochar (Solid)</span>
                 </div>
-                <div class="problem-card">
-                    <div class="problem-icon">📊</div>
-                    <h3 class="problem-title">400M+ Tons</h3>
-                    <p class="problem-text">Of plastic waste each year with less than 10% recycled effectively. Incineration plants release 400M tons of CO2 yearly.</p>
+                <div class="legend-item">
+                    <div class="legend-color-box" style="background: #f39c12;"></div>
+                    <span class="legend-label">Syngas</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color-box" style="background: #8b4513;"></div>
+                    <span class="legend-label">Bio-oil (Liquid)</span>
                 </div>
             </div>
-        </div>
+        </section>
+    </main>
 
-        <div id="solution" class="page solution-page">
-            <div class="page-header">
-                <span class="page-number">02</span>
-                <h1 class="page-title">OUR SOLUTION</h1>
-            </div>
-            <div class="solutions-grid">
-                <div class="solution-card">
-                    <div class="card-icon">🏭</div>
-                    <h3 class="card-title">INDUSTRIAL PLANTS</h3>
-                    <p class="card-description">
-                        Buy/recycle plastics from plants or households → produce eco-friendly fuel using advanced microwave pyrolysis technology.
-                    </p>
-                </div>
-                <div class="solution-card">
-                    <div class="card-icon">🏠</div>
-                    <h3 class="card-title">HOME UNITS (R&D)</h3>
-                    <p class="card-description">
-                        Compact, safe pyrolysis devices for households, turning waste into usable fuel safely. Currently in development.
-                    </p>
-                </div>
-                <div class="solution-card">
-                    <div class="card-icon">🔬</div>
-                    <h3 class="card-title">INNOVATION</h3>
-                    <p class="card-description">
-                        Integrated approach — operational experience improves safety and efficiency of both home units and industrial plants.
-                    </p>
-                </div>
-                <div class="solution-card">
-                    <div class="card-icon">🌱</div>
-                    <h3 class="card-title">IMPACT</h3>
-                    <p class="card-description">
-                        Reduces landfill waste, produces low-carbon fuel, enables circular economy at both industrial and household scale.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div id="team" class="page problem-page">
-            <div class="page-header">
-                <span class="page-number">03</span>
-                <h1 class="page-title">OUR TEAM</h1>
-            </div>
-            <div class="team-grid" style="max-width: 1200px; margin: 0 auto;">
-                <!-- Team page: same 3x2 order: CEO, COO, CFO, Marketing, Tech, Janitor -->
-                <div class="team-member">
-                    <div class="team-avatar">A</div>
-                    <h3 class="team-name">Atiksh</h3>
-                    <p class="team-role">CEO</p>
-                    <p class="team-bio">Visionary leader driving Thermowave's mission to revolutionize waste-to-energy solutions globally. Strategic thinker with passion for sustainable innovation.</p>
-                </div>
-
-                <div class="team-member">
-                    <div class="team-avatar">L</div>
-                    <h3 class="team-name">Lavitra</h3>
-                    <p class="team-role">COO</p>
-                    <p class="team-bio">Operations expert ensuring seamless execution of industrial and consumer initiatives. Master of process optimization and team coordination.</p>
-                </div>
-
-                <div class="team-member">
-                    <div class="team-avatar">K</div>
-                    <h3 class="team-name">Kamlesh</h3>
-                    <p class="team-role">CFO</p>
-                    <p class="team-bio">Financial strategist managing investments and ensuring sustainable growth. Expert in financial planning and resource allocation.</p>
-                </div>
-
-                <div class="team-member">
-                    <div class="team-avatar">S</div>
-                    <h3 class="team-name">Srishti</h3>
-                    <p class="team-role">Marketing</p>
-                    <p class="team-bio">Marketing leader building brand awareness and driving customer engagement. Creative strategist connecting our mission with the world.</p>
-                </div>
-
-                <div class="team-member">
-                    <div class="team-avatar">J</div>
-                    <h3 class="team-name">Jivitesh</h3>
-                    <p class="team-role">Tech</p>
-                    <p class="team-bio">Technology specialist developing cutting-edge pyrolysis systems and automation solutions. Passionate about innovation and engineering excellence.</p>
-                </div>
-
-                <div class="team-member">
-                    <div class="team-avatar">A</div>
-                    <h3 class="team-name">Arjun</h3>
-                    <p class="team-role">Janitor</p>
-                    <p class="team-bio">Keeping our facilities spotless and ensuring a clean, safe working environment for the entire team. The unsung hero of Thermowave.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">&copy; 2024 Thermowave Dynamics. All rights reserved. | Innovating sustainable waste-to-energy solutions.</p>
+    </footer>
 
     <script>
-        function showPage(event, pageName) {
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(page => page.classList.remove('active'));
+        const canvas = document.getElementById('pyrolysisCanvas');
+        const ctx = canvas.getContext('2d');
+        const startBtn = document.getElementById('startBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const statusTitle = document.getElementById('statusTitle');
+        const statusText = document.getElementById('statusText');
 
-            const target = document.getElementById(pageName);
-            if (target) target.classList.add('active');
+        let animationRunning = false;
+        let animationFrame = 0;
+        let currentStage = 0;
 
-            const navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(link => link.classList.remove('active'));
-            if (event && event.target) event.target.classList.add('active');
+        let feedstockParticles = [];
+        let decomposingParticles = [];
+        let biocharParticles = [];
+        let syngasParticles = [];
+        let bioOilDrops = [];
 
-            document.getElementById('navMenu').classList.remove('active');
+        const stages = [
+            {
+                title: "Stage 1: Feedstock Input",
+                text: "Biomass feedstock (wood chips, agricultural waste, or plastic) enters the reactor vessel via a conveyor system. The reactor is sealed to maintain an oxygen-free environment."
+            },
+            {
+                title: "Stage 2: Heating Phase",
+                text: "The reactor is heated to 400°C - 800°C. The inert atmosphere (no oxygen) prevents combustion. Instead, thermal energy breaks chemical bonds in the feedstock."
+            },
+            {
+                title: "Stage 3: Thermal Decomposition",
+                text: "High heat causes long polymer chains to break down into smaller molecules. The material decomposes into three phases: solid char, vapors, and gases."
+            },
+            {
+                title: "Stage 4: Separation - Biochar Collection",
+                text: "Solid carbon-rich residue (biochar) settles at the bottom of the reactor. This biochar can be used as soil amendment or activated carbon."
+            },
+            {
+                title: "Stage 5: Condensation - Bio-oil Formation",
+                text: "Hot vapors rise into the condenser where they cool rapidly. Heavy organic compounds condense into bio-oil, which drips into a collection tank."
+            },
+            {
+                title: "Stage 6: Syngas Recovery",
+                text: "Non-condensable gases (H₂, CO, CH₄, CO₂) exit as syngas - a valuable fuel that can generate electricity or heat. The process is now complete!"
+            }
+        ];
 
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        function init() {
+            feedstockParticles = [];
+            decomposingParticles = [];
+            biocharParticles = [];
+            syngasParticles = [];
+            bioOilDrops = [];
+            animationFrame = 0;
+            currentStage = 0;
+            updateStatus(stages[0].title, stages[0].text);
         }
 
-        function toggleMobileMenu() {
-            document.getElementById('navMenu').classList.toggle('active');
+        function updateStatus(title, text) {
+            statusTitle.textContent = title;
+            statusText.textContent = text;
         }
 
-        document.addEventListener('click', function(event) {
-            const nav = document.getElementById('navMenu');
-            const toggle = document.querySelector('.mobile-menu-toggle');
+        function drawStaticElements() {
+            ctx.fillStyle = '#f5f5f0';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            if (!nav.contains(event.target) && (!toggle || !toggle.contains(event.target)) && !event.target.classList.contains('nav-link')) {
-                nav.classList.remove('active');
+            ctx.fillStyle = '#666';
+            ctx.fillRect(50, 300, 250, 15);
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(50, 300, 250, 15);
+            
+            for (let i = 50; i < 300; i += 30) {
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillRect(i, 315, 8, 20);
+            }
+
+            ctx.fillStyle = '#e0e0e0';
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 4;
+            
+            ctx.beginPath();
+            ctx.moveTo(300, 250);
+            ctx.lineTo(300, 500);
+            ctx.lineTo(500, 500);
+            ctx.lineTo(500, 250);
+            ctx.lineTo(480, 230);
+            ctx.lineTo(320, 230);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = '#1a1a1a';
+            ctx.font = 'bold 18px sans-serif';
+            ctx.fillText('REACTOR', 350, 370);
+
+            ctx.fillStyle = '#d0d0d0';
+            ctx.fillRect(510, 280, 30, 100);
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(510, 280, 30, 100);
+            
+            ctx.fillStyle = '#e63946';
+            ctx.fillRect(512, 282 + (96 - (animationFrame % 96)), 26, animationFrame % 96);
+            
+            ctx.fillStyle = '#1a1a1a';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.fillText('TEMP', 508, 270);
+            if (animationRunning) {
+                const temp = Math.min(800, Math.floor((animationFrame / 500) * 800));
+                ctx.fillText(temp + '°C', 505, 395);
+            }
+
+            ctx.fillStyle = '#e63946';
+            ctx.fillRect(320, 240, 150, 30);
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(320, 240, 150, 30);
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.fillText('⊘ OXYGEN FREE', 328, 260);
+
+            if (animationRunning && animationFrame > 50) {
+                drawFlames(350, 520, 100);
+            }
+
+            ctx.fillStyle = '#d0d0d0';
+            ctx.fillRect(350, 510, 100, 80);
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(350, 510, 100, 80);
+            
+            ctx.fillStyle = '#1a1a1a';
+            ctx.font = 'bold 12px sans-serif';
+            ctx.fillText('BIOCHAR', 365, 600);
+
+            ctx.fillStyle = '#e0e0e0';
+            ctx.fillRect(550, 200, 120, 200);
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(550, 200, 120, 200);
+
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 3;
+            for (let i = 0; i < 5; i++) {
+                const y = 220 + i * 35;
+                ctx.beginPath();
+                ctx.moveTo(560, y);
+                ctx.bezierCurveTo(580, y - 10, 600, y + 10, 620, y);
+                ctx.bezierCurveTo(640, y - 10, 650, y + 10, 660, y);
+                ctx.stroke();
+            }
+
+            ctx.fillStyle = '#1a1a1a';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.fillText('CONDENSER', 560, 235);
+
+            ctx.fillStyle = '#e0e0e0';
+            ctx.fillRect(700, 320, 80, 100);
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(700, 320, 80, 100);
+            
+            ctx.fillStyle = '#1a1a1a';
+            ctx.font = 'bold 12px sans-serif';
+            ctx.fillText('BIO-OIL', 710, 430);
+
+            ctx.fillStyle = '#666';
+            ctx.fillRect(605, 150, 20, 50);
+            ctx.fillRect(580, 130, 70, 20);
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(605, 150, 20, 50);
+            ctx.strokeRect(580, 130, 70, 20);
+            
+            ctx.fillStyle = '#e63946';
+            ctx.beginPath();
+            ctx.moveTo(615, 110);
+            ctx.lineTo(605, 130);
+            ctx.lineTo(625, 130);
+            ctx.closePath();
+            ctx.fill();
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = '#1a1a1a';
+            ctx.font = 'bold 12px sans-serif';
+            ctx.fillText('SYNGAS OUT', 800, 145);
+
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(480, 260);
+            ctx.lineTo(530, 260);
+            ctx.lineTo(530, 280);
+            ctx.lineTo(550, 280);
+            ctx.stroke();
+            
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(480, 260);
+            ctx.lineTo(530, 260);
+            ctx.lineTo(530, 280);
+            ctx.lineTo(550, 280);
+            ctx.stroke();
+
+            // Draw output labels (fade in during separation phase)
+            if (animationFrame > 400) {
+                const labelOpacity = Math.min(1, (animationFrame - 400) / 100);
+                drawOutputLabels(labelOpacity);
+            }
+        }
+
+        // Draw detailed output labels with tag style
+        function drawOutputLabels(opacity) {
+            ctx.globalAlpha = opacity;
+
+            // BIOCHAR LABEL (Solid Output)
+            // Pointer line from label to collection bin
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(280, 620);
+            ctx.lineTo(350, 590);
+            ctx.stroke();
+
+            // Label background
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(60, 605, 220, 60);
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(60, 605, 220, 60);
+
+            // Label text
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 16px sans-serif';
+            ctx.fillText('BIOCHAR', 75, 625);
+            ctx.font = '14px sans-serif';
+            ctx.fillText('(Solid Carbon)', 75, 643);
+            ctx.font = '11px sans-serif';
+            ctx.fillStyle = '#cccccc';
+            ctx.fillText('Soil amendment & sequestration', 70, 658);
+
+            // BIO-OIL LABEL (Liquid Output)
+            // Pointer line from label to tank
+            ctx.strokeStyle = '#8b4513';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(820, 370);
+            ctx.lineTo(780, 370);
+            ctx.stroke();
+
+            // Label background
+            ctx.fillStyle = '#8b4513';
+            ctx.fillRect(825, 345, 240, 60);
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(825, 345, 240, 60);
+
+            // Label text
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 16px sans-serif';
+            ctx.fillText('BIO-OIL', 840, 365);
+            ctx.font = '14px sans-serif';
+            ctx.fillText('(Pyrolysis Oil)', 840, 383);
+            ctx.font = '11px sans-serif';
+            ctx.fillStyle = '#f5e6d3';
+            ctx.fillText('Refinable into fuel or chemicals', 835, 398);
+
+            // SYNGAS LABEL (Gas Output)
+            // Pointer line from label to pipe
+            ctx.strokeStyle = '#f39c12';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(820, 100);
+            ctx.lineTo(650, 140);
+            ctx.stroke();
+
+            // Label background
+            ctx.fillStyle = '#f39c12';
+            ctx.fillRect(825, 70, 240, 60);
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(825, 70, 240, 60);
+
+            // Label text
+            ctx.fillStyle = '#1a1a1a';
+            ctx.font = 'bold 16px sans-serif';
+            ctx.fillText('SYNGAS', 840, 90);
+            ctx.font = '14px sans-serif';
+            ctx.fillText('(CO + H₂ + CH₄)', 840, 108);
+            ctx.font = '11px sans-serif';
+            ctx.fillStyle = '#4a3a00';
+            ctx.fillText('Combustible gas for energy', 835, 123);
+
+            ctx.globalAlpha = 1.0;
+        }
+
+        function drawFlames(x, y, width) {
+            const flameCount = 5;
+            const offset = (animationFrame * 2) % 20;
+            
+            for (let i = 0; i < flameCount; i++) {
+                const fx = x + (i * width / flameCount) + Math.sin(animationFrame * 0.1 + i) * 5;
+                const fy = y + Math.sin(animationFrame * 0.15 + i) * 3;
+                
+                ctx.fillStyle = `rgba(230, 57, 70, ${0.7 + Math.sin(animationFrame * 0.1 + i) * 0.3})`;
+                ctx.beginPath();
+                ctx.moveTo(fx, fy);
+                ctx.quadraticCurveTo(fx - 8, fy - 20 - offset, fx, fy - 30 - offset);
+                ctx.quadraticCurveTo(fx + 8, fy - 20 - offset, fx, fy);
+                ctx.fill();
+                
+                ctx.fillStyle = `rgba(107, 15, 26, ${0.8 + Math.sin(animationFrame * 0.1 + i) * 0.2})`;
+                ctx.beginPath();
+                ctx.moveTo(fx, fy);
+                ctx.quadraticCurveTo(fx - 5, fy - 15 - offset, fx, fy - 20 - offset);
+                ctx.quadraticCurveTo(fx + 5, fy - 15 - offset, fx, fy);
+                ctx.fill();
+            }
+        }
+
+        function createFeedstockParticle() {
+            return {
+                x: 50,
+                y: 293,
+                vx: 2,
+                size: 15,
+                type: 'feedstock'
+            };
+        }
+
+        function updateFeedstock() {
+            if (animationFrame % 30 === 0 && animationFrame < 400 && animationRunning) {
+                feedstockParticles.push(createFeedstockParticle());
+            }
+
+            feedstockParticles = feedstockParticles.filter(p => {
+                p.x += p.vx;
+
+                ctx.fillStyle = '#27ae60';
+                ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+                ctx.strokeStyle = '#1a1a1a';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+
+                if (p.x > 310 && animationFrame > 100) {
+                    for (let i = 0; i < 8; i++) {
+                        decomposingParticles.push({
+                            x: p.x,
+                            y: p.y,
+                            vx: (Math.random() - 0.5) * 3,
+                            vy: (Math.random() - 0.5) * 3,
+                            size: 4 + Math.random() * 4,
+                            life: 100,
+                            type: Math.random() > 0.3 ? 'gas' : 'char'
+                        });
+                    }
+                    return false;
+                }
+
+                return p.x < 320;
+            });
+        }
+
+        function updateDecomposition() {
+            decomposingParticles = decomposingParticles.filter(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life--;
+
+                p.x += (Math.random() - 0.5) * 2;
+                p.y += (Math.random() - 0.5) * 2;
+
+                if (p.type === 'char') {
+                    p.vy += 0.3;
+                    ctx.fillStyle = `rgba(26, 26, 26, ${p.life / 100})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    if (p.y > 510 && p.x > 350 && p.x < 450) {
+                        biocharParticles.push({x: p.x, y: 520, size: p.size});
+                        return false;
+                    }
+                } else {
+                    p.vy -= 0.5;
+                    p.vx *= 0.98;
+                    ctx.fillStyle = `rgba(102, 102, 102, ${p.life / 100})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    if (p.x > 530 && p.y < 400 && p.y > 200) {
+                        if (Math.random() > 0.5) {
+                            bioOilDrops.push({
+                                x: 550 + Math.random() * 100,
+                                y: p.y,
+                                vy: 2,
+                                size: 3
+                            });
+                        } else {
+                            syngasParticles.push({
+                                x: p.x,
+                                y: p.y,
+                                vy: -3,
+                                size: 3
+                            });
+                        }
+                        return false;
+                    }
+                }
+
+                return p.life > 0 && p.x > 250 && p.x < 700 && p.y > 180 && p.y < 550;
+            });
+        }
+
+        function updateBiochar() {
+            biocharParticles.forEach(p => {
+                if (p.y < 580) {
+                    p.y += 2;
+                }
+                ctx.fillStyle = '#1a1a1a';
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        function updateBioOil() {
+            bioOilDrops = bioOilDrops.filter(p => {
+                p.y += p.vy;
+                
+                ctx.fillStyle = '#8b4513';
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                if (p.y > 420) {
+                    return false;
+                }
+
+                return true;
+            });
+
+            const oilLevel = Math.min(90, bioOilDrops.length + animationFrame * 0.05);
+            ctx.fillStyle = 'rgba(139, 69, 19, 0.8)';
+            ctx.fillRect(702, 420 - oilLevel, 76, oilLevel);
+        }
+
+        function updateSyngas() {
+            syngasParticles = syngasParticles.filter(p => {
+                p.y += p.vy;
+                
+                ctx.fillStyle = '#f39c12';
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                if (p.y < 150) {
+                    ctx.fillStyle = '#f39c12';
+                    ctx.beginPath();
+                    ctx.arc(800 + Math.random() * 50, 140 + Math.random() * 10, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                    return false;
+                }
+
+                return true;
+            });
+        }
+
+        function updateStage() {
+            const prevStage = currentStage;
+            
+            if (animationFrame < 100) currentStage = 0;
+            else if (animationFrame < 200) currentStage = 1;
+            else if (animationFrame < 400) currentStage = 2;
+            else if (animationFrame < 600) currentStage = 3;
+            else if (animationFrame < 800) currentStage = 4;
+            else currentStage = 5;
+
+            if (prevStage !== currentStage && currentStage < stages.length) {
+                updateStatus(stages[currentStage].title, stages[currentStage].text);
+            }
+        }
+
+        function animate() {
+            if (!animationRunning) return;
+
+            drawStaticElements();
+            updateFeedstock();
+            updateDecomposition();
+            updateBiochar();
+            updateBioOil();
+            updateSyngas();
+            updateStage();
+
+            animationFrame++;
+
+            if (animationFrame > 1000) {
+                animationRunning = false;
+                startBtn.disabled = false;
+                startBtn.textContent = 'Restart Animation';
+            } else {
+                requestAnimationFrame(animate);
+            }
+        }
+
+        startBtn.addEventListener('click', () => {
+            if (!animationRunning) {
+                animationRunning = true;
+                startBtn.disabled = true;
+                animate();
             }
         });
+
+        resetBtn.addEventListener('click', () => {
+            animationRunning = false;
+            startBtn.disabled = false;
+            startBtn.textContent = 'Start Animation';
+            init();
+            drawStaticElements();
+        });
+
+        init();
+        drawStaticElements();
     </script>
 </body>
 </html>
