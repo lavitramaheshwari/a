@@ -48,6 +48,15 @@
             font-size: 1.1rem;
         }
 
+        .site-logo {
+            width: 52px;
+            height: auto;
+            display: inline-block;
+            border-radius: 6px;
+            object-fit: contain;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
         .nav-logo .logo-main {
             color: #4a0000;
         }
@@ -156,6 +165,12 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
+            display: none; /* hidden by default */
+        }
+
+        /* Show team section only when the HOME page is active */
+        .page.home-page[data-active="true"] .team-section {
+            display: block;
         }
 
         .team-title {
@@ -1291,6 +1306,8 @@
     <nav>
         <div class="nav-container">
             <div class="nav-logo">
+                <!-- logo image (place THERMOWAVE-logo.png next to the HTML file) -->
+                <img src="THERMOWAVE-logo.png" alt="Thermowave logo" class="site-logo" />
                 <span class="logo-main">THERMOWAVE</span>
                 <span class="logo-sub">DYNAMICS</span>
             </div>
@@ -1588,7 +1605,7 @@
         </div>
 
         <!-- TEAM PAGE -->
-        <div class="page problem-page" data-page="team" style="display: none;"></div>
+        <!-- Removed empty duplicate TEAM page so team content is only present inside the Home page -->
 
     <script>
         // Page navigation
