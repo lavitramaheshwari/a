@@ -37,7 +37,6 @@
             padding: 0 2rem;
         }
 
-        /* Logo container changed to host the PDF-based logo */
         .nav-logo {
             display: flex;
             align-items: center;
@@ -152,7 +151,6 @@
             margin: 0 auto;
         }
 
-        /* Enforce a 3x2 layout on larger screens (3 columns, 2 rows) */
         .team-section {
             max-width: 1200px;
             margin: 0 auto;
@@ -167,7 +165,6 @@
             text-align: center;
         }
 
-        /* 3 columns layout for desktop, falls back to single column on small screens */
         .team-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -221,7 +218,8 @@
         }
 
         .problem-page,
-        .solution-page {
+        .solution-page,
+        .how-it-works-page {
             padding: 4rem 2rem;
             max-width: 1400px;
             margin: 0 auto;
@@ -332,6 +330,231 @@
             opacity: 0.95;
         }
 
+        /* How It Works Styles */
+        .process-container {
+            margin-top: 4rem;
+            background: white;
+            border-radius: 30px;
+            padding: 4rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .animation-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto 4rem;
+            height: 600px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #2c2c2c 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .reactor-chamber {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            height: 400px;
+            background: linear-gradient(135deg, #4a0000, #2a0000);
+            border-radius: 25px;
+            border: 5px solid #c41e3a;
+            box-shadow: 0 0 40px rgba(196, 30, 58, 0.5);
+        }
+
+        .chamber-inner {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .waste-pile {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 70px;
+            background: linear-gradient(135deg, #555, #333);
+            border-radius: 50% 50% 10px 10px;
+            animation: wasteShrink 8s infinite;
+        }
+
+        .microwave-emitter {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #c41e3a, #4a0000);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(196, 30, 58, 0.8);
+        }
+
+        .wave-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 3px solid rgba(196, 30, 58, 0.8);
+            border-radius: 50%;
+            animation: waveExpand 2s infinite ease-out;
+        }
+
+        .wave-ring:nth-child(2) { animation-delay: 0.4s; }
+        .wave-ring:nth-child(3) { animation-delay: 0.8s; }
+        .wave-ring:nth-child(4) { animation-delay: 1.2s; }
+        .wave-ring:nth-child(5) { animation-delay: 1.6s; }
+
+        .heat-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ff6b6b;
+            animation: particleFloat 4s infinite ease-in-out;
+        }
+
+        .particle:nth-child(1) { left: 25%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 35%; animation-delay: 0.5s; }
+        .particle:nth-child(3) { left: 45%; animation-delay: 1s; }
+        .particle:nth-child(4) { left: 55%; animation-delay: 1.5s; }
+        .particle:nth-child(5) { left: 65%; animation-delay: 2s; }
+        .particle:nth-child(6) { left: 75%; animation-delay: 2.5s; }
+
+        .vapor-stream {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 200px;
+        }
+
+        .vapor-bubble {
+            position: absolute;
+            bottom: 150px;
+            left: 50%;
+            width: 12px;
+            height: 12px;
+            background: rgba(100, 150, 255, 0.7);
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(100, 150, 255, 0.5);
+            animation: vaporRise 3s infinite ease-out;
+        }
+
+        .vapor-bubble:nth-child(2) { animation-delay: 0.5s; left: 45%; }
+        .vapor-bubble:nth-child(3) { animation-delay: 1s; left: 55%; }
+        .vapor-bubble:nth-child(4) { animation-delay: 1.5s; left: 42%; }
+        .vapor-bubble:nth-child(5) { animation-delay: 2s; left: 58%; }
+
+        .output-system {
+            position: absolute;
+            top: 80px;
+            right: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .condenser {
+            width: 120px;
+            height: 150px;
+            background: linear-gradient(180deg, #666, #333);
+            border-radius: 15px;
+            border: 3px solid #4a0000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .condenser::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, transparent, rgba(100, 150, 255, 0.3));
+            animation: condenserFill 8s infinite;
+        }
+
+        .fuel-output {
+            width: 80px;
+            height: 80px;
+            margin-top: 20px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+        }
+
+        .fuel-drop {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15px;
+            height: 20px;
+            background: linear-gradient(180deg, #ffd700, #ff8c00);
+            border-radius: 0 0 50% 50%;
+            animation: fuelDrip 3s infinite;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step-card {
+            background: linear-gradient(135deg, #4a0000, #c41e3a);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(196, 30, 58, 0.4);
+        }
+
+        .step-number {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .step-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-description {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -340,6 +563,85 @@
             to {
                 opacity: 1;
                 transform: translateY(0);
+            }
+        }
+
+        @keyframes wasteShrink {
+            0%, 100% {
+                height: 70px;
+                opacity: 1;
+            }
+            50% {
+                height: 50px;
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes waveExpand {
+            0% {
+                width: 60px;
+                height: 60px;
+                opacity: 1;
+            }
+            100% {
+                width: 250px;
+                height: 250px;
+                opacity: 0;
+            }
+        }
+
+        @keyframes particleFloat {
+            0% {
+                bottom: 100px;
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                bottom: 300px;
+                opacity: 0;
+                transform: translateX(calc(var(--drift, 0) * 30px));
+            }
+        }
+
+        @keyframes vaporRise {
+            0% {
+                bottom: 150px;
+                opacity: 0;
+                transform: translateX(0) scale(1);
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                bottom: 400px;
+                opacity: 0;
+                transform: translateX(calc(var(--drift, 0) * 40px)) scale(1.5);
+            }
+        }
+
+        @keyframes fuelDrip {
+            0%, 85% {
+                opacity: 0;
+                top: -10px;
+            }
+            90% {
+                opacity: 1;
+                top: -10px;
+            }
+            100% {
+                opacity: 0;
+                top: 30px;
+            }
+        }
+
+        @keyframes condenserFill {
+            0%, 100% {
+                height: 0%;
+            }
+            50% {
+                height: 80%;
             }
         }
 
@@ -361,6 +663,19 @@
             .nav-logo .logo-pdf {
                 width: 140px;
                 height: 44px;
+            }
+
+            .animation-container {
+                height: 500px;
+            }
+
+            .reactor-chamber {
+                width: 300px;
+                height: 350px;
+            }
+
+            .output-system {
+                right: 50px;
             }
         }
 
@@ -395,7 +710,6 @@
                 grid-template-columns: 1fr;
             }
 
-            /* Stack team members into 1 column on small screens */
             .team-grid {
                 grid-template-columns: 1fr;
             }
@@ -412,6 +726,30 @@
             .logo-display h2 {
                 font-size: 2rem !important;
             }
+
+            .animation-container {
+                height: 400px;
+            }
+
+            .reactor-chamber {
+                width: 250px;
+                height: 300px;
+            }
+
+            .output-system {
+                right: 30px;
+                top: 60px;
+            }
+
+            .condenser {
+                width: 80px;
+                height: 100px;
+            }
+
+            .fuel-output {
+                width: 60px;
+                height: 60px;
+            }
         }
     </style>
 </head>
@@ -419,15 +757,10 @@
     <nav>
         <div class="nav-container">
             <div class="nav-logo" aria-label="Thermowave Dynamics">
-                <!-- Embed the PDF logo. The object will display the PDF in browsers that support it.
-                     Also include an <img> fallback (e.g., thermodynamics.png) and plain text fallback. 
-                     Ensure the referenced file thermodynamics.pdf is available at the repo root. -->
                 <object class="logo-pdf" data="thermodynamics.pdf" type="application/pdf" aria-label="Thermowave logo">
-                    <!-- Fallback for browsers that cannot render PDFs inside an object -->
                     <img src="thermodynamics.png" alt="Thermowave Dynamics logo" style="height:48px; display:block;" />
                     <span class="logo-fallback">THERMOWAVE <span style="color:#c41e3a">DYNAMICS</span></span>
                 </object>
-                <!-- Keep the textual brand in case object fails or for accessibility -->
                 <div style="display:none;">THERMOWAVE <span>DYNAMICS</span></div>
             </div>
             <div class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">
@@ -439,6 +772,7 @@
                 <li><a class="nav-link active" onclick="showPage(event, 'home')">Home</a></li>
                 <li><a class="nav-link" onclick="showPage(event, 'problem')">Problem</a></li>
                 <li><a class="nav-link" onclick="showPage(event, 'solution')">Solution</a></li>
+                <li><a class="nav-link" onclick="showPage(event, 'how-it-works')">How It Works</a></li>
                 <li><a class="nav-link" onclick="showPage(event, 'team')">Team</a></li>
             </ul>
         </div>
@@ -456,7 +790,6 @@
                 <div class="team-section">
                     <h2 class="team-title">Our Team</h2>
                     <div class="team-grid">
-                        <!-- Reordered to: CEO, COO, CFO, Marketing, Tech, Janitor -->
                         <div class="team-member">
                             <div class="team-avatar">A</div>
                             <h3 class="team-name">Atiksh</h3>
@@ -498,8 +831,6 @@
                             <p class="team-role">HR</p>
                             <p class="team-bio">Human resources strategist building world-class teams and company culture.</p>
                         </div>
-
-                       
                     </div>
                 </div>
             </div>
@@ -571,13 +902,84 @@
             </div>
         </div>
 
-        <div id="team" class="page problem-page">
+        <div id="how-it-works" class="page how-it-works-page">
             <div class="page-header">
                 <span class="page-number">03</span>
+                <h1 class="page-title">HOW IT WORKS</h1>
+            </div>
+            
+            <div class="process-container">
+                <div class="animation-container">
+                    <div class="reactor-chamber">
+                        <div class="chamber-inner">
+                            <div class="microwave-emitter">
+                                <div class="wave-ring"></div>
+                                <div class="wave-ring"></div>
+                                <div class="wave-ring"></div>
+                                <div class="wave-ring"></div>
+                                <div class="wave-ring"></div>
+                            </div>
+                            
+                            <div class="waste-pile"></div>
+                            
+                            <div class="heat-particles">
+                                <div class="particle" style="--drift: 1"></div>
+                                <div class="particle" style="--drift: -1"></div>
+                                <div class="particle" style="--drift: 0.5"></div>
+                                <div class="particle" style="--drift: -0.5"></div>
+                                <div class="particle" style="--drift: 0.8"></div>
+                                <div class="particle" style="--drift: -0.8"></div>
+                            </div>
+                            
+                            <div class="vapor-stream">
+                                <div class="vapor-bubble" style="--drift: 0"></div>
+                                <div class="vapor-bubble" style="--drift: 0.5"></div>
+                                <div class="vapor-bubble" style="--drift: -0.5"></div>
+                                <div class="vapor-bubble" style="--drift: 0.3"></div>
+                                <div class="vapor-bubble" style="--drift: -0.3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="output-system">
+                        <div class="condenser"></div>
+                        <div class="fuel-output">
+                            <div class="fuel-drop"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="process-steps">
+                    <div class="step-card">
+                        <div class="step-number">01</div>
+                        <h3 class="step-title">Waste Input</h3>
+                        <p class="step-description">Plastic and organic waste materials are loaded into the pyrolysis reactor chamber.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">02</div>
+                        <h3 class="step-title">Microwave Heating</h3>
+                        <p class="step-description">Targeted microwave energy rapidly heats the waste material, breaking molecular bonds efficiently.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">03</div>
+                        <h3 class="step-title">Decomposition</h3>
+                        <p class="step-description">Materials decompose into vapor and gases without combustion, in an oxygen-free environment.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">04</div>
+                        <h3 class="step-title">Fuel Output</h3>
+                        <p class="step-description">Vapors are condensed into clean, usable fuel oils ready for industrial or consumer applications.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="team" class="page problem-page">
+            <div class="page-header">
+                <span class="page-number">04</span>
                 <h1 class="page-title">OUR TEAM</h1>
             </div>
             <div class="team-grid" style="max-width: 1200px; margin: 0 auto;">
-                <!-- Team page: same 3x2 order: CEO, COO, CFO, Marketing, Tech, Janitor -->
                 <div class="team-member">
                     <div class="team-avatar">A</div>
                     <h3 class="team-name">Atiksh</h3>
