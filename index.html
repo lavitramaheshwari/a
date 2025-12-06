@@ -812,6 +812,7 @@
             
             // Re-initialize animation when the How It Works page is shown
             if (pageName === 'how-it-works') {
+                // Check if the initialization function exists before calling
                 if (typeof initPyrolysis === 'function') {
                     initPyrolysis();
                     drawStaticElementsPyrolysis();
@@ -840,8 +841,6 @@
         });
 
         // --- PYROLYSIS ANIMATION SPECIFIC JAVASCRIPT START ---
-        // Functions are renamed/aliased to avoid potential global scope collisions, 
-        // though the original code was mostly self-contained using explicit element IDs.
 
         let animationRunning = false;
         let animationFrame = 0;
@@ -856,31 +855,30 @@
         const stages = [
             {
                 title: "Stage 1: Feedstock Input",
-                text: "Biomass feedstock (wood chips, agricultural waste, or plastic) enters the reactor vessel via a conveyor system. The reactor is sealed to maintain an oxygen-free environment."
+                text: "Biomass feedstock (wood, agricultural waste) enters the sealed reactor. The process starts in an **oxygen-free environment**."
             },
             {
                 title: "Stage 2: Heating Phase",
-                text: "The reactor is heated to 400°C - 800°C. The inert atmosphere (no oxygen) prevents combustion. Instead, thermal energy breaks chemical bonds in the feedstock."
+                text: "The reactor is heated to **400°C - 800°C**. The inert atmosphere prevents burning (combustion). Instead, chemical bonds begin to break."
             },
             {
                 title: "Stage 3: Thermal Decomposition",
-                text: "High heat causes long polymer chains to break down into smaller molecules. The material decomposes into three phases: solid char, vapors, and gases."
+                text: "High heat rapidly breaks down the material into smaller molecules, simultaneously forming **solid char** and **volatile gases/vapors**."
             },
             {
                 title: "Stage 4: Separation - Biochar Collection",
-                text: "Solid carbon-rich residue (biochar) settles at the bottom of the reactor. This biochar can be used as soil amendment or activated carbon."
+                text: "The heavy, solid carbon residue (**Biochar**) settles at the bottom of the reactor, ready for collection."
             },
             {
                 title: "Stage 5: Condensation - Bio-oil Formation",
-                text: "Hot vapors rise into the condenser where they cool rapidly. Heavy organic compounds condense into bio-oil, which drips into a collection tank."
+                text: "Hot organic vapors rise into the condenser and are cooled. This condensation process yields the liquid product, **Bio-oil**."
             },
             {
                 title: "Stage 6: Syngas Recovery",
-                text: "Non-condensable gases (H₂, CO, CH₄, CO₂) exit as syngas - a valuable fuel that can generate electricity or heat. The process is now complete!"
+                text: "Non-condensable gases (H₂, CO, CH₄) exit as **Syngas**—a valuable fuel source. The process is now complete!"
             }
         ];
 
-        // Ensure canvas elements are available before attempting to get context
         let canvas, ctx, startBtn, resetBtn, statusTitle, statusText;
 
         function getPyrolysisElements() {
@@ -922,10 +920,16 @@
             if (statusText) statusText.textContent = text;
         }
 
-        // Renamed function to avoid conflict with potential global `drawStaticElements`
+        function drawLabel(text, x, y, color, alignment = 'center') {
+            if (!ctx) return;
+            ctx.fillStyle = color;
+            ctx.font = 'bold 16px sans-serif';
+            ctx.textAlign = alignment;
+            ctx.fillText(text, x, y);
+        }
+
         function drawStaticElementsPyrolysis() {
             if (!ctx) return;
-            // Draw background and static elements (content of drawStaticElements)
             
             // Clear canvas with background color
             ctx.fillStyle = '#f5f5f0';
@@ -961,27 +965,29 @@
             ctx.stroke();
 
             // Reactor label
-            ctx.fillStyle = '#1a1a1a';
-            ctx.font = 'bold 18px sans-serif';
-            ctx.fillText('REACTOR', 350, 370);
+            drawLabel('PYROLYSIS REACTOR', 400, 370, '#1a1a1a');
 
-            // Temperature gauge
+            // Temperature gauge (Improved)
+            const maxTempHeight = 96;
+            const currentTempFrame = Math.min(1000, animationFrame);
+            const tempProgress = currentTempFrame / 1000;
+            const tempDisplay = Math.min(800, Math.floor(tempProgress * 800));
+            
             ctx.fillStyle = '#d0d0d0';
             ctx.fillRect(510, 280, 30, 100);
             ctx.strokeStyle = '#1a1a1a';
             ctx.lineWidth = 3;
             ctx.strokeRect(510, 280, 30, 100);
             
+            const filledHeight = maxTempHeight * tempProgress;
             ctx.fillStyle = '#e63946';
-            ctx.fillRect(512, 282 + (96 - (animationFrame % 96)), 26, animationFrame % 96);
+            ctx.fillRect(512, 282 + (maxTempHeight - filledHeight), 26, filledHeight);
             
             ctx.fillStyle = '#1a1a1a';
             ctx.font = 'bold 14px sans-serif';
             ctx.fillText('TEMP', 508, 270);
-            if (animationRunning) {
-                const temp = Math.min(800, Math.floor((animationFrame / 500) * 800));
-                ctx.fillText(temp + '°C', 505, 395);
-            }
+            ctx.fillText(tempDisplay + '°C', 505, 395);
+
 
             // Oxygen-free indicator
             ctx.fillStyle = '#e63946';
@@ -991,7 +997,7 @@
             ctx.strokeRect(320, 240, 150, 30);
             ctx.fillStyle = 'white';
             ctx.font = 'bold 14px sans-serif';
-            ctx.fillText('⊘ OXYGEN FREE', 328, 260);
+            ctx.fillText('⊘ INERT ATMOSPHERE', 395, 260);
 
             // Heat source (flames)
             if (animationRunning && animationFrame > 50) {
@@ -1005,10 +1011,6 @@
             ctx.lineWidth = 3;
             ctx.strokeRect(350, 510, 100, 80);
             
-            ctx.fillStyle = '#1a1a1a';
-            ctx.font = 'bold 12px sans-serif';
-            ctx.fillText('BIOCHAR', 365, 600);
-
             // Condenser unit
             ctx.fillStyle = '#e0e0e0';
             ctx.fillRect(550, 200, 120, 200);
@@ -1028,9 +1030,7 @@
                 ctx.stroke();
             }
 
-            ctx.fillStyle = '#1a1a1a';
-            ctx.font = 'bold 14px sans-serif';
-            ctx.fillText('CONDENSER', 560, 235);
+            drawLabel('CONDENSER', 610, 235, '#1a1a1a');
 
             // Bio-oil tank
             ctx.fillStyle = '#e0e0e0';
@@ -1039,10 +1039,6 @@
             ctx.lineWidth = 3;
             ctx.strokeRect(700, 320, 80, 100);
             
-            ctx.fillStyle = '#1a1a1a';
-            ctx.font = 'bold 12px sans-serif';
-            ctx.fillText('BIO-OIL', 710, 430);
-
             // Syngas exit pipe
             ctx.fillStyle = '#666';
             ctx.fillRect(605, 150, 20, 50);
@@ -1064,10 +1060,6 @@
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            ctx.fillStyle = '#1a1a1a';
-            ctx.font = 'bold 12px sans-serif';
-            ctx.fillText('SYNGAS OUT', 800, 145);
-
             // Vapor rise pipe
             ctx.strokeStyle = '#666';
             ctx.lineWidth = 4;
@@ -1086,6 +1078,20 @@
             ctx.lineTo(530, 280);
             ctx.lineTo(550, 280);
             ctx.stroke();
+            
+            // --- OUTPUT LABELS ---
+            drawLabel('FEEDSTOCK IN', 170, 290, '#27ae60');
+
+            // Biochar label
+            drawLabel('BIOCHAR (Solid)', 400, 610, '#1a1a1a');
+            
+            // Bio-oil label
+            drawLabel('BIO-OIL (Liquid)', 740, 445, '#8b4513');
+            
+            // Syngas label
+            drawLabel('SYNGAS (Gas)', 850, 145, '#f39c12', 'left');
+            drawLabel('H₂, CO, CH₄', 850, 165, '#f39c12', 'left');
+
         }
 
         function drawFlames(x, y, width) {
@@ -1152,7 +1158,8 @@
                             vy: (Math.random() - 0.5) * 3,
                             size: 4 + Math.random() * 4,
                             life: 100,
-                            type: Math.random() > 0.3 ? 'gas' : 'char'
+                            // Increased Bio-oil chance for better visualization
+                            type: Math.random() > 0.4 ? 'gas' : (Math.random() > 0.5 ? 'oil' : 'char')
                         });
                     }
                     return false;
@@ -1186,34 +1193,41 @@
                         biocharParticles.push({x: p.x, y: 520, size: p.size});
                         return false;
                     }
-                } else {
-                    // Gas rises
+                } else if (p.type === 'oil') {
+                    // Oil Vapors rise slowly
+                    p.vy -= 0.3;
+                    p.vx *= 0.98;
+                    ctx.fillStyle = `rgba(139, 69, 19, ${p.life / 100})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    if (p.x > 530 && p.y < 400 && p.y > 200) {
+                        bioOilDrops.push({
+                            x: 550 + Math.random() * 100,
+                            y: p.y,
+                            vy: 2,
+                            size: 3
+                        });
+                        return false;
+                    }
+                } else { // Syngas
+                    // Gas rises quickly
                     p.vy -= 0.5;
                     p.vx *= 0.98;
-                    ctx.fillStyle = `rgba(102, 102, 102, ${p.life / 100})`;
+                    ctx.fillStyle = `rgba(243, 156, 18, ${p.life / 100})`;
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                     ctx.fill();
 
-                    // Enter condenser
-                    if (p.x > 530 && p.y < 400 && p.y > 200) {
-                        // Some condense to bio-oil
-                        if (Math.random() > 0.5) {
-                            bioOilDrops.push({
-                                x: 550 + Math.random() * 100,
-                                y: p.y,
-                                vy: 2,
-                                size: 3
-                            });
-                        } else {
-                            // Some become syngas
-                            syngasParticles.push({
-                                x: p.x,
-                                y: p.y,
-                                vy: -3,
-                                size: 3
-                            });
-                        }
+                    // Enter condenser and bypass (Syngas)
+                    if (p.x > 530 && p.y < 280) {
+                        syngasParticles.push({
+                            x: p.x,
+                            y: p.y,
+                            vy: -3,
+                            size: 3
+                        });
                         return false;
                     }
                 }
@@ -1254,7 +1268,7 @@
             });
 
             // Draw accumulated bio-oil in tank
-            const oilLevel = Math.min(90, bioOilDrops.length + animationFrame * 0.05);
+            const oilLevel = Math.min(90, bioOilDrops.length * 0.5); // Smoother accumulation
             ctx.fillStyle = 'rgba(139, 69, 19, 0.8)';
             ctx.fillRect(702, 420 - oilLevel, 76, oilLevel);
         }
@@ -1340,6 +1354,13 @@
         document.addEventListener('DOMContentLoaded', () => {
              initPyrolysis();
              drawStaticElementsPyrolysis();
+             // Manually activate the Home page on load
+             const homePage = document.getElementById('home');
+             if (homePage && !document.querySelector('.page.active')) {
+                 homePage.classList.add('active');
+                 const homeLink = document.querySelector('.nav-link[onclick*="\'home\'"]');
+                 if (homeLink) homeLink.classList.add('active');
+             }
         });
         // --- PYROLYSIS ANIMATION SPECIFIC JAVASCRIPT END ---
     </script>
