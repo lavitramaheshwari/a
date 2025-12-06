@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Thermowave Dynamics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f8f8;
+            color: #1a1a1a;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: white;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        /* Logo container changed to host the PDF-based logo */
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #4a0000;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .nav-logo .logo-pdf {
+            width: 160px;
+            height: 48px;
+            display: block;
+            border: none;
+        }
+
+        .nav-logo .logo-fallback {
+            font-size: 1.1rem;
+            color: #4a0000;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: #c41e3a;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: #c41e3a;
+        }
+
+        .content {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .home-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 80px);
+            padding: 4rem 2rem;
+        }
+
+        .logo-display {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .logo-display h1 {
+            font-size: 5rem;
+            font-weight: 900;
+            color: #4a0000;
+            letter-spacing: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .logo-display h2 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #c41e3a;
+            letter-spacing: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Enforce a 3x2 layout on larger screens (3 columns, 2 rows) */
+        .team-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .team-title {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        /* 3 columns layout for desktop, falls back to single column on small screens */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .team-member {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(196, 30, 58, 0.2);
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a0000, #c41e3a);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .team-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-role {
+            font-size: 1rem;
+            color: #c41e3a;
+            margin-bottom: 1rem;
+        }
+
+        .team-bio {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .problem-page,
+        .solution-page {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            margin-bottom: 4rem;
+        }
+
+        .page-number {
+            font-size: 1.5rem;
+            color: #999;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #1a1a1a;
+        }
+
+        .problem-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .problem-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .problem-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .problem-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4a0000;
+            margin-bottom: 1rem;
+        }
+
+        .problem-text {
+            font-size: 1.1rem;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2rem;
+        }
+
+        .solution-card {
+            background: #4a0000;
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 250px;
+        }
+
+        .solution-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(74, 0, 0, 0.4);
+        }
+
+        .solution-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #c41e3a, #ff6b6b);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .card-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .mobile-menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #1a1a1a;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 1024px) {
+            .nav-logo .logo-pdf {
+                width: 140px;
+                height: 44px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                gap: 0;
+                padding: 2rem;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+                transition: left 0.3s ease;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .solutions-grid,
+            .problem-content {
+                grid-template-columns: 1fr;
+            }
+
+            /* Stack team members into 1 column on small screens */
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-link {
+                padding: 1rem;
+                border-bottom: 1px solid #eee;
+            }
+
+            .logo-display h1 {
+                font-size: 3rem !important;
+            }
+
+            .logo-display h2 {
+                font-size: 2rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo" aria-label="Thermowave Dynamics">
+                <!-- Embed the PDF logo. The object will display the PDF in browsers that support it.
+                     Also include an <img> fallback (e.g., thermodynamics.png) and plain text fallback. 
+                     Ensure the referenced file thermodynamics.pdf is available at the repo root. -->
+                <object class="logo-pdf" data="thermodynamics.pdf" type="application/pdf" aria-label="Thermowave logo">
+                    <!-- Fallback for browsers that cannot render PDFs inside an object -->
+                    <img src="thermodynamics.png" alt="Thermowave Dynamics logo" style="height:48px; display:block;" />
+                    <span class="logo-fallback">THERMOWAVE <span style="color:#c41e3a">DYNAMICS</span></span>
+                </object>
+                <!-- Keep the textual brand in case object fails or for accessibility -->
+                <div style="display:none;">THERMOWAVE <span>DYNAMICS</span></div>
+            </div>
+            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a class="nav-link active" onclick="showPage(event, 'home')">Home</a></li>
+                <li><a class="nav-link" onclick="showPage(event, 'problem')">Problem</a></li>
+                <li><a class="nav-link" onclick="showPage(event, 'solution')">Solution</a></li>
+                <li><a class="nav-link" onclick="showPage(event, 'team')">Team</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="content">
+        <div id="home" class="page active">
+            <div class="home-page">
+                <div class="logo-display">
+                    <h1>THERMOWAVE</h1>
+                    <h2>DYNAMICS</h2>
+                    <p class="subtitle">Deeptech company building both industrial-scale and consumer-focused pyrolysis solutions</p>
+                </div>
+
+                <div class="team-section">
+                    <h2 class="team-title">Our Team</h2>
+                    <div class="team-grid">
+                        <!-- Reordered to: CEO, COO, CFO, Marketing, Tech, Janitor -->
+                        <div class="team-member">
+                            <div class="team-avatar">A</div>
+                            <h3 class="team-name">Atiksh</h3>
+                            <p class="team-role">CEO</p>
+                            <p class="team-bio">Visionary leader driving Thermowave's mission to revolutionize waste-to-energy solutions.</p>
+                        </div>
+
+                        <div class="team-member">
+                            <div class="team-avatar">L</div>
+                            <h3 class="team-name">Lavitra</h3>
+                            <p class="team-role">COO & CTO</p>
+                            <p class="team-bio">Technology leader responsible for operational execution and technical direction, driving innovation and overseeing both organizational performance and advanced engineering development.</p>
+                        </div>
+
+                        <div class="team-member">
+                            <div class="team-avatar">K</div>
+                            <h3 class="team-name">Kamlesh</h3>
+                            <p class="team-role">CFO</p>
+                            <p class="team-bio">Financial strategist managing investments and ensuring sustainable growth.</p>
+                        </div>
+
+                        <div class="team-member">
+                            <div class="team-avatar">S</div>
+                            <h3 class="team-name">Srishti</h3>
+                            <p class="team-role">CMO</p>
+                            <p class="team-bio">Marketing leader building brand awareness and driving customer engagement. Creative strategist connecting our mission with the world.</p>
+                        </div>
+                        
+                         <div class="team-member">
+                            <div class="team-avatar">A</div>
+                            <h3 class="team-name">Arjun</h3>
+                            <p class="team-role">CRDO</p>
+                            <p class="team-bio">Chief Research & Development Officer spearheading breakthrough innovations in pyrolysis technology.</p>
+                        </div>
+                        
+                        <div class="team-member">
+                            <div class="team-avatar">J</div>
+                            <h3 class="team-name">Jivitesh</h3>
+                            <p class="team-role">HR</p>
+                            <p class="team-bio">Human resources strategist building world-class teams and company culture.</p>
+                        </div>
+
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="problem" class="page problem-page">
+            <div class="page-header">
+                <span class="page-number">01</span>
+                <h1 class="page-title">THE PROBLEM</h1>
+            </div>
+            <div class="problem-content">
+                <div class="problem-card">
+                    <div class="problem-icon">🌍</div>
+                    <h3 class="problem-title">Waste Crisis</h3>
+                    <p class="problem-text">Millions of tons of plastic and organic waste cannot be efficiently recycled.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">🏠</div>
+                    <h3 class="problem-title">Limited Home Solutions</h3>
+                    <p class="problem-text">Households and small communities lack safe, convenient ways to convert waste into usable energy.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">🏭</div>
+                    <h3 class="problem-title">Industrial Limitations</h3>
+                    <p class="problem-text">Large-scale pyrolysis plants face safety, efficiency, and emissions limitations.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">📊</div>
+                    <h3 class="problem-title">400M+ Tons</h3>
+                    <p class="problem-text">Of plastic waste each year with less than 10% recycled effectively. Incineration plants release 400M tons of CO2 yearly.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="solution" class="page solution-page">
+            <div class="page-header">
+                <span class="page-number">02</span>
+                <h1 class="page-title">OUR SOLUTION</h1>
+            </div>
+            <div class="solutions-grid">
+                <div class="solution-card">
+                    <div class="card-icon">🏭</div>
+                    <h3 class="card-title">INDUSTRIAL PLANTS</h3>
+                    <p class="card-description">
+                        Buy/recycle plastics from plants or households → produce eco-friendly fuel using advanced microwave pyrolysis technology.
+                    </p>
+                </div>
+                <div class="solution-card">
+                    <div class="card-icon">🏠</div>
+                    <h3 class="card-title">HOME UNITS (R&D)</h3>
+                    <p class="card-description">
+                        Compact, safe pyrolysis devices for households, turning waste into usable fuel safely. Currently in development.
+                    </p>
+                </div>
+                <div class="solution-card">
+                    <div class="card-icon">🔬</div>
+                    <h3 class="card-title">INNOVATION</h3>
+                    <p class="card-description">
+                        Integrated approach — operational experience improves safety and efficiency of both home units and industrial plants.
+                    </p>
+                </div>
+                <div class="solution-card">
+                    <div class="card-icon">🌱</div>
+                    <h3 class="card-title">IMPACT</h3>
+                    <p class="card-description">
+                        Reduces landfill waste, produces low-carbon fuel, enables circular economy at both industrial and household scale.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="team" class="page problem-page">
+            <div class="page-header">
+                <span class="page-number">03</span>
+                <h1 class="page-title">OUR TEAM</h1>
+            </div>
+            <div class="team-grid" style="max-width: 1200px; margin: 0 auto;">
+                <!-- Team page: same 3x2 order: CEO, COO, CFO, Marketing, Tech, Janitor -->
+                <div class="team-member">
+                    <div class="team-avatar">A</div>
+                    <h3 class="team-name">Atiksh</h3>
+                    <p class="team-role">CEO</p>
+                    <p class="team-bio">Visionary leader driving Thermowave's mission to revolutionize waste-to-energy solutions globally. Strategic thinker with passion for sustainable innovation.</p>
+                </div>
+
+                <div class="team-member">
+                    <div class="team-avatar">L</div>
+                    <h3 class="team-name">Lavitra</h3>
+                    <p class="team-role">COO</p>
+                    <p class="team-bio">Operations expert ensuring seamless execution of industrial and consumer initiatives. Master of process optimization and team coordination.</p>
+                </div>
+
+                <div class="team-member">
+                    <div class="team-avatar">K</div>
+                    <h3 class="team-name">Kamlesh</h3>
+                    <p class="team-role">CFO</p>
+                    <p class="team-bio">Financial strategist managing investments and ensuring sustainable growth. Expert in financial planning and resource allocation.</p>
+                </div>
+
+                <div class="team-member">
+                    <div class="team-avatar">S</div>
+                    <h3 class="team-name">Srishti</h3>
+                    <p class="team-role">Marketing</p>
+                    <p class="team-bio">Marketing leader building brand awareness and driving customer engagement. Creative strategist connecting our mission with the world.</p>
+                </div>
+
+                <div class="team-member">
+                    <div class="team-avatar">J</div>
+                    <h3 class="team-name">Jivitesh</h3>
+                    <p class="team-role">Tech</p>
+                    <p class="team-bio">Technology specialist developing cutting-edge pyrolysis systems and automation solutions. Passionate about innovation and engineering excellence.</p>
+                </div>
+
+                <div class="team-member">
+                    <div class="team-avatar">A</div>
+                    <h3 class="team-name">Arjun</h3>
+                    <p class="team-role">Janitor</p>
+                    <p class="team-bio">Keeping our facilities spotless and ensuring a clean, safe working environment for the entire team. The unsung hero of Thermowave.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(event, pageName) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+
+            const target = document.getElementById(pageName);
+            if (target) target.classList.add('active');
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+            if (event && event.target) event.target.classList.add('active');
+
+            document.getElementById('navMenu').classList.remove('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('navMenu').classList.toggle('active');
+        }
+
+        document.addEventListener('click', function(event) {
+            const nav = document.getElementById('navMenu');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+
+            if (!nav.contains(event.target) && (!toggle || !toggle.contains(event.target)) && !event.target.classList.contains('nav-link')) {
+                nav.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
