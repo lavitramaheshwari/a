@@ -40,23 +40,20 @@
         .nav-logo {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.5rem;
             color: #4a0000;
             font-weight: 900;
             letter-spacing: 3px;
             text-transform: uppercase;
-        }
-
-        .nav-logo .logo-pdf {
-            width: 160px;
-            height: 48px;
-            display: block;
-            border: none;
-        }
-
-        .nav-logo .logo-fallback {
             font-size: 1.1rem;
+        }
+
+        .nav-logo .logo-main {
             color: #4a0000;
+        }
+
+        .nav-logo .logo-sub {
+            color: #c41e3a;
         }
 
         .nav-menu {
@@ -91,13 +88,16 @@
             transform: translateX(-50%);
         }
 
-        .nav-link:hover::after,
-        .nav-link.active::after {
+        .nav-link:hover::after {
             width: 100%;
         }
 
-        .nav-link.active {
+        .nav-link[data-active="true"] {
             color: #c41e3a;
+        }
+
+        .nav-link[data-active="true"]::after {
+            width: 100%;
         }
 
         .content {
@@ -110,7 +110,7 @@
             animation: fadeIn 0.5s ease-in;
         }
 
-        .page.active {
+        .page[data-active="true"] {
             display: block;
         }
 
@@ -149,6 +149,7 @@
             color: #333;
             max-width: 600px;
             margin: 0 auto;
+            line-height: 1.6;
         }
 
         .team-section {
@@ -196,6 +197,7 @@
             justify-content: center;
             font-size: 3rem;
             color: white;
+            font-weight: 700;
         }
 
         .team-name {
@@ -209,6 +211,7 @@
             font-size: 1rem;
             color: #c41e3a;
             margin-bottom: 1rem;
+            font-weight: 600;
         }
 
         .team-bio {
@@ -234,6 +237,7 @@
             color: #999;
             display: block;
             margin-bottom: 0.5rem;
+            font-weight: 600;
         }
 
         .page-title {
@@ -244,7 +248,7 @@
 
         .problem-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
         }
 
@@ -281,7 +285,7 @@
 
         .solutions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 2rem;
         }
 
@@ -330,351 +334,415 @@
             opacity: 0.95;
         }
 
-        /* How It Works Styles */
-        .process-container {
+        .animation-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
             margin-top: 4rem;
-            background: white;
-            border-radius: 30px;
-            padding: 4rem;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
         }
 
-        .animation-container {
+        .animation-panel {
+            background: white;
+            border-radius: 25px;
+            padding: 3rem;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
+        }
+
+        .panel-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #4a0000;
+            margin-bottom: 2rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .stage-container {
             position: relative;
             width: 100%;
-            max-width: 1000px;
-            margin: 0 auto 4rem;
-            height: 600px;
-            background: linear-gradient(180deg, #1a1a1a 0%, #2c2c2c 100%);
-            border-radius: 20px;
-            overflow: visible;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-        }
-
-        .label {
-            position: absolute;
-            background: rgba(196, 30, 58, 0.95);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            white-space: nowrap;
-            z-index: 10;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .label::before {
-            content: '';
-            position: absolute;
-            width: 2px;
-            height: 30px;
-            background: rgba(196, 30, 58, 0.6);
-        }
-
-        .label-input {
-            top: 50%;
-            left: -180px;
-            transform: translateY(-50%);
-        }
-
-        .label-input::before {
-            right: -30px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 30px;
-            height: 2px;
-        }
-
-        .label-microwave {
-            top: -50px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .label-microwave::before {
-            left: 50%;
-            bottom: -30px;
-            transform: translateX(-50%);
-        }
-
-        .label-vapor {
-            top: 80px;
-            left: -150px;
-        }
-
-        .label-vapor::before {
-            right: -25px;
-            top: 50%;
-            width: 25px;
-            height: 2px;
-        }
-
-        .label-condenser {
-            top: 50px;
-            right: -180px;
-        }
-
-        .label-condenser::before {
-            left: -30px;
-            top: 50%;
-            width: 30px;
-            height: 2px;
-        }
-
-        .label-fuel {
-            bottom: -60px;
-            right: -100px;
-        }
-
-        .label-fuel::before {
-            left: 50%;
-            top: -30px;
-            transform: translateX(-50%);
-        }
-
-        .arrow {
-            position: absolute;
-            z-index: 5;
-        }
-
-        .arrow-path {
-            stroke: rgba(196, 30, 58, 0.6);
-            stroke-width: 3;
-            fill: none;
-            stroke-dasharray: 8, 4;
-            animation: dashMove 2s linear infinite;
-        }
-
-        @keyframes dashMove {
-            to {
-                stroke-dashoffset: -24;
-            }
-        }
-
-        .temp-indicator {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 107, 107, 0.9);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            animation: tempPulse 2s infinite;
-        }
-
-        @keyframes tempPulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-            }
-            50% {
-                transform: scale(1.05);
-                box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
-            }
-        }
-
-        .process-label {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(74, 0, 0, 0.95);
-            color: white;
-            padding: 0.75rem 2rem;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 1rem;
-            animation: labelCycle 16s infinite;
-            text-align: center;
-            min-width: 250px;
-        }
-
-        @keyframes labelCycle {
-            0%, 23% {
-                content: 'LOADING WASTE';
-                opacity: 1;
-            }
-            25%, 48% {
-                content: 'MICROWAVE HEATING';
-                opacity: 1;
-            }
-            50%, 73% {
-                content: 'DECOMPOSITION ACTIVE';
-                opacity: 1;
-            }
-            75%, 98% {
-                content: 'FUEL PRODUCTION';
-                opacity: 1;
-            }
-        }
-
-        .reactor-chamber {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 350px;
-            height: 400px;
-            background: linear-gradient(135deg, #4a0000, #2a0000);
-            border-radius: 25px;
-            border: 5px solid #c41e3a;
-            box-shadow: 0 0 40px rgba(196, 30, 58, 0.5);
-        }
-
-        .chamber-inner {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            right: 20px;
-            bottom: 20px;
-            background: rgba(0, 0, 0, 0.9);
+            height: 500px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%);
             border-radius: 20px;
             overflow: hidden;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
         }
 
-        .waste-pile {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 180px;
-            height: 70px;
-            background: linear-gradient(135deg, #555, #333);
-            border-radius: 50% 50% 10px 10px;
-            animation: wasteShrink 8s infinite;
-        }
-
-        .microwave-emitter {
-            position: absolute;
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle, #c41e3a, #4a0000);
-            border-radius: 50%;
-            box-shadow: 0 0 30px rgba(196, 30, 58, 0.8);
-        }
-
-        .wave-ring {
+        .reactor-unit {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            border: 3px solid rgba(196, 30, 58, 0.8);
-            border-radius: 50%;
-            animation: waveExpand 2s infinite ease-out;
+            width: 280px;
+            height: 350px;
         }
 
-        .wave-ring:nth-child(2) { animation-delay: 0.4s; }
-        .wave-ring:nth-child(3) { animation-delay: 0.8s; }
-        .wave-ring:nth-child(4) { animation-delay: 1.2s; }
-        .wave-ring:nth-child(5) { animation-delay: 1.6s; }
+        .reactor-body {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #4a0000 0%, #2a0000 50%, #1a0000 100%);
+            border-radius: 20px;
+            border: 4px solid #c41e3a;
+            box-shadow: 0 0 50px rgba(196, 30, 58, 0.6), inset 0 0 30px rgba(0,0,0,0.5);
+            position: relative;
+        }
 
-        .heat-particles {
+        .reactor-window {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 220px;
+            height: 280px;
+            background: radial-gradient(circle at center, rgba(40,0,0,0.9), rgba(0,0,0,0.95));
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: inset 0 0 40px rgba(196, 30, 58, 0.3);
+        }
+
+        .microwave-source {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 70px;
+            background: radial-gradient(circle, #ff3355 0%, #c41e3a 50%, #4a0000 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 40px rgba(255, 51, 85, 0.9), 0 0 80px rgba(196, 30, 58, 0.6);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: translateX(-50%) scale(1);
+                box-shadow: 0 0 40px rgba(255, 51, 85, 0.9), 0 0 80px rgba(196, 30, 58, 0.6);
+            }
+            50% { 
+                transform: translateX(-50%) scale(1.1);
+                box-shadow: 0 0 60px rgba(255, 51, 85, 1), 0 0 120px rgba(196, 30, 58, 0.8);
+            }
+        }
+
+        .wave-emission {
             position: absolute;
             width: 100%;
             height: 100%;
         }
 
-        .particle {
+        .wave {
             position: absolute;
-            width: 6px;
-            height: 6px;
-            background: #ff6b6b;
+            top: -35px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 3px solid rgba(255, 51, 85, 0.8);
             border-radius: 50%;
-            box-shadow: 0 0 10px #ff6b6b;
-            animation: particleFloat 4s infinite ease-in-out;
+            animation: expandWave 2.5s ease-out infinite;
         }
 
-        .particle:nth-child(1) { left: 25%; animation-delay: 0s; }
-        .particle:nth-child(2) { left: 35%; animation-delay: 0.5s; }
-        .particle:nth-child(3) { left: 45%; animation-delay: 1s; }
-        .particle:nth-child(4) { left: 55%; animation-delay: 1.5s; }
-        .particle:nth-child(5) { left: 65%; animation-delay: 2s; }
-        .particle:nth-child(6) { left: 75%; animation-delay: 2.5s; }
+        .wave:nth-child(1) { animation-delay: 0s; }
+        .wave:nth-child(2) { animation-delay: 0.5s; }
+        .wave:nth-child(3) { animation-delay: 1s; }
+        .wave:nth-child(4) { animation-delay: 1.5s; }
+        .wave:nth-child(5) { animation-delay: 2s; }
 
-        .vapor-stream {
+        @keyframes expandWave {
+            0% {
+                width: 70px;
+                height: 70px;
+                opacity: 1;
+                border-width: 3px;
+            }
+            100% {
+                width: 280px;
+                height: 280px;
+                opacity: 0;
+                border-width: 1px;
+            }
+        }
+
+        .waste-material {
             position: absolute;
-            top: 0;
+            bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
-            height: 200px;
+            width: 160px;
+            height: 70px;
+            background: linear-gradient(135deg, #666 0%, #444 50%, #222 100%);
+            border-radius: 50% 50% 15px 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.8);
+            animation: materialDecompose 8s ease-in-out infinite;
         }
 
-        .vapor-bubble {
+        @keyframes materialDecompose {
+            0%, 100% { 
+                height: 70px; 
+                opacity: 1;
+                background: linear-gradient(135deg, #666 0%, #444 50%, #222 100%);
+            }
+            50% { 
+                height: 45px; 
+                opacity: 0.7;
+                background: linear-gradient(135deg, #555 0%, #333 50%, #111 100%);
+            }
+        }
+
+        .heat-particles {
             position: absolute;
-            bottom: 150px;
-            left: 50%;
-            width: 12px;
-            height: 12px;
-            background: rgba(100, 150, 255, 0.7);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .heat-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #ff6b6b, #ff3355);
             border-radius: 50%;
-            box-shadow: 0 0 15px rgba(100, 150, 255, 0.5);
-            animation: vaporRise 3s infinite ease-out;
+            box-shadow: 0 0 15px #ff6b6b, 0 0 30px rgba(255, 51, 85, 0.5);
+            animation: floatUp 4s ease-in-out infinite;
         }
 
-        .vapor-bubble:nth-child(2) { animation-delay: 0.5s; left: 45%; }
-        .vapor-bubble:nth-child(3) { animation-delay: 1s; left: 55%; }
-        .vapor-bubble:nth-child(4) { animation-delay: 1.5s; left: 42%; }
-        .vapor-bubble:nth-child(5) { animation-delay: 2s; left: 58%; }
+        .heat-particle:nth-child(1) { left: 20%; animation-delay: 0s; }
+        .heat-particle:nth-child(2) { left: 30%; animation-delay: 0.5s; }
+        .heat-particle:nth-child(3) { left: 40%; animation-delay: 1s; }
+        .heat-particle:nth-child(4) { left: 50%; animation-delay: 1.5s; }
+        .heat-particle:nth-child(5) { left: 60%; animation-delay: 2s; }
+        .heat-particle:nth-child(6) { left: 70%; animation-delay: 2.5s; }
+        .heat-particle:nth-child(7) { left: 80%; animation-delay: 3s; }
 
-        .output-system {
+        @keyframes floatUp {
+            0% {
+                bottom: 110px;
+                opacity: 0;
+                transform: translateX(0) scale(0.5);
+            }
+            20% {
+                opacity: 1;
+                transform: translateX(5px) scale(1);
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                bottom: 250px;
+                opacity: 0;
+                transform: translateX(-10px) scale(0.8);
+            }
+        }
+
+        .temp-display {
             position: absolute;
-            top: 80px;
-            right: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ff6b6b, #ff3355);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1.4rem;
+            box-shadow: 0 8px 30px rgba(255, 51, 85, 0.5);
+            animation: tempGlow 2s ease-in-out infinite;
         }
 
-        .condenser {
-            width: 120px;
-            height: 150px;
-            background: linear-gradient(180deg, #666, #333);
-            border-radius: 15px;
-            border: 3px solid #4a0000;
+        @keyframes tempGlow {
+            0%, 100% {
+                box-shadow: 0 8px 30px rgba(255, 51, 85, 0.5);
+            }
+            50% {
+                box-shadow: 0 12px 40px rgba(255, 51, 85, 0.8);
+            }
+        }
+
+        .collection-unit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+        }
+
+        .vapor-chamber {
+            width: 200px;
+            height: 350px;
+            background: linear-gradient(180deg, rgba(100, 150, 255, 0.1) 0%, rgba(100, 150, 255, 0.3) 100%);
+            border: 4px solid rgba(100, 150, 255, 0.6);
+            border-radius: 20px;
             position: relative;
+            box-shadow: 0 0 40px rgba(100, 150, 255, 0.4), inset 0 0 30px rgba(100, 150, 255, 0.2);
+        }
+
+        .vapor-flow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
         }
 
-        .condenser::before {
-            content: '';
+        .vapor-blob {
+            position: absolute;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(150, 200, 255, 0.9), rgba(100, 150, 255, 0.6));
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(100, 150, 255, 0.8);
+            animation: vaporFloat 5s ease-in-out infinite;
+        }
+
+        .vapor-blob:nth-child(1) { animation-delay: 0s; left: 40%; }
+        .vapor-blob:nth-child(2) { animation-delay: 1s; left: 50%; }
+        .vapor-blob:nth-child(3) { animation-delay: 2s; left: 60%; }
+        .vapor-blob:nth-child(4) { animation-delay: 3s; left: 45%; }
+        .vapor-blob:nth-child(5) { animation-delay: 4s; left: 55%; }
+
+        @keyframes vaporFloat {
+            0% {
+                bottom: 0%;
+                opacity: 0;
+                transform: translateX(0) scale(0.5);
+            }
+            20% {
+                opacity: 1;
+                transform: translateX(10px) scale(1);
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                bottom: 100%;
+                opacity: 0;
+                transform: translateX(-10px) scale(1.2);
+            }
+        }
+
+        .condenser-unit {
+            width: 180px;
+            height: 280px;
+            background: linear-gradient(180deg, #555 0%, #333 100%);
+            border: 4px solid #c41e3a;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            overflow: hidden;
+        }
+
+        .condenser-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(180deg, transparent 0%, rgba(255, 215, 0, 0.3) 50%, rgba(255, 140, 0, 0.5) 100%);
+            animation: fillCondenser 8s ease-in-out infinite;
+        }
+
+        @keyframes fillCondenser {
+            0%, 100% { height: 0%; }
+            50% { height: 85%; }
+        }
+
+        .fuel-collector {
+            position: absolute;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, #ffd700 0%, #ff8c00 100%);
+            border-radius: 50%;
+            box-shadow: 0 10px 50px rgba(255, 215, 0, 0.7), 0 0 80px rgba(255, 140, 0, 0.5);
+            animation: fuelGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes fuelGlow {
+            0%, 100% {
+                box-shadow: 0 10px 50px rgba(255, 215, 0, 0.7), 0 0 80px rgba(255, 140, 0, 0.5);
+            }
+            50% {
+                box-shadow: 0 15px 60px rgba(255, 215, 0, 0.9), 0 0 100px rgba(255, 140, 0, 0.7);
+            }
+        }
+
+        .fuel-droplet {
+            position: absolute;
+            bottom: 280px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 30px;
+            background: linear-gradient(180deg, #ffd700, #ff8c00);
+            border-radius: 0 0 50% 50%;
+            box-shadow: 0 5px 15px rgba(255, 140, 0, 0.6);
+            animation: dropFuel 4s ease-in infinite;
+        }
+
+        @keyframes dropFuel {
+            0%, 80% {
+                opacity: 0;
+                bottom: 280px;
+            }
+            85% {
+                opacity: 1;
+                bottom: 280px;
+            }
+            100% {
+                opacity: 0;
+                bottom: 140px;
+            }
+        }
+
+        .connection-pipe {
+            position: absolute;
+            top: 50%;
+            left: 200px;
+            width: 60px;
+            height: 8px;
+            background: linear-gradient(90deg, rgba(100, 150, 255, 0.6), rgba(196, 30, 58, 0.6));
+            transform: translateY(-50%);
+            box-shadow: 0 0 20px rgba(100, 150, 255, 0.4);
+        }
+
+        .flow-indicator {
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            height: 50%;
-            background: linear-gradient(180deg, transparent, rgba(100, 150, 255, 0.3));
-            animation: condenserFill 8s infinite;
+            width: 20px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 4px;
+            animation: flowMove 2s linear infinite;
         }
 
-        .fuel-output {
-            width: 80px;
-            height: 80px;
-            margin-top: 20px;
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            border-radius: 50%;
-            position: relative;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+        @keyframes flowMove {
+            0% { left: 0%; }
+            100% { left: 100%; }
         }
 
-        .fuel-drop {
+        .label-overlay {
             position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 15px;
-            height: 20px;
-            background: linear-gradient(180deg, #ffd700, #ff8c00);
-            border-radius: 0 0 50% 50%;
-            animation: fuelDrip 3s infinite;
+            background: rgba(196, 30, 58, 0.95);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            z-index: 10;
+            white-space: nowrap;
         }
+
+        .label-heating { top: 380px; left: 50%; transform: translateX(-50%); }
+        .label-vapor { top: 20px; left: 20px; }
+        .label-condenser { top: 20px; right: 20px; }
+        .label-fuel { bottom: 20px; left: 50%; transform: translateX(-50%); }
 
         .process-steps {
             display: grid;
@@ -727,85 +795,6 @@
             }
         }
 
-        @keyframes wasteShrink {
-            0%, 100% {
-                height: 70px;
-                opacity: 1;
-            }
-            50% {
-                height: 50px;
-                opacity: 0.8;
-            }
-        }
-
-        @keyframes waveExpand {
-            0% {
-                width: 60px;
-                height: 60px;
-                opacity: 1;
-            }
-            100% {
-                width: 250px;
-                height: 250px;
-                opacity: 0;
-            }
-        }
-
-        @keyframes particleFloat {
-            0% {
-                bottom: 100px;
-                opacity: 0;
-            }
-            20% {
-                opacity: 1;
-            }
-            100% {
-                bottom: 300px;
-                opacity: 0;
-                transform: translateX(calc(var(--drift, 0) * 30px));
-            }
-        }
-
-        @keyframes vaporRise {
-            0% {
-                bottom: 150px;
-                opacity: 0;
-                transform: translateX(0) scale(1);
-            }
-            20% {
-                opacity: 1;
-            }
-            100% {
-                bottom: 400px;
-                opacity: 0;
-                transform: translateX(calc(var(--drift, 0) * 40px)) scale(1.5);
-            }
-        }
-
-        @keyframes fuelDrip {
-            0%, 85% {
-                opacity: 0;
-                top: -10px;
-            }
-            90% {
-                opacity: 1;
-                top: -10px;
-            }
-            100% {
-                opacity: 0;
-                top: 30px;
-            }
-        }
-
-        @keyframes condenserFill {
-            0%, 100% {
-                height: 0%;
-            }
-            50% {
-                height: 80%;
-            }
-        }
-
         .mobile-menu-toggle {
             display: none;
             flex-direction: column;
@@ -821,48 +810,23 @@
         }
 
         @media (max-width: 1024px) {
-            .nav-logo .logo-pdf {
-                width: 140px;
-                height: 44px;
+            .animation-split {
+                grid-template-columns: 1fr;
+                gap: 2rem;
             }
 
-            .animation-container {
-                height: 500px;
+            .stage-container {
+                height: 450px;
             }
 
-            .reactor-chamber {
-                width: 300px;
-                height: 350px;
+            .reactor-unit {
+                width: 240px;
+                height: 300px;
             }
 
-            .output-system {
-                right: 50px;
-            }
-
-            .label {
-                font-size: 0.7rem;
-                padding: 0.4rem 0.8rem;
-            }
-
-            .label-input {
-                left: -140px;
-            }
-
-            .label-vapor {
-                left: -120px;
-            }
-
-            .label-condenser {
-                right: -140px;
-            }
-
-            .label-fuel {
-                right: -80px;
-            }
-
-            .temp-indicator {
-                font-size: 1rem;
-                padding: 0.75rem 1rem;
+            .reactor-window {
+                width: 190px;
+                height: 240px;
             }
         }
 
@@ -880,7 +844,7 @@
                 transition: left 0.3s ease;
             }
 
-            .nav-menu.active {
+            .nav-menu[data-mobile-open="true"] {
                 left: 0;
             }
 
@@ -907,68 +871,55 @@
             }
 
             .logo-display h1 {
-                font-size: 3rem !important;
+                font-size: 3rem;
             }
 
             .logo-display h2 {
-                font-size: 2rem !important;
+                font-size: 2rem;
             }
 
-            .animation-container {
+            .stage-container {
                 height: 400px;
             }
 
-            .reactor-chamber {
-                width: 250px;
-                height: 300px;
+            .reactor-unit {
+                width: 200px;
+                height: 260px;
             }
 
-            .output-system {
-                right: 30px;
-                top: 60px;
+            .reactor-window {
+                width: 160px;
+                height: 210px;
             }
 
-            .condenser {
-                width: 80px;
+            .collection-unit {
+                gap: 30px;
+            }
+
+            .vapor-chamber {
+                width: 140px;
+                height: 280px;
+            }
+
+            .condenser-unit {
+                width: 130px;
+                height: 220px;
+            }
+
+            .fuel-collector {
+                width: 100px;
                 height: 100px;
+                bottom: -70px;
             }
 
-            .fuel-output {
-                width: 60px;
-                height: 60px;
+            .temp-display {
+                font-size: 1.1rem;
+                padding: 0.7rem 1.3rem;
             }
 
-            .label {
-                font-size: 0.65rem;
-                padding: 0.3rem 0.6rem;
-            }
-
-            .label-input,
-            .label-vapor,
-            .label-condenser {
-                display: none;
-            }
-
-            .label-microwave {
-                top: -40px;
-            }
-
-            .label-fuel {
-                right: -70px;
-                bottom: -50px;
-            }
-
-            .temp-indicator {
-                font-size: 0.9rem;
-                padding: 0.5rem 0.75rem;
-                top: 10px;
-                right: 10px;
-            }
-
-            .process-label {
-                font-size: 0.85rem;
-                padding: 0.5rem 1rem;
-                min-width: 200px;
+            .label-overlay {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.8rem;
             }
         }
     </style>
@@ -976,87 +927,83 @@
 <body>
     <nav>
         <div class="nav-container">
-            <div class="nav-logo" aria-label="Thermowave Dynamics">
-                <object class="logo-pdf" data="thermodynamics.pdf" type="application/pdf" aria-label="Thermowave logo">
-                    <img src="thermodynamics.png" alt="Thermowave Dynamics logo" style="height:48px; display:block;" />
-                    <span class="logo-fallback">THERMOWAVE <span style="color:#c41e3a">DYNAMICS</span></span>
-                </object>
-                <div style="display:none;">THERMOWAVE <span>DYNAMICS</span></div>
+            <div class="nav-logo">
+                <span class="logo-main">THERMOWAVE</span>
+                <span class="logo-sub">DYNAMICS</span>
             </div>
-            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">
+            <div class="mobile-menu-toggle">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
-            <ul class="nav-menu" id="navMenu">
-                <li><a class="nav-link active" onclick="showPage(event, 'home')">Home</a></li>
-                <li><a class="nav-link" onclick="showPage(event, 'problem')">Problem</a></li>
-                <li><a class="nav-link" onclick="showPage(event, 'solution')">Solution</a></li>
-                <li><a class="nav-link" onclick="showPage(event, 'how-it-works')">How It Works</a></li>
-                <li><a class="nav-link" onclick="showPage(event, 'team')">Team</a></li>
+            <ul class="nav-menu">
+                <li><a class="nav-link" data-page="home" data-active="true">Home</a></li>
+                <li><a class="nav-link" data-page="problem">Problem</a></li>
+                <li><a class="nav-link" data-page="solution">Solution</a></li>
+                <li><a class="nav-link" data-page="how-it-works">How It Works</a></li>
             </ul>
         </div>
     </nav>
 
     <div class="content">
-        <div id="home" class="page active">
-            <div class="home-page">
-                <div class="logo-display">
-                    <h1>THERMOWAVE</h1>
-                    <h2>DYNAMICS</h2>
-                    <p class="subtitle">Deeptech company building both industrial-scale and consumer-focused pyrolysis solutions</p>
-                </div>
+        <!-- HOME PAGE -->
+        <div class="page home-page" data-page="home" data-active="true">
+            <div class="logo-display">
+                <h1>THERMOWAVE</h1>
+                <h2>DYNAMICS</h2>
+                <p class="subtitle">Deeptech company building both industrial-scale and consumer-focused pyrolysis solutions</p>
+            </div>
 
-                <div class="team-section">
-                    <h2 class="team-title">Our Team</h2>
-                    <div class="team-grid">
-                        <div class="team-member">
-                            <div class="team-avatar">A</div>
-                            <h3 class="team-name">Atiksh</h3>
-                            <p class="team-role">CEO</p>
-                            <p class="team-bio">Visionary leader driving Thermowave's mission to revolutionize waste-to-energy solutions.</p>
-                        </div>
+            <div class="team-section">
+                <h2 class="team-title">Our Team</h2>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="team-avatar">A</div>
+                        <h3 class="team-name">Atiksh</h3>
+                        <p class="team-role">CEO</p>
+                        <p class="team-bio">Visionary leader driving Thermowave's mission to revolutionize waste-to-energy solutions.</p>
+                    </div>
 
-                        <div class="team-member">
-                            <div class="team-avatar">L</div>
-                            <h3 class="team-name">Lavitra</h3>
-                            <p class="team-role">COO & CTO</p>
-                            <p class="team-bio">Technology leader responsible for operational execution and technical direction, driving innovation and overseeing both organizational performance and advanced engineering development.</p>
-                        </div>
+                    <div class="team-member">
+                        <div class="team-avatar">L</div>
+                        <h3 class="team-name">Lavitra</h3>
+                        <p class="team-role">COO & CTO</p>
+                        <p class="team-bio">Technology leader responsible for operational execution and technical direction, driving innovation and overseeing both organizational performance and advanced engineering development.</p>
+                    </div>
 
-                        <div class="team-member">
-                            <div class="team-avatar">K</div>
-                            <h3 class="team-name">Kamlesh</h3>
-                            <p class="team-role">CFO</p>
-                            <p class="team-bio">Financial strategist managing investments and ensuring sustainable growth.</p>
-                        </div>
+                    <div class="team-member">
+                        <div class="team-avatar">K</div>
+                        <h3 class="team-name">Kamlesh</h3>
+                        <p class="team-role">CFO</p>
+                        <p class="team-bio">Financial strategist managing investments and ensuring sustainable growth.</p>
+                    </div>
 
-                        <div class="team-member">
-                            <div class="team-avatar">S</div>
-                            <h3 class="team-name">Srishti</h3>
-                            <p class="team-role">CMO</p>
-                            <p class="team-bio">Marketing leader building brand awareness and driving customer engagement. Creative strategist connecting our mission with the world.</p>
-                        </div>
-                        
-                         <div class="team-member">
-                            <div class="team-avatar">A</div>
-                            <h3 class="team-name">Arjun</h3>
-                            <p class="team-role">CRDO</p>
-                            <p class="team-bio">Chief Research & Development Officer spearheading breakthrough innovations in pyrolysis technology.</p>
-                        </div>
-                        
-                        <div class="team-member">
-                            <div class="team-avatar">J</div>
-                            <h3 class="team-name">Jivitesh</h3>
-                            <p class="team-role">HR</p>
-                            <p class="team-bio">Human resources strategist building world-class teams and company culture.</p>
-                        </div>
+                    <div class="team-member">
+                        <div class="team-avatar">S</div>
+                        <h3 class="team-name">Srishti</h3>
+                        <p class="team-role">CMO</p>
+                        <p class="team-bio">Marketing leader building brand awareness and driving customer engagement. Creative strategist connecting our mission with the world.</p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="team-avatar">A</div>
+                        <h3 class="team-name">Arjun</h3>
+                        <p class="team-role">CRDO</p>
+                        <p class="team-bio">Chief Research & Development Officer spearheading breakthrough innovations in pyrolysis technology.</p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="team-avatar">J</div>
+                        <h3 class="team-name">Jivitesh</h3>
+                        <p class="team-role">HR</p>
+                        <p class="team-bio">Human resources strategist building world-class teams and company culture.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="problem" class="page problem-page">
+        <!-- PROBLEM PAGE -->
+        <div class="page problem-page" data-page="problem">
             <div class="page-header">
                 <span class="page-number">01</span>
                 <h1 class="page-title">THE PROBLEM</h1>
@@ -1085,7 +1032,8 @@
             </div>
         </div>
 
-        <div id="solution" class="page solution-page">
+        <!-- SOLUTION PAGE -->
+        <div class="page solution-page" data-page="solution">
             <div class="page-header">
                 <span class="page-number">02</span>
                 <h1 class="page-title">OUR SOLUTION</h1>
@@ -1122,100 +1070,105 @@
             </div>
         </div>
 
-        <div id="how-it-works" class="page how-it-works-page">
+        <!-- HOW IT WORKS PAGE -->
+        <div class="page how-it-works-page" data-page="how-it-works">
             <div class="page-header">
                 <span class="page-number">03</span>
                 <h1 class="page-title">HOW IT WORKS</h1>
             </div>
             
-            <div class="process-container">
-                <div class="animation-container">
-                    <!-- Labels -->
-                    <div class="label label-input">WASTE INPUT</div>
-                    <div class="label label-microwave">MICROWAVE EMITTER</div>
-                    <div class="label label-vapor">RISING VAPOR</div>
-                    <div class="label label-condenser">CONDENSER</div>
-                    <div class="label label-fuel">FUEL OUTPUT</div>
-                    
-                    <!-- Temperature Indicator -->
-                    <div class="temp-indicator">400-600°C</div>
-                    
-                    <!-- Arrows -->
-                    <svg class="arrow" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">
-                        <!-- Vapor to Condenser arrow -->
-                        <path class="arrow-path" d="M 350 150 Q 450 150 550 200" />
-                        <!-- Condenser to Fuel arrow -->
-                        <path class="arrow-path" d="M 650 350 L 650 420" />
-                    </svg>
-                    
-                    <div class="reactor-chamber">
-                        <div class="chamber-inner">
-                            <div class="microwave-emitter">
-                                <div class="wave-ring"></div>
-                                <div class="wave-ring"></div>
-                                <div class="wave-ring"></div>
-                                <div class="wave-ring"></div>
-                                <div class="wave-ring"></div>
-                            </div>
-                            
-                            <div class="waste-pile"></div>
-                            
-                            <div class="heat-particles">
-                                <div class="particle" style="--drift: 1"></div>
-                                <div class="particle" style="--drift: -1"></div>
-                                <div class="particle" style="--drift: 0.5"></div>
-                                <div class="particle" style="--drift: -0.5"></div>
-                                <div class="particle" style="--drift: 0.8"></div>
-                                <div class="particle" style="--drift: -0.8"></div>
-                            </div>
-                            
-                            <div class="vapor-stream">
-                                <div class="vapor-bubble" style="--drift: 0"></div>
-                                <div class="vapor-bubble" style="--drift: 0.5"></div>
-                                <div class="vapor-bubble" style="--drift: -0.5"></div>
-                                <div class="vapor-bubble" style="--drift: 0.3"></div>
-                                <div class="vapor-bubble" style="--drift: -0.3"></div>
+            <div class="animation-split">
+                <!-- Stage 1: Heating & Decomposition -->
+                <div class="animation-panel">
+                    <h2 class="panel-title">Stage 1: Heating & Decomposition</h2>
+                    <div class="stage-container">
+                        <div class="temp-display">500°C</div>
+                        <div class="reactor-unit">
+                            <div class="reactor-body">
+                                <div class="reactor-window">
+                                    <div class="microwave-source"></div>
+                                    <div class="wave-emission">
+                                        <div class="wave"></div>
+                                        <div class="wave"></div>
+                                        <div class="wave"></div>
+                                        <div class="wave"></div>
+                                        <div class="wave"></div>
+                                    </div>
+                                    <div class="waste-material"></div>
+                                    <div class="heat-particles">
+                                        <div class="heat-particle"></div>
+                                        <div class="heat-particle"></div>
+                                        <div class="heat-particle"></div>
+                                        <div class="heat-particle"></div>
+                                        <div class="heat-particle"></div>
+                                        <div class="heat-particle"></div>
+                                        <div class="heat-particle"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <div class="label-overlay label-heating">MICROWAVE HEATING</div>
                     </div>
-                    
-                    <div class="output-system">
-                        <div class="condenser"></div>
-                        <div class="fuel-output">
-                            <div class="fuel-drop"></div>
-                        </div>
-                    </div>
-                    
-                    <!-- Process Status Label -->
-                    <div class="process-label">MICROWAVE PYROLYSIS IN PROGRESS</div>
                 </div>
 
-                <div class="process-steps">
-                    <div class="step-card">
-                        <div class="step-number">01</div>
-                        <h3 class="step-title">Waste Input</h3>
-                        <p class="step-description">Plastic and organic waste materials are loaded into the pyrolysis reactor chamber.</p>
+                <!-- Stage 2: Condensation & Collection -->
+                <div class="animation-panel">
+                    <h2 class="panel-title">Stage 2: Condensation & Collection</h2>
+                    <div class="stage-container">
+                        <div class="collection-unit">
+                            <div class="vapor-chamber">
+                                <div class="vapor-flow">
+                                    <div class="vapor-blob"></div>
+                                    <div class="vapor-blob"></div>
+                                    <div class="vapor-blob"></div>
+                                    <div class="vapor-blob"></div>
+                                    <div class="vapor-blob"></div>
+                                </div>
+                                <div class="label-overlay label-vapor">VAPOR</div>
+                            </div>
+                            
+                            <div class="connection-pipe">
+                                <div class="flow-indicator"></div>
+                            </div>
+                            
+                            <div class="condenser-unit">
+                                <div class="condenser-fill"></div>
+                                <div class="fuel-droplet"></div>
+                                <div class="label-overlay label-condenser">CONDENSER</div>
+                            </div>
+                        </div>
+                        <div class="fuel-collector"></div>
+                        <div class="label-overlay label-fuel">FUEL OUTPUT</div>
                     </div>
-                    <div class="step-card">
-                        <div class="step-number">02</div>
-                        <h3 class="step-title">Microwave Heating</h3>
-                        <p class="step-description">Targeted microwave energy rapidly heats the waste material, breaking molecular bonds efficiently.</p>
-                    </div>
-                    <div class="step-card">
-                        <div class="step-number">03</div>
-                        <h3 class="step-title">Decomposition</h3>
-                        <p class="step-description">Materials decompose into vapor and gases without combustion, in an oxygen-free environment.</p>
-                    </div>
-                    <div class="step-card">
-                        <div class="step-number">04</div>
-                        <h3 class="step-title">Fuel Output</h3>
-                        <p class="step-description">Vapors are condensed into clean, usable fuel oils ready for industrial or consumer applications.</p>
-                    </div>
+                </div>
+            </div>
+
+            <div class="process-steps">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <h3 class="step-title">Waste Input</h3>
+                    <p class="step-description">Plastic and organic waste materials are loaded into the pyrolysis reactor chamber.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <h3 class="step-title">Microwave Heating</h3>
+                    <p class="step-description">Targeted microwave energy rapidly heats the waste material, breaking molecular bonds efficiently.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <h3 class="step-title">Decomposition</h3>
+                    <p class="step-description">Materials decompose into vapor and gases without combustion, in an oxygen-free environment.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">04</div>
+                    <h3 class="step-title">Fuel Output</h3>
+                    <p class="step-description">Vapors are condensed into clean, usable fuel oils ready for industrial or consumer applications.</p>
                 </div>
             </div>
         </div>
 
-        <div id="team" class="page problem-page">
+        <!-- TEAM PAGE -->
+        <div class="page problem-page" data-page="team" style="display: none;">
             <div class="page-header">
                 <span class="page-number">04</span>
                 <h1 class="page-title">OUR TEAM</h1>
@@ -1231,8 +1184,8 @@
                 <div class="team-member">
                     <div class="team-avatar">L</div>
                     <h3 class="team-name">Lavitra</h3>
-                    <p class="team-role">COO</p>
-                    <p class="team-bio">Operations expert ensuring seamless execution of industrial and consumer initiatives. Master of process optimization and team coordination.</p>
+                    <p class="team-role">COO & CTO</p>
+                    <p class="team-bio">Technology leader responsible for operational execution and technical direction, driving innovation and overseeing both organizational performance and advanced engineering development.</p>
                 </div>
 
                 <div class="team-member">
@@ -1245,54 +1198,72 @@
                 <div class="team-member">
                     <div class="team-avatar">S</div>
                     <h3 class="team-name">Srishti</h3>
-                    <p class="team-role">Marketing</p>
+                    <p class="team-role">CMO</p>
                     <p class="team-bio">Marketing leader building brand awareness and driving customer engagement. Creative strategist connecting our mission with the world.</p>
-                </div>
-
-                <div class="team-member">
-                    <div class="team-avatar">J</div>
-                    <h3 class="team-name">Jivitesh</h3>
-                    <p class="team-role">Tech</p>
-                    <p class="team-bio">Technology specialist developing cutting-edge pyrolysis systems and automation solutions. Passionate about innovation and engineering excellence.</p>
                 </div>
 
                 <div class="team-member">
                     <div class="team-avatar">A</div>
                     <h3 class="team-name">Arjun</h3>
-                    <p class="team-role">Janitor</p>
-                    <p class="team-bio">Keeping our facilities spotless and ensuring a clean, safe working environment for the entire team. The unsung hero of Thermowave.</p>
+                    <p class="team-role">CRDO</p>
+                    <p class="team-bio">Chief Research & Development Officer spearheading breakthrough innovations in pyrolysis technology. Leading our technical advancement.</p>
+                </div>
+
+                <div class="team-member">
+                    <div class="team-avatar">J</div>
+                    <h3 class="team-name">Jivitesh</h3>
+                    <p class="team-role">HR</p>
+                    <p class="team-bio">Human resources strategist building world-class teams and company culture. Fostering innovation and collaboration.</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        function showPage(event, pageName) {
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(page => page.classList.remove('active'));
-
-            const target = document.getElementById(pageName);
-            if (target) target.classList.add('active');
-
-            const navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(link => link.classList.remove('active'));
-            if (event && event.target) event.target.classList.add('active');
-
-            document.getElementById('navMenu').classList.remove('active');
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function toggleMobileMenu() {
-            document.getElementById('navMenu').classList.toggle('active');
-        }
-
+        // Page navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                const targetPage = this.getAttribute('data-page');
+                
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(page => {
+                    page.removeAttribute('data-active');
+                });
+                
+                // Show target page
+                document.querySelector(`.page[data-page="${targetPage}"]`).setAttribute('data-active', 'true');
+                
+                // Update nav links
+                document.querySelectorAll('.nav-link').forEach(navLink => {
+                    navLink.removeAttribute('data-active');
+                });
+                this.setAttribute('data-active', 'true');
+                
+                // Close mobile menu
+                document.querySelector('.nav-menu').removeAttribute('data-mobile-open');
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+        
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+            const menu = document.querySelector('.nav-menu');
+            if (menu.getAttribute('data-mobile-open') === 'true') {
+                menu.removeAttribute('data-mobile-open');
+            } else {
+                menu.setAttribute('data-mobile-open', 'true');
+            }
+        });
+        
+        // Close mobile menu when clicking outside
         document.addEventListener('click', function(event) {
-            const nav = document.getElementById('navMenu');
+            const menu = document.querySelector('.nav-menu');
             const toggle = document.querySelector('.mobile-menu-toggle');
-
-            if (!nav.contains(event.target) && (!toggle || !toggle.contains(event.target)) && !event.target.classList.contains('nav-link')) {
-                nav.classList.remove('active');
+            
+            if (!menu.contains(event.target) && !toggle.contains(event.target) && !event.target.classList.contains('nav-link')) {
+                menu.removeAttribute('data-mobile-open');
             }
         });
     </script>
