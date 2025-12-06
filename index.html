@@ -416,7 +416,6 @@
         }
 
         /* --- PYROLYSIS ANIMATION SPECIFIC STYLES START --- */
-        /* These styles are copied from pyrolysis_animation.html */
         .pyro-header {
             color: #6b0f1a;
             margin-bottom: 10px;
@@ -840,7 +839,7 @@
             }
         });
 
-        // --- PYROLYSIS ANIMATION SPECIFIC JAVASCRIPT START ---
+        // --- PYROLYSIS ANIMATION SPECIFIC JAVASCRIPT START (REFINED) ---
 
         let animationRunning = false;
         let animationFrame = 0;
@@ -920,10 +919,10 @@
             if (statusText) statusText.textContent = text;
         }
 
-        function drawLabel(text, x, y, color, alignment = 'center') {
+        function drawLabel(text, x, y, color, alignment = 'center', size = 16) {
             if (!ctx) return;
             ctx.fillStyle = color;
-            ctx.font = 'bold 16px sans-serif';
+            ctx.font = `bold ${size}px sans-serif`; 
             ctx.textAlign = alignment;
             ctx.fillText(text, x, y);
         }
@@ -969,8 +968,9 @@
 
             // Temperature gauge (Improved)
             const maxTempHeight = 96;
-            const currentTempFrame = Math.min(1000, animationFrame);
-            const tempProgress = currentTempFrame / 1000;
+            const maxFrame = 1000;
+            const currentTempFrame = Math.min(maxFrame, animationFrame);
+            const tempProgress = currentTempFrame / maxFrame;
             const tempDisplay = Math.min(800, Math.floor(tempProgress * 800));
             
             ctx.fillStyle = '#d0d0d0';
@@ -1010,6 +1010,14 @@
             ctx.strokeStyle = '#1a1a1a';
             ctx.lineWidth = 3;
             ctx.strokeRect(350, 510, 100, 80);
+
+            // Draw accumulated biochar (New visual fill)
+            const maxCharFillHeight = 76;
+            const charLevel = Math.min(maxCharFillHeight, biocharParticles.length * 0.5); 
+            if (charLevel > 0) {
+                ctx.fillStyle = 'rgba(26, 26, 26, 0.9)'; // Darker fill
+                ctx.fillRect(352, 588 - charLevel, 96, charLevel);
+            }
             
             // Condenser unit
             ctx.fillStyle = '#e0e0e0';
@@ -1039,6 +1047,8 @@
             ctx.lineWidth = 3;
             ctx.strokeRect(700, 320, 80, 100);
             
+            // Draw accumulated bio-oil in tank (Visual fill handled in updateBioOil)
+
             // Syngas exit pipe
             ctx.fillStyle = '#666';
             ctx.fillRect(605, 150, 20, 50);
@@ -1079,19 +1089,39 @@
             ctx.lineTo(550, 280);
             ctx.stroke();
             
-            // --- OUTPUT LABELS ---
-            drawLabel('FEEDSTOCK IN', 170, 290, '#27ae60');
-
-            // Biochar label
-            drawLabel('BIOCHAR (Solid)', 400, 610, '#1a1a1a');
+            // --- INPUT & OUTPUT LABELS ---
             
-            // Bio-oil label
-            drawLabel('BIO-OIL (Liquid)', 740, 445, '#8b4513');
+            // Feedstock Input Label
+            drawLabel('FEEDSTOCK INPUT', 175, 285, '#27ae60', 'center', 18);
             
-            // Syngas label
-            drawLabel('SYNGAS (Gas)', 850, 145, '#f39c12', 'left');
-            drawLabel('H₂, CO, CH₄', 850, 165, '#f39c12', 'left');
+            // Biochar Output Label
+            drawLabel('BIOCHAR (Solid Product)', 400, 615, '#1a1a1a', 'center', 18);
+            ctx.beginPath();
+            ctx.moveTo(400, 595);
+            ctx.lineTo(400, 500);
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 2;
+            ctx.stroke();
 
+            // Bio-oil Output Label
+            drawLabel('BIO-OIL (Liquid Fuel)', 740, 445, '#8b4513', 'center', 18);
+            drawLabel('Collection Tank', 740, 465, '#8b4513', 'center', 14);
+            ctx.beginPath();
+            ctx.moveTo(740, 435);
+            ctx.lineTo(740, 400);
+            ctx.strokeStyle = '#8b4513';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Syngas Output Label
+            drawLabel('SYNGAS (Gaseous Fuel)', 850, 145, '#f39c12', 'left', 18);
+            drawLabel('H₂, CO, CH₄', 850, 165, '#f39c12', 'left', 14);
+            ctx.beginPath();
+            ctx.moveTo(840, 155);
+            ctx.lineTo(650, 155);
+            ctx.strokeStyle = '#f39c12';
+            ctx.lineWidth = 2;
+            ctx.stroke();
         }
 
         function drawFlames(x, y, width) {
@@ -1149,8 +1179,8 @@
 
                 // Enter reactor and start decomposition
                 if (p.x > 310 && animationFrame > 100) {
-                    // Create decomposing particles
-                    for (let i = 0; i < 8; i++) {
+                    // Create more decomposing particles (Refinement 2)
+                    for (let i = 0; i < 10 + Math.random() * 5; i++) {
                         decomposingParticles.push({
                             x: p.x,
                             y: p.y,
@@ -1158,7 +1188,7 @@
                             vy: (Math.random() - 0.5) * 3,
                             size: 4 + Math.random() * 4,
                             life: 100,
-                            // Increased Bio-oil chance for better visualization
+                            // Particles split into Char (solid), Oil (vapor/condensable), or Gas (syngas/non-condensable)
                             type: Math.random() > 0.4 ? 'gas' : (Math.random() > 0.5 ? 'oil' : 'char')
                         });
                     }
@@ -1181,8 +1211,8 @@
                 p.y += (Math.random() - 0.5) * 2;
 
                 if (p.type === 'char') {
-                    // Char falls down
-                    p.vy += 0.3;
+                    // Char falls down quickly (Refinement 1)
+                    p.vy += 0.5; 
                     ctx.fillStyle = `rgba(26, 26, 26, ${p.life / 100})`;
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
@@ -1194,14 +1224,15 @@
                         return false;
                     }
                 } else if (p.type === 'oil') {
-                    // Oil Vapors rise slowly
-                    p.vy -= 0.3;
+                    // Oil Vapors rise slowly (Refinement 1)
+                    p.vy -= 0.2;
                     p.vx *= 0.98;
                     ctx.fillStyle = `rgba(139, 69, 19, ${p.life / 100})`;
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                     ctx.fill();
                     
+                    // Enter condenser to condense
                     if (p.x > 530 && p.y < 400 && p.y > 200) {
                         bioOilDrops.push({
                             x: 550 + Math.random() * 100,
@@ -1212,8 +1243,8 @@
                         return false;
                     }
                 } else { // Syngas
-                    // Gas rises quickly
-                    p.vy -= 0.5;
+                    // Gas rises quickly (Refinement 1)
+                    p.vy -= 0.6;
                     p.vx *= 0.98;
                     ctx.fillStyle = `rgba(243, 156, 18, ${p.life / 100})`;
                     ctx.beginPath();
@@ -1239,9 +1270,7 @@
         function updateBiochar() {
             if (!ctx) return;
             biocharParticles.forEach(p => {
-                if (p.y < 580) {
-                    p.y += 2;
-                }
+                // Char is drawn in place once collected
                 ctx.fillStyle = '#1a1a1a';
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
@@ -1267,8 +1296,8 @@
                 return true;
             });
 
-            // Draw accumulated bio-oil in tank
-            const oilLevel = Math.min(90, bioOilDrops.length * 0.5); // Smoother accumulation
+            // Draw accumulated bio-oil in tank (Refinement 3)
+            const oilLevel = Math.min(96, bioOilDrops.length * 0.5); // Max fill 96
             ctx.fillStyle = 'rgba(139, 69, 19, 0.8)';
             ctx.fillRect(702, 420 - oilLevel, 76, oilLevel);
         }
@@ -1285,16 +1314,22 @@
 
                 // Exit through pipe
                 if (p.y < 150) {
-                    // Draw exiting particle
-                    ctx.fillStyle = '#f39c12';
-                    ctx.beginPath();
-                    ctx.arc(800 + Math.random() * 50, 140 + Math.random() * 10, 3, 0, Math.PI * 2);
-                    ctx.fill();
                     return false;
                 }
 
                 return true;
             });
+            
+            // Draw continuous exiting syngas stream (Refinement 4)
+            if (syngasParticles.length > 5 && animationRunning) {
+                for (let i = 0; i < 5; i++) {
+                    ctx.fillStyle = `rgba(243, 156, 18, ${0.8 - i * 0.1})`;
+                    ctx.beginPath();
+                    // Scatter gas particles outside the pipe exit, moving outward
+                    ctx.arc(800 + Math.random() * 80 + i*10, 140 + Math.random() * 20 - i*5, 3 + i*0.5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
         }
 
         function updateStage() {
@@ -1362,7 +1397,7 @@
                  if (homeLink) homeLink.classList.add('active');
              }
         });
-        // --- PYROLYSIS ANIMATION SPECIFIC JAVASCRIPT END ---
+        // --- PYROLYSIS ANIMATION SPECIFIC JAVASCRIPT END (REFINED) ---
     </script>
 </body>
 </html>
